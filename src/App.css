@@ -9,29 +9,37 @@
 }
 
 
+.debug {
+  opacity: 0.2;
+}
+
 @keyframes rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
 
-svg g {
+svg {
+  user-select: none;
+}
+
+g.hexagon-group {
   fill: #3F51B5;
   fill-opacity: 0.6;
 }
-svg g:hover {
+g.hexagon-group:hover {
   fill-opacity: 1;
 }
-svg g:hover text {
+g.hexagon-group:hover text {
   fill-opacity: 1;
 }
 
-svg g polygon {
+g.hexagon-group polygon {
   stroke: #3F51B5;
   stroke-width: 0.2;
   transition: fill-opacity .2s;
 }
-svg g text {
+g.hexagon-group text {
   font-size: 0.2em;
   fill: #000;
   fill-opacity: 0.9;
@@ -40,8 +48,8 @@ svg g text {
 svg path {
   fill: none;
   stroke: hsl(60, 20%, 70%);
-  stroke-width: 0.4em;
-  stroke-opacity: 0.3;
+  stroke-width: 0.2em;
+  stroke-opacity: 0.7;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
