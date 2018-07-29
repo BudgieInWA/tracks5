@@ -138,6 +138,12 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          // Put svg icons into a symbol sprite-sheet.
+          {
+            test: /\.svg$/,
+            include: [/\/icons\//],
+            use: [ { loader: 'svg-sprite-loader' } ],
+          },
           // Process JS with Babel.
           {
             test: /\.(js|jsx|mjs)$/,

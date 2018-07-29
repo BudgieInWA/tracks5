@@ -19,8 +19,17 @@
 }
 
 
-svg {
+svg.grid {
   user-select: none;
+}
+
+svg#__SVG_SPRITE_NODE__ {
+  fill: red;
+  stroke: black;
+  stroke-width: 1;
+  stroke-opacity: 0.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 g.hexagon-group {
@@ -45,7 +54,7 @@ g.hexagon-group text {
   fill-opacity: 0.9;
   transition: fill-opacity .2s;
 }
-svg path {
+svg.grid path:not([class]) {
   fill: none;
   stroke: hsl(60, 20%, 70%);
   stroke-width: 0.2em;

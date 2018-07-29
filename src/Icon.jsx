@@ -1,6 +1,11 @@
 import React from 'react';
 
-import hut from './assets/icons/delapouite/originals/svg/000000/transparent/hut.svg';
+import hut from './assets/icons/lorc/originals/svg/000000/transparent/pawn.svg';
 
-console.log({hut});
-export default (asset=hut) => <use {...{ 'xlink:href': '#' + asset.id }} />;
+export default ({asset=hut}) => <use
+  href={'#' + asset.id }
+  width="7"
+  height="7"
+  transform="translate(-3.5 -3.5)"
+  className="icon"
+/>;
