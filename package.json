@@ -11,9 +11,13 @@
     "redux": "^4.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "webpack-conf-react-scripts start",
+    "build": "webpack-conf-react-scripts build",
+    "test": "webpack-conf-react-scripts test --env=jsdom",
+    "eject": "webpack-conf-react-scripts eject"
+  },
+  "devDependencies": {
+    "svg-sprite-loader": "^3.8.0",
+    "webpack-conf-react-scripts": "^0.0.3"
   }
 }

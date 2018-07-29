@@ -2,8 +2,6 @@ import _ from 'lodash';
 import React from 'react';
 import { HexGrid, Layout, Hexagon, Path, Text, GridGenerator, Hex } from 'react-hexgrid';
 
-import { IconSymbols, Home } from './icons.jsx';
-
 import ActionTypes from './ActionTypes';
 
 import Building from './Building.jsx';
