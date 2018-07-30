@@ -5,9 +5,6 @@ import ActionTypes from './ActionTypes';
 
 import { tools } from './tools';
 
-// import Building from './Building.jsx';
-
-
 export default class Toolbar extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +23,7 @@ export default class Toolbar extends React.Component {
 
     return (
       <form className="toolbar">
-        {_.map(tools, (tool, id) => <label><input type="radio" name="tool" value={id} checked={id === toolName} onChange={this.changeTool} />{tool.name || id}</label>)}
+        {_.map(tools, (tool, id) => <label key={id}><input type="radio" name="tool" value={id} checked={id === toolName} onChange={this.changeTool} />{tool.name || id}</label>)}
       </form>
     );
   }
