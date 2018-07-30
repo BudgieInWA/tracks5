@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Map from './Map';
+import Toolbar from './Toolbar';
 
 class App extends Component {
   render() {
@@ -11,6 +12,7 @@ class App extends Component {
         <header>
           <h1>Hex Map Game</h1>
         </header>
+        <Toolbar {...store.getState()} dispatch={store.dispatch} />
         <Map {...store.getState()} dispatch={store.dispatch} />
       </div>
     );

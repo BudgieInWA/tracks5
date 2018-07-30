@@ -4,6 +4,7 @@ import { Hex } from 'react-hexgrid';
 
 import ActionTypes from './ActionTypes';
 
+const toolName = (state = 'line', action) => action.type === ActionTypes.toolName ? action.toolName : state;
 
 function path(state = [], action) {
   switch(action.type) {
@@ -19,4 +20,4 @@ const buildings = () => [{hex: Hex.origin, name: 'test building'}];
 const terrain = () => ({ [Hex.origin]: { type: 'grass', color: 'green' } });
 
 
-export default combineReducers({ buildings, path, terrain })
+export default combineReducers({ toolName, buildings, path, terrain })
