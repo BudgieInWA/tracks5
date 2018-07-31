@@ -4,7 +4,7 @@ export const tools = {
   poke: {
     onClick(event, hexComponent) {
       const { state: { hex } } = hexComponent;
-      console.log(hex)
+      console.info('Poke!', hex);
     }
   },
 
@@ -30,7 +30,7 @@ export const tools = {
     // onDragStart(event, hexComponent) {
     //   const { state: { hex } } = hexComponent;
     //   this.props.dispatch({ type: ActionTypes.path.start, hex });
-    // },
+    // },;
     // onDragOver(event, hexComponent)  {
     //   const { state: { hex } } = hexComponent;
     //   this.props.dispatch({ type: ActionTypes.path.end, hex });

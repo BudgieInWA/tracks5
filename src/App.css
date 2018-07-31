@@ -11,6 +11,7 @@
 
 .debug {
   opacity: 0.2;
+  display: none;
 }
 
 @keyframes rotate {
@@ -54,11 +55,34 @@ g.hexagon-group text {
   fill-opacity: 0.9;
   transition: fill-opacity .2s;
 }
-svg.grid path:not([class]) {
+svg.grid > g > path:not([class]) {
   fill: none;
   stroke: hsl(60, 20%, 70%);
   stroke-width: 0.2em;
   stroke-opacity: 0.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+g.tool {
+  pointer-events: none;
+  opacity: 0.7;
+}
+g.tool > path {
+  fill: none;
+  stroke: hsl(79, 20%, 70%);
+  stroke-width: 0.2em;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+g.tracks {
+  pointer-events: none;
+}
+g.tracks > path {
+  fill: none;
+  stroke: hsl(150, 20%, 70%);
+  stroke-width: 0.2em;
   stroke-linecap: round;
   stroke-linejoin: round;
 }

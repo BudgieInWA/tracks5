@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import React from 'react';
-import { HexGrid, Layout, Hexagon, Path, Text, GridGenerator, Hex } from 'react-hexgrid';
+import { HexGrid, Layout, Hexagon, Text, GridGenerator, Hex } from 'react-hexgrid';
+import Path from './Path.jsx';
 
 import { getTool }  from './tools';
 
 import Building from './Building.jsx';
 
-const makeHex = (str) => new Hex(...(str.split(',').map(parseInt))); // FIXME
+const makeHex = (str) => new Hex(...(str.split(',').map(s => parseInt(s))));
 
 export default class Map extends React.Component {
   constructor(props) {
@@ -46,10 +47,16 @@ export default class Map extends React.Component {
               <Text className="debug">{hex.toString()}</Text>
             </Hexagon>
           ))}
-          {_.map(tracks.edges, ({ v, w }) => <Path start={makeHex(v)} end={makeHex(w)} />)}
+          {tracks && (
+            <g className="tracks">
+              {_.map(tracks.edges, ({ v, w }) => <Path hexes={[makeHex(v), makeHex(w)]} />)}
+            </g>
+          )}
           {_.map(buildings, building => <Building {...building} />) }
 
-          {tool.hexes.length && <Path start={tool.hexes[0]} end={tool.hexes[tool.hexes.length - 1]} />}
+          <g className="tool">
+            {tool.hexes.length && <Path hexes={tool.hexes} />}
+          </g>
 
         </Layout>
       </HexGrid>
