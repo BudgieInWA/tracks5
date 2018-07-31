@@ -23,18 +23,27 @@
 .color-ui-hightlight-darker { color: #F9B713 }
 .color-ui-hightlight-darkest { color: #C08A05 }
 
-.App {
-  text-align: center;
+html, body,
+#root, .App, main {
+  overflow: hidden;
+  height: 100%;
 }
 
-.App header {
-  background-color: #222;
-  padding: 1em;
-  color: white;
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  padding: 0.5em;
+
+  z-index: 10;
 }
 
-.App main {
+
+main {
   position: relative;
+  height: 100%;
 
   font-size: 20pt;
 }
@@ -47,6 +56,8 @@
 
   display: flex;
   justify-content: center;
+
+  user-select: none;
 }
 
 .toolbar label {

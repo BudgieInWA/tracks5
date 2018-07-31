@@ -1,12 +1,12 @@
-import _ from 'lodash';
-import React from 'react';
-import { HexGrid, Layout, Text, GridGenerator, Hex } from 'react-hexgrid';
-import Tile from './svg/Tile.jsx';
-import Path from './svg/Path.jsx';
+import _ from "lodash";
+import React from "react";
+import { GridGenerator, Hex, HexGrid, Layout, Text } from "react-hexgrid";
+import Tile from "./svg/Tile.jsx";
+import Path from "./svg/Path.jsx";
 
-import { getTool }  from './tools';
+import { getTool } from "./tools";
 
-import Building from './svg/Building.jsx';
+import Building from "./svg/Building.jsx";
 
 const makeHex = (str) => new Hex(...(str.split(',').map(s => parseInt(s))));
 
@@ -26,7 +26,7 @@ export default class Map extends React.Component {
     const hexagons = GridGenerator.spiral(Hex.origin , 4);
 
     return (
-      <HexGrid width={800} height={800}>
+      <HexGrid width="100%" height="100%">
         <Layout size={{ x: 7, y: 7 }}>
           {_.map(hexagons, hex => (
             <Tile
