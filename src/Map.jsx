@@ -2,11 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import { HexGrid, Layout, Hexagon, Path, Text, GridGenerator, Hex } from 'react-hexgrid';
 
-import ActionTypes from './ActionTypes';
-
 import { getTool }  from './tools';
 
 import Building from './Building.jsx';
+
+const makeHex = (str) => new Hex(...(str.split(',').map(parseInt))); // FIXME
 
 export default class Map extends React.Component {
   constructor(props) {
@@ -14,12 +14,12 @@ export default class Map extends React.Component {
   }
 
   makeHexToolEventDelegator(eventType) {
-    const tool = getTool(this.props.toolName);
+    const tool = getTool(this.props.tool.name);
     return tool[eventType] && tool[eventType].bind(this);
   }
 
   render() {
-    const { terrain, buildings, path } = this.props;
+    const { tool, terrain, tracks, buildings } = this.props;
 
     const hexagons = GridGenerator.spiral(Hex.origin , 4);
 
@@ -46,8 +46,11 @@ export default class Map extends React.Component {
               <Text className="debug">{hex.toString()}</Text>
             </Hexagon>
           ))}
+          {_.map(tracks.edges, ({ v, w }) => <Path start={makeHex(v)} end={makeHex(w)} />)}
           {_.map(buildings, building => <Building {...building} />) }
-          {path && <Path start={path[0]} end={path[path.length - 1]} />}
+
+          {tool.hexes.length && <Path start={tool.hexes[0]} end={tool.hexes[tool.hexes.length - 1]} />}
+
         </Layout>
       </HexGrid>
     );

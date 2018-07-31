@@ -3,11 +3,12 @@ export default {
     build: 'TRACKS_BUILD',
   },
 
-  path: {
-    start: 'PATH_START',
-    end:  'PATH_END',
-    clear: 'PATH_CLEAR',
-  },
-
-  toolName: 'TOOL_NAME',
+  tool: {
+    name: 'tool anme',
+    hexes: {
+      start: 'PATH_START',
+      end:  'PATH_END',
+      clear: 'PATH_CLEAR',
+    },
+  }
 };

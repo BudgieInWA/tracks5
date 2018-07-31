@@ -6,7 +6,6 @@ import { Hex } from 'react-hexgrid';
 
 import ActionTypes from './ActionTypes';
 
-const toolName = (state = 'line', action) => action.type === ActionTypes.toolName ? action.toolName : state;
 
 
 class TrackNetwork {
@@ -57,7 +56,7 @@ class TrackNetwork {
 
       if (prevHex) {
         // Fill in the "between hex" network.
-        graph.setEdge({ v: prevHex, w: hex, name: this.between.hex }, /* directions, ... */);
+        graph.setEdge({ v: prevHex, w: hex, name: TrackNetwork.between.hex }, /* directions, ... */);
       }
 
       prevHex = hex;
@@ -80,7 +79,7 @@ class TrackNetwork {
    * @param {Hex} hex
    */
   markIntersection(hex) {
-    _.each(this.nodeOutEdges(hex, this.between.hex), e => {
+    _.each(this.nodeOutEdges(hex, TrackNetwork.between.hex), e => {
       _.each(this.pathToIntersectionFollowingTrack(e), hex => {
         // Correct the 'between intersections' edge that this new intersection breaks.
         //TODO
@@ -89,7 +88,7 @@ class TrackNetwork {
   }
 
   connectedNeighbors(hex) {
-    _.map(this.nodeOutEdges(hex, this.between.hex), 'w');
+    _.map(this.nodeOutEdges(hex, TrackNetwork.between.hex), 'w');
   }
 
   pathToIntersectionFollowingTrack(edge, path=[]) {
@@ -144,18 +143,25 @@ function tracks(state, action) {
   return network.state();
 }
 
-function path(state = [], action) {
+
+const name = (state = 'poke', action) => action.type === ActionTypes.tool.name ? action.name : state;
+
+function hexes(state = [], action) {
   switch(action.type) {
-    case ActionTypes.path.start:  return [action.hex, action.hex];
-    case ActionTypes.path.end: return state.length === 0 ? [] : [state[0], action.hex];
-    case ActionTypes.path.clear:  return [];
+    case ActionTypes.tool.hexes.start:  return [action.hex, action.hex];
+    case ActionTypes.tool.hexes.end: return state.length === 0 ? [] : [state[0], action.hex];
+    case ActionTypes.tool.hexes.clear:  return [];
     default: return state;
   }
 }
+
+const tool = combineReducers({ name, hexes });
 
 const buildings = () => [{hex: Hex.origin, name: 'test building'}];
 
 const terrain = () => ({ [Hex.origin]: { type: 'grass', color: 'green' } });
 
+const trains = () => [];
 
-export default combineReducers({ toolName, buildings, path, terrain, tracks })
+
+export default combineReducers({ tool, terrain, tracks, buildings, trains })

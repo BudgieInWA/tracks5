@@ -16,14 +16,14 @@ export default class Toolbar extends React.Component {
     const { dispatch } = this.props;
     if (event.defaultPrevented) return;
 
-    dispatch({ type: ActionTypes.toolName, toolName: event.currentTarget.value });
+    dispatch({ type: ActionTypes.tool.name, name: event.currentTarget.value });
   }
   render() {
-    const { toolName } = this.props;
+    const { tool: { name } } = this.props;
 
     return (
       <form className="toolbar">
-        {_.map(tools, (tool, id) => <label key={id}><input type="radio" name="tool" value={id} checked={id === toolName} onChange={this.changeTool} />{tool.name || id}</label>)}
+        {_.map(tools, (tool, id) => <label key={id}><input type="radio" name="tool" value={id} checked={id === name} onChange={this.changeTool} />{tool.name || id}</label>)}
       </form>
     );
   }
