@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { HexUtils } from 'react-hexgrid';
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { HexUtils } from "react-hexgrid";
 
 export default function gridPositioned(Component) {
   return class extends React.Component {
@@ -10,7 +10,7 @@ export default function gridPositioned(Component) {
     };
 
     static contextTypes = {
-      layout: PropTypes.object, // TODO Shape
+      layout: PropTypes.object,
     };
 
     render() {

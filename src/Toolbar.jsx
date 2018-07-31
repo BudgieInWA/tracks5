@@ -1,9 +1,9 @@
-import _ from 'lodash';
-import React from 'react';
+import _ from "lodash";
+import React from "react";
 
-import ActionTypes from './ActionTypes';
+import ActionTypes from "./reducers/ActionTypes";
 
-import { tools } from './tools';
+import { tools } from "./tools";
 
 export default class Toolbar extends React.Component {
   constructor(props) {
