@@ -12,8 +12,10 @@ class App extends Component {
         <header>
           <h1>Hex Map Game</h1>
         </header>
-        <Toolbar {...store.getState()} dispatch={store.dispatch} />
-        <Map {...store.getState()} dispatch={store.dispatch} />
+        <main>
+          <Toolbar {...store.getState()} dispatch={store.dispatch} />
+          <Map {...store.getState()} dispatch={store.dispatch} />
+        </main>
       </div>
     );
   }

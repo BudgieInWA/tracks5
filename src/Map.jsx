@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
-import { HexGrid, Layout, Hexagon, Text, GridGenerator, Hex } from 'react-hexgrid';
-import Path from './Path.jsx';
+import { HexGrid, Layout, Text, GridGenerator, Hex } from 'react-hexgrid';
+import Tile from './svg/Tile.jsx';
+import Path from './svg/Path.jsx';
 
 import { getTool }  from './tools';
 
-import Building from './Building.jsx';
+import Building from './svg/Building.jsx';
 
 const makeHex = (str) => new Hex(...(str.split(',').map(s => parseInt(s))));
 
@@ -14,9 +15,9 @@ export default class Map extends React.Component {
     super(props);
   }
 
-  makeHexToolEventDelegator(eventType) {
+  makeHexToolEventDelegator(eventType, arg) {
     const tool = getTool(this.props.tool.name);
-    return tool[eventType] && tool[eventType].bind(this);
+    return tool[eventType] && ((event) => tool[eventType].apply(this, [arg, event]));
   }
 
   render() {
@@ -28,24 +29,23 @@ export default class Map extends React.Component {
       <HexGrid width={800} height={800}>
         <Layout size={{ x: 7, y: 7 }}>
           {_.map(hexagons, hex => (
-            <Hexagon
+            <Tile
               key={hex.toString()}
-              {...hex}
+              hex={hex}
 
-              onClick={this.makeHexToolEventDelegator('onClick')}
-              onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
-              onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
+              onClick={this.makeHexToolEventDelegator('onClick', { hex })}
+              // onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
+              // onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
+              onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', { hex })}
+              onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', { hex })}
 
-              onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter')}
-              onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave')}
-
-              onDragStart={this.makeHexToolEventDelegator('onDragStart')}
-              onDragOver={this.makeHexToolEventDelegator('onDragStart')}
-              onDrop={this.makeHexToolEventDelegator('onDragOver')}
-              onDragEnd={this.makeHexToolEventDelegator('onDragEnd')}
+              // onDragStart={this.makeHexToolEventDelegator('onDragStart')}
+              // onDragOver={this.makeHexToolEventDelegator('onDragStart')}
+              // onDrop={this.makeHexToolEventDelegator('onDragOver')}
+              // onDragEnd={this.makeHexToolEventDelegator('onDragEnd')}
             >
               <Text className="debug">{hex.toString()}</Text>
-            </Hexagon>
+            </Tile>
           ))}
           {tracks && (
             <g className="tracks">

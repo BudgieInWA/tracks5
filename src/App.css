@@ -1,3 +1,28 @@
+/* Palette URL: http://paletton.com/#uid=73T260knTyAd+NajqEPt-vevfo9 */
+.color-map-base { color: #3F52B5 }	/* Main Primary color */
+.color-map-lightest { color: #8895DC }
+.color-map-lighter { color: #5E6EC7 }
+.color-map-darker { color: #2137AA }
+.color-map-darkest { color: #132584 }
+
+.color-map-highlight-base { color: #FF8741 }	/* Main Secondary color (1) */
+.color-map-highlight-lightest { color: #FFB990 }
+.color-map-highlight-lighter { color: #FF9E64 }
+.color-map-highlight-darker { color: #F96813 }
+.color-map-highlight-darkest { color: #C04A05 }
+
+.color-ui-base { color: #2CAD8D }	/* Main Secondary color (2) */
+.color-ui-lightest { color: #7AD8C1 }
+.color-ui-lighter { color: #4CC1A4 }
+.color-ui-darker { color: #0CA27C }
+.color-ui-darkest { color: #037D5F }
+
+.color-ui-hightlight-base { color: #FFC841 }	/* Main Complement color */
+.color-ui-hightlight-lightest { color: #FFDF90 }
+.color-ui-hightlight-lighter { color: #FFD264 }
+.color-ui-hightlight-darker { color: #F9B713 }
+.color-ui-hightlight-darkest { color: #C08A05 }
+
 .App {
   text-align: center;
 }
@@ -6,6 +31,31 @@
   background-color: #222;
   padding: 1em;
   color: white;
+}
+
+.App main {
+  position: relative;
+
+  font-size: 20pt;
+}
+
+.toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+.toolbar label {
+  border: 2px solid #0CA27C;
+  background: #2CAD8D;
+  padding: 0.6em;
+  margin: 0.6em;
+
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 1em;
 }
 
 
@@ -33,35 +83,17 @@ svg#__SVG_SPRITE_NODE__ {
   stroke-linejoin: round;
 }
 
-g.hexagon-group {
-  fill: #3F51B5;
-  fill-opacity: 0.6;
-}
-g.hexagon-group:hover {
-  fill-opacity: 1;
-}
-g.hexagon-group:hover text {
-  fill-opacity: 1;
-}
+g.grid-positioned { }
 
-g.hexagon-group polygon {
-  stroke: #3F51B5;
+.tile {
+  fill: #5E6EC7;
+  stroke: #2137AA;
   stroke-width: 0.2;
-  transition: fill-opacity .2s;
+
+  transition: fill 0.2s;
 }
-g.hexagon-group text {
-  font-size: 0.2em;
-  fill: #000;
-  fill-opacity: 0.9;
-  transition: fill-opacity .2s;
-}
-svg.grid > g > path:not([class]) {
-  fill: none;
-  stroke: hsl(60, 20%, 70%);
-  stroke-width: 0.2em;
-  stroke-opacity: 0.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.tile:hover {
+  fill: #3F52B5;
 }
 
 g.tool {
@@ -82,7 +114,19 @@ g.tracks {
 g.tracks > path {
   fill: none;
   stroke: hsl(150, 20%, 70%);
-  stroke-width: 0.2em;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+
+
+svg.grid > g > path:not([class]) {
+  fill: none;
+  stroke: hsl(60, 20%, 70%);
+  stroke-width: 0.2em;
+  stroke-opacity: 0.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+

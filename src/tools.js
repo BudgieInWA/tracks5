@@ -2,16 +2,14 @@ import ActionTypes from './ActionTypes';
 
 export const tools = {
   poke: {
-    onClick(event, hexComponent) {
-      const { state: { hex } } = hexComponent;
+    onClick({ hex }, event) {
       console.info('Poke!', hex);
     }
   },
 
   track: {
-    onClick(event, hexComponent) {
+    onClick({ hex }, event) {
       const { tool: { hexes }, dispatch } = this.props;
-      const { state: { hex } } = hexComponent;
       if (hexes.length === 0) {
         dispatch({ type: ActionTypes.tool.hexes.start, hex });
       } else {
@@ -19,9 +17,8 @@ export const tools = {
         dispatch({ type: ActionTypes.tool.hexes.clear });
       }
     },
-    onMouseEnter(event, hexComponent) {
+    onMouseEnter({ hex }, event) {
       const { tool: { hexes }, dispatch } = this.props;
-      const { state: { hex } } = hexComponent;
       if (hexes.length > 0) {
         dispatch({ type: ActionTypes.tool.hexes.end, hex });
       }

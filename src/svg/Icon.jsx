@@ -1,6 +1,6 @@
 import React from 'react';
 
-import hut from './assets/icons/lorc/originals/svg/000000/transparent/pawn.svg';
+import hut from '../assets/icons/lorc/originals/svg/000000/transparent/pawn.svg';
 
 export default ({asset=hut}) => <use
   href={'#' + asset.id }
