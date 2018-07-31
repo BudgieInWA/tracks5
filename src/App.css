@@ -85,6 +85,12 @@ svg.grid {
   user-select: none;
 }
 
+svg.grid text {
+  font-size: 2.5pt;
+  fill: black;
+  stroke: none;
+}
+
 svg#__SVG_SPRITE_NODE__ {
   fill: red;
   stroke: black;

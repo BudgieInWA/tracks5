@@ -7,6 +7,7 @@ import Path from "./svg/Path.jsx";
 import { getToolImpl } from "./tools";
 
 import Building from "./svg/Building.jsx";
+import TrainCar from "./svg/TrainCar.jsx";
 
 const makeHex = (str) => new Hex(...(str.split(',').map(s => parseInt(s))));
 
@@ -21,7 +22,7 @@ export default class Map extends React.Component {
   }
 
   render() {
-    const { tool, terrain, tracks, buildings } = this.props;
+    const { tool, terrain, tracks, trains, buildings } = this.props;
 
     const hexagons = GridGenerator.spiral(Hex.origin , 4);
 
@@ -50,6 +51,11 @@ export default class Map extends React.Component {
           {tracks && (
             <g className="tracks">
               {_.map(tracks.edges, ({ v, w }) => <Path hexes={[makeHex(v), makeHex(w)]} />)}
+            </g>
+          )}
+          {trains && (
+            <g className="trains">
+              {_.map(trains, (train) => <TrainCar {...train} />)}
             </g>
           )}
           {_.map(buildings, building => <Building {...building} />) }

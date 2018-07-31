@@ -3,6 +3,12 @@ export default {
     build: 'TRACKS_BUILD',
   },
 
+  trains: {
+    build: "bas",
+    name: "name train",
+    direction: "direct train",
+  },
+
   tool: {
     name: 'tool anme',
     hexes: {
