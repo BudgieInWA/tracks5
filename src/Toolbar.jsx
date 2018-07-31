@@ -1,11 +1,13 @@
 import _ from "lodash";
 import React from "react";
+import { connect } from "react-redux";
 
 import ActionTypes from "./reducers/ActionTypes";
+import { getTool } from "./reducers/tool";
 
 import { tools } from "./tools";
 
-export default class Toolbar extends React.Component {
+class Toolbar extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,7 +21,7 @@ export default class Toolbar extends React.Component {
     dispatch({ type: ActionTypes.tool.name, name: event.currentTarget.value });
   }
   render() {
-    const { tool: { name } } = this.props;
+    const { name } = this.props;
 
     return (
       <form className="toolbar">
@@ -27,5 +29,6 @@ export default class Toolbar extends React.Component {
       </form>
     );
   }
-
 }
+
+export default connect(getTool)(Toolbar);

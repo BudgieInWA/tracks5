@@ -4,7 +4,7 @@ import { GridGenerator, Hex, HexGrid, Layout, Text } from "react-hexgrid";
 import Tile from "./svg/Tile.jsx";
 import Path from "./svg/Path.jsx";
 
-import { getTool } from "./tools";
+import { getToolImpl } from "./tools";
 
 import Building from "./svg/Building.jsx";
 
@@ -16,7 +16,7 @@ export default class Map extends React.Component {
   }
 
   makeHexToolEventDelegator(eventType, arg) {
-    const tool = getTool(this.props.tool.name);
+    const tool = getToolImpl(this.props.tool.name);
     return tool[eventType] && ((event) => tool[eventType].apply(this, [arg, event]));
   }
 

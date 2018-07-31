@@ -46,4 +46,8 @@ function hexes(state = [], action) {
   }
 }
 
+export function getTool(state) {
+  return state.tool;
+}
+
 export default combineReducers({ name, hexes });

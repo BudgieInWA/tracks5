@@ -39,4 +39,4 @@ export const tools = {
   building: {},
 };
 
-export const getTool = id => tools[id] || {};
+export const getToolImpl = id => tools[id] || {};
