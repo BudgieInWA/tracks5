@@ -116,6 +116,14 @@ svg#__SVG_SPRITE_NODE__ {
 
 g.grid-positioned { }
 
+.grid {
+  pointer-events: none;
+}
+
+.touchable {
+  pointer-events: auto;
+}
+
 .tile {
   fill: #8895DC;
   stroke: #2137AA;
@@ -137,9 +145,6 @@ g.tool > path {
   stroke-linejoin: round;
 }
 
-g.tracks {
-  pointer-events: none;
-}
 g.tracks > path {
   fill: none;
   stroke: #FF9E64;

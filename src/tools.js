@@ -2,12 +2,14 @@ import ActionTypes from "./reducers/ActionTypes";
 
 export const tools = {
   poke: {
+    touchTargets: { tile: true, building: true, track: true, train: true },
     onClick({ hex }, event) {
-      console.info('Poke!', hex);
+      console.info('Poke!', { hex, event });
     }
   },
 
   track: {
+    touchTargets: { tile: true },
     onClick({ hex }, event) {
       const { tool: { hexes }, dispatch } = this.props;
       if (hexes.length === 0) {
@@ -24,6 +26,7 @@ export const tools = {
       }
     },
 
+
     // onDragStart(event, hexComponent) {
     //   const { state: { hex } } = hexComponent;
     //   this.props.dispatch({ type: ActionTypes.path.start, hex });
@@ -36,7 +39,9 @@ export const tools = {
     //   this.props.dispatch({ type: ActionTypes.path.clear });
     // },
   },
+
   building: {},
+  train: {},
 };
 
 export const getToolImpl = id => tools[id] || {};
