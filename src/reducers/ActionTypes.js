@@ -4,7 +4,10 @@ export default {
   },
 
   trains: {
-    build: "bas",
+    build: "build train",
+  },
+
+  game: {
     movePhase: "train move phase",
   },
 

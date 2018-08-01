@@ -1,14 +1,17 @@
 import React, { Component } from "react";
+import { createStore } from "redux";
 import { Provider } from "react-redux";
-import "./App.css";
+import appReducer from "./reducers/appReducer";
 
+import "./App.css";
 import Map from "./Map";
 import Toolbar from "./Toolbar";
 import TurnControls from "./TurnControls";
 
+const store = createStore(appReducer);
+
 class App extends Component {
   render() {
-    const { store } = this.props;
     return (
       <Provider store={store}>
         <div className="App">
@@ -16,7 +19,7 @@ class App extends Component {
             <h1>Hex Map Game</h1>
           </header>
           <main>
-            <Map {...store.getState()} dispatch={store.dispatch} />
+            <Map />
             <Toolbar />
             <TurnControls />
           </main>

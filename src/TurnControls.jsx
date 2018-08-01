@@ -6,7 +6,7 @@ import ActionTypes from "./reducers/ActionTypes";
 
 const turnActions = dispatch => ({
   doMovePhase(event) {
-    dispatch({ type: ActionTypes.trains.movePhase })
+    dispatch({ type: ActionTypes.game.movePhase })
   },
 });
 class TurnControls extends React.Component {

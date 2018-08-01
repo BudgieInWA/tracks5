@@ -1,13 +1,11 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-import { Hex } from "react-hexgrid";
+import { Hex } from 'react-hexgrid';
 
-import tool from "./tool";
-import tracks from "./tracks";
-import trains from "./trains";
+import tool from './tool';
+import game from './game';
 
-const buildings = () => [{hex: Hex.origin, name: 'test building'}];
 
 const terrain = () => ({ [Hex.origin]: { type: 'grass', color: 'green' } });
 
-export default combineReducers({ tool, terrain, tracks, buildings, trains })
+export default combineReducers({ tool, terrain, game})

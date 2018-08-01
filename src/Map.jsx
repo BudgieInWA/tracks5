@@ -1,17 +1,19 @@
 import _ from "lodash";
 import React from "react";
+import { connect } from "react-redux";
 import { GridGenerator, Hex, HexGrid, Layout, Text } from "react-hexgrid";
 import Tile from "./svg/Tile.jsx";
 import Path from "./svg/Path.jsx";
 
 import { getToolImpl } from "./tools";
+import { getGame } from './reducers/game';
 
 import Building from "./svg/Building.jsx";
 import TrainCar from "./svg/TrainCar.jsx";
 
 const makeHex = (str) => new Hex(...(str.split(',').map(s => parseInt(s))));
 
-export default class Map extends React.Component {
+class Map extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -69,3 +71,5 @@ export default class Map extends React.Component {
     );
   }
 }
+
+export default connect(getGame)(Map);
