@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { HexUtils } from "react-hexgrid";
+import { Hex, HexUtils } from "react-hexgrid";
 
 export default function gridPositioned(Component) {
   return class extends React.Component {
+    static displayName = 'GridPositioner';
+
     static propTypes = {
       hex: PropTypes.object.isRequired,
     };
@@ -14,7 +16,7 @@ export default function gridPositioned(Component) {
     };
 
     render() {
-      const { hex, ...rest } = this.props;
+      const { hex = Hex.origin, ...rest } = this.props;
       const { layout } = this.context;
       const pixel = HexUtils.hexToPixel(hex, layout);
       return (
