@@ -69,6 +69,12 @@ main {
   box-shadow: rgba(0, 0, 0, 0.3) 0 0 1em;
 }
 
+.turn-controls {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 
 .debug {
   opacity: 0.2;
@@ -90,6 +96,14 @@ svg.grid text {
   fill: black;
   stroke: none;
 }
+.building:hover,
+.track:hover,
+.train:hover,
+/*.tile:hover,*/
+label:hover,
+.tile:hover {
+  opacity: 0.7;
+}
 
 svg#__SVG_SPRITE_NODE__ {
   fill: red;
@@ -103,14 +117,12 @@ svg#__SVG_SPRITE_NODE__ {
 g.grid-positioned { }
 
 .tile {
-  fill: #5E6EC7;
+  fill: #8895DC;
   stroke: #2137AA;
-  stroke-width: 0.2;
+  stroke-width: 0.1pt;
+  clip-path: fill-box;
 
   transition: fill 0.2s;
-}
-.tile:hover {
-  fill: #3F52B5;
 }
 
 g.tool {
@@ -130,18 +142,25 @@ g.tracks {
 }
 g.tracks > path {
   fill: none;
-  stroke: hsl(150, 20%, 70%);
+  stroke: #FF9E64;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
+.building {
+  fill: #C04A05;
+}
+
+.train {
+  fill: #C04A05;
+}
 
 
 svg.grid > g > path:not([class]) {
   fill: none;
   stroke: hsl(60, 20%, 70%);
-  stroke-width: 0.2em;
+  stroke-width: 1;
   stroke-opacity: 0.7;
   stroke-linecap: round;
   stroke-linejoin: round;

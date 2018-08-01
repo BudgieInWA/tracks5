@@ -4,6 +4,7 @@ import "./App.css";
 
 import Map from "./Map";
 import Toolbar from "./Toolbar";
+import TurnControls from "./TurnControls";
 
 class App extends Component {
   render() {
@@ -15,8 +16,9 @@ class App extends Component {
             <h1>Hex Map Game</h1>
           </header>
           <main>
-            <Toolbar />
             <Map {...store.getState()} dispatch={store.dispatch} />
+            <Toolbar />
+            <TurnControls />
           </main>
         </div>
       </Provider>

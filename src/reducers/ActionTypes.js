@@ -5,8 +5,7 @@ export default {
 
   trains: {
     build: "bas",
-    name: "name train",
-    direction: "direct train",
+    movePhase: "train move phase",
   },
 
   tool: {

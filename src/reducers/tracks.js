@@ -119,8 +119,7 @@ class TrackNetwork {
   static otherEndOf = (edge, hex) => hex !== edge.w ? edge.w : edge.v;
 }
 
-export default function tracks(state, action) {
-  if (!state) return new TrackNetwork().state();
+export default function tracks(state = new TrackNetwork().state(), action) {
   if (!_.includes(ActionTypes.tracks, action.type)) return state;
 
   const network = new TrackNetwork(state);
