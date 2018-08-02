@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { combineReducers } from "redux";
 
 import { Hex, HexUtils } from "react-hexgrid";
-import CardinalDirections from "../CardinalDirections";
+import CardinalDirection from "../CardinalDirection";
 
 import ActionTypes from "./ActionTypes";
 import { TrackNetwork } from "./tracks";
@@ -34,7 +34,10 @@ export function moveTrains(trains, network) {
         if (nextEdge) {
           const [edge, data] = nextEdge;
           destination = edge.w;
-          direction = data.direction.toString();
+          direction = data.direction;
+          if (!direction) {
+            console.warn({direction}, 'should be valid');
+          }
         } else {
           speed = 0;
           break;
@@ -60,7 +63,7 @@ export function moveTrains(trains, network) {
 const defaultTrain = {
   name: "default train",
   hex: Hex.origin.toString(),
-  direction: CardinalDirections.SE.toString(),
+  direction: CardinalDirection.SE.toString(),
   distance: 0/segments,
   speed: 1,
   destination: null,
@@ -90,7 +93,7 @@ function transformTrain(state) {
   return {
     ...state,
     hex: makeHex(state.hex),
-    direction: CardinalDirections.fromString(state.direction),
+    direction: CardinalDirection.of(state.direction),
   }
 }
 export function getTrains(state) {

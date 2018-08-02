@@ -2,7 +2,7 @@ import _ from "lodash";
 import graphs from "@dagrejs/graphlib";
 
 import { Hex, HexUtils } from "react-hexgrid";
-import CardinalDirections from '../CardinalDirections';
+import CardinalDirection from '../CardinalDirection';
 
 import ActionTypes from "./ActionTypes";
 
@@ -127,7 +127,7 @@ export class TrackNetwork {
     const node = hex.toString();
     return _.map(this.nodeEdges(node, name), ([edge, data]) => (
       edge.w === node
-        ? [{...edge, v: edge.w, w: edge.v}, {...data, direction: CardinalDirections.fromString(data.direction).opposite.toString()}]
+        ? [{...edge, v: edge.w, w: edge.v}, {...data, direction: CardinalDirection.reverse(data.direction)}]
         : [edge, data]
     ));
   }
