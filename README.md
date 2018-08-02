@@ -7,5 +7,7 @@
 
 # Misc TODO
 
+- right click and keyboard business
+
 - Look like unexplored map.
 - find a transitiiiion-stable description of train positions so they can be css animated.
