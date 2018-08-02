@@ -9,7 +9,7 @@
 
 Game 
 
-- Split TrackNetwork and wrap edges in TrackSegment or something
+- ~~Split TrackNetwork~~ and wrap edges in TrackSegment or something
     - make trains navigate forward
 
 Engine

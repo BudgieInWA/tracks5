@@ -2,9 +2,11 @@ import  _ from 'lodash';
 import { combineReducers } from 'redux';
 import { Hex } from "react-hexgrid";
 
+import TrackNetwork  from '../lib/TrackNetwork';
+
 import ActionTypes from "./ActionTypes";
 
-import tracks, { withNetwork, TrackNetwork } from './tracks';
+import tracks from './tracks';
 import trains, { moveTrains, getTrains } from './trains';
 
 const buildings = () => [{hex: Hex.origin, name: 'test building'}];

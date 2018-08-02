@@ -3,9 +3,9 @@ import { combineReducers } from "redux";
 
 import { Hex, HexUtils } from "react-hexgrid";
 import CardinalDirection from "../lib/CardinalDirection";
+import TrackNetwork from "../lib/TrackNetwork";
 
 import ActionTypes from "./ActionTypes";
-import { TrackNetwork } from "./tracks";
 
 const segments = 3;
 
@@ -73,19 +73,20 @@ function train(state = {}, action) {
   return state;
 }
 
-const trainsSub = state => state;
-
-function trainsTop(state=[defaultTrain], action) {
+export default function trains(state=[defaultTrain], action) {
   switch(action.type) {
     case ActionTypes.trains.build:
       return [ ...state, train(undefined, action) ];
+    case ActionTypes.train.name:
+      console.warn('untested');
+      return [
+        ...state.slice(0, action.index),
+        train(state[action.index]),
+        ...state.slice(action.index),
+      ];
     default:
       return state;
   }
-}
-
-export default function trains(state, action) {
-  return trainsSub(trainsTop(state, action), action);
 }
 
 
