@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { combineReducers } from "redux";
 
-import { Hex, HexUtils } from "react-hexgrid";
+import Hex from '../lib/Hex';
 import CardinalDirection from "../lib/CardinalDirection";
 import TrackNetwork from "../lib/TrackNetwork";
 
@@ -9,7 +9,6 @@ import ActionTypes from "./ActionTypes";
 
 const segments = 3;
 
-const makeHex = (str) => str ? new Hex(...(str.split(',').map(s => parseInt(s)))) : str;
 
 const name = (state = null, action) => action.type === ActionTypes.trains.name ? action.name : state;
 
@@ -30,11 +29,10 @@ export function moveTrains(trains, network) {
       if (!train.destination) {
         // TODO choose next track segment
         // TODO turning rules
-        const nextEdge = network.nodeOutEdges(train.hex, TrackNetwork.between.hex)[0];
-        if (nextEdge) {
-          const [edge, data] = nextEdge;
-          destination = edge.w;
-          direction = data.direction;
+        const nextRail = network.optionsFrom(train.hex)[0];
+        if (nextRail) {
+          destination = nextRail.w.toString();
+          direction = nextRail.direction.toString();
           if (!direction) {
             console.warn({direction}, 'should be valid');
           }
@@ -93,7 +91,7 @@ export default function trains(state=[defaultTrain], action) {
 function transformTrain(state) {
   return {
     ...state,
-    hex: makeHex(state.hex),
+    hex: Hex.of(state.hex),
     direction: CardinalDirection.of(state.direction),
   }
 }

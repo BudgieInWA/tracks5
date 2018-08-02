@@ -1,8 +1,8 @@
 import _ from "lodash";
 
-import ActionTypes from "./ActionTypes";
-
 import TrackNetwork  from '../lib/TrackNetwork';
+
+import ActionTypes from "./ActionTypes";
 
 export default function tracks(state = new TrackNetwork().state(), action) {
   if (!_.includes(ActionTypes.tracks, action.type)) return state;

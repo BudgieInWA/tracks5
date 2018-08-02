@@ -1,10 +1,26 @@
 import _ from "lodash";
 import graphs from "@dagrejs/graphlib";
 
-import { Hex, HexUtils } from "react-hexgrid";
-import CardinalDirection from '../lib/CardinalDirection';
+import { HexUtils } from "react-hexgrid";
+// import Hex from './Hex';
+import CardinalDirection from './CardinalDirection';
+import TrackRail from './TrackRail';
 
-const makeHex = (str) => str ? new Hex(...(str.split(',').map(s => parseInt(s)))) : str;
+const normalEdgeOrder = (edge, data) => {
+  //TODO store directionsFrom: { [v]: a, [w]: b } to avoid flipping and remain generic between intersection edges.
+  const {v, w} = edge;
+  if ('' + v > '' + w) {
+    return [{
+      ...edge,
+      v: w,
+      w: v,
+    }, {
+      ...data,
+      direction: CardinalDirection.reverse(data.direction),
+    }]
+  }
+  return [edge, data];
+};
 
 export default class TrackNetwork {
   constructor(state) {
@@ -17,9 +33,8 @@ export default class TrackNetwork {
   }
 
   static between = {
-    turn: 't',
-    intersection: 'i',
-    hex: 'h',
+    intersections: 'i',
+    hexes: 'h',
   };
 
   static NotSimpleTrack = class extends Error {
@@ -36,9 +51,7 @@ export default class TrackNetwork {
     // }
 
     let prevHex;
-    let prevJoinedIntersection;
     _.each(hexes, hex => {
-      prevJoinedIntersection = false;
       if (this.graph.hasNode(hex)) {
         // if (isIntersection(hex)) {
         // Join the intersection.
@@ -54,7 +67,7 @@ export default class TrackNetwork {
 
       if (prevHex) {
         // Fill in the "between hex" network.
-        graph.setEdge({ v: prevHex, w: hex, name: TrackNetwork.between.hex }, { direction: HexUtils.subtract(hex, prevHex) });
+        graph.setEdge({ v: prevHex, w: hex, name: TrackNetwork.between.hexes }, { direction: HexUtils.subtract(hex, prevHex) });
       }
 
       prevHex = hex;
@@ -77,7 +90,7 @@ export default class TrackNetwork {
    * @param {Hex} hex
    */
   markIntersection(hex) {
-    _.each(this.nodeOutEdges(hex, TrackNetwork.between.hex), ([e, v]) => {
+    _.each(this.nodeOutEdges(hex, TrackNetwork.between.hexes), e => {
       _.each(this.pathToIntersectionFollowingTrack(e), hex => {
         // Correct the 'between intersections' edge that this new intersection breaks.
         //TODO
@@ -85,8 +98,8 @@ export default class TrackNetwork {
     });
   }
 
-  connectedNeighbors(hex) {
-    _.map(this.nodeOutEdges(hex, TrackNetwork.between.hex), ([e, v]) => e.w);
+  connectedNodes(hex) {
+    _.map(this.nodeOutEdges(hex, TrackNetwork.between.hexes), e => e.w);
   }
 
   pathToIntersectionFollowingTrack(edge, path=[]) {
@@ -109,26 +122,36 @@ export default class TrackNetwork {
   }
 
   nextEdgeFollowingTrack(edge) {
-    const destinationOutEdges = _.filter(this.nodeOutEdges(edge.w, TrackNetwork.between.hex), ([e, v]) => e.w === edge.v);
+    const destinationOutEdges = _.filter(this.nodeOutEdges(edge.w, TrackNetwork.between.hexes), e => e.w === edge.v);
     if (destinationOutEdges.length !== 1) throw new TrackNetwork.NotSimpleTrack({choices: destinationOutEdges});
     return destinationOutEdges[0];
   }
 
   nodeEdges(node, name) {
-    return _(this.graph.nodeEdges(node))
-      .filter({ name })
-      .map(edge => [edge, this.graph.edge(edge)])
-      .value();
+    return _.filter(this.graph.nodeEdges(node), { name });
   }
+
+  rail(edge) {
+    const edgeData = this.graph.edge(edge);
+    const [ normalEdge, dataFlippedIfNeeded ] = normalEdgeOrder(edge, edgeData);
+    return new TrackRail(edge, dataFlippedIfNeeded);
+  }
+
   /** All edges from node with v === node */
   nodeOutEdges(hex, name) {
     const node = hex.toString();
-    return _.map(this.nodeEdges(node, name), ([edge, data]) => (
-      edge.w === node
-        ? [{...edge, v: edge.w, w: edge.v}, {...data, direction: CardinalDirection.reverse(data.direction)}]
-        : [edge, data]
-    ));
+    return _.map(this.nodeEdges(node, name), edge => edge.w === node ? {...edge, v: edge.w, w: edge.v} : edge);
   }
+
+  wholeEdge(edge) {
+
+  }
+
+  optionsFrom(hex, direction=null) {
+    // TODO: if (direction) { filter... }
+    return _.map(this.nodeOutEdges(hex, TrackNetwork.between.hexes), edge => this.rail(edge));
+  }
+
   static otherEndOf = (edge, hex) => hex !== edge.w ? edge.w : edge.v;
 }
 

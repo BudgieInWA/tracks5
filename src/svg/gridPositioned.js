@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { Hex, HexUtils } from "react-hexgrid";
+import { HexUtils } from "react-hexgrid";
+import Hex from '../lib/Hex';
 
 export default function gridPositioned(Component) {
   return class extends React.Component {

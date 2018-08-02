@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { Hex } from 'react-hexgrid';
+import Hex from '../lib/Hex';
 
 import tool from './tool';
 import game from './game';

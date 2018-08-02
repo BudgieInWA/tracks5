@@ -1,7 +1,6 @@
 import  _ from 'lodash';
 import { combineReducers } from 'redux';
-import { Hex } from "react-hexgrid";
-
+import Hex from '../lib/Hex';
 import TrackNetwork  from '../lib/TrackNetwork';
 
 import ActionTypes from "./ActionTypes";

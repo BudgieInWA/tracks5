@@ -2,7 +2,8 @@ import _ from "lodash";
 import React from "react";
 import classNames from "classnames";
 import { connect } from "react-redux";
-import { GridGenerator, Hex, HexGrid, Layout, Text } from "react-hexgrid";
+import { GridGenerator, HexGrid, Layout, Text } from "react-hexgrid";
+import Hex from './lib/Hex';
 import Tile from "./svg/Tile.jsx";
 import Path from "./svg/Path.jsx";
 
@@ -11,8 +12,6 @@ import { getGame } from './reducers/game';
 
 import Building from "./svg/Building.jsx";
 import TrainCar from "./svg/TrainCar.jsx";
-
-const makeHex = (str) => new Hex(...(str.split(',').map(s => parseInt(s))));
 
 class Map extends React.Component {
   constructor(props) {
@@ -61,7 +60,7 @@ class Map extends React.Component {
           </g>
           {tracks && (
             <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
-              {_.map(tracks.edges, ({ v, w }) => <Path key={`${v} -> ${w}`} className="track" hexes={[makeHex(v), makeHex(w)]} />)}
+              {_.map(tracks.edges, ({ v, w }) => <Path key={`${v} -> ${w}`} className="track" hexes={[Hex.of(v), Hex.of(w)]} />)}
             </g>
           )}
           {trains && (

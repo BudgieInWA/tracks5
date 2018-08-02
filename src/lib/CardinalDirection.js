@@ -1,7 +1,6 @@
 import _ from 'lodash';
-import { Hex, HexUtils } from 'react-hexgrid';
 
-const makeHex = (str) => str ? new Hex(...(str.split(',').map(s => parseInt(s)))) : str;
+import Hex from './Hex';
 
 const directionsByString = {};
 let getConstructorPermission = () => undefined;
@@ -21,10 +20,10 @@ export class CardinalDirection extends Hex {
   }
 
   static of(vectorLike) {
-    if (!vectorLike) return;
-    if (_.isString(vectorLike)) return directionsByString[vectorLike];
-    if (vectorLike instanceof Hex) return directionsByString[vectorLike.toString()];
-    console.warn('TODO'); // TODO
+    if (!vectorLike) return null;
+    if (vectorLike instanceof CardinalDirection) return vectorLike;
+    const hex = Hex.of(vectorLike);
+    return directionsByString[hex.toString()];
   }
 
   static reverse(directionLike) {
