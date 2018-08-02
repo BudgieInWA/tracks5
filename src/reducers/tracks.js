@@ -2,7 +2,7 @@ import _ from "lodash";
 import graphs from "@dagrejs/graphlib";
 
 import { Hex, HexUtils } from "react-hexgrid";
-import CardinalDirection from '../CardinalDirection';
+import CardinalDirection from '../lib/CardinalDirection';
 
 import ActionTypes from "./ActionTypes";
 
