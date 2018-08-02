@@ -61,16 +61,16 @@ class Map extends React.Component {
           </g>
           {tracks && (
             <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
-              {_.map(tracks.edges, ({ v, w }) => <Path className="track" hexes={[makeHex(v), makeHex(w)]} />)}
+              {_.map(tracks.edges, ({ v, w }) => <Path key={`${v} -> ${w}`} className="track" hexes={[makeHex(v), makeHex(w)]} />)}
             </g>
           )}
           {trains && (
             <g className={classNames('trains', { touchable: this.isTouchable('train') })}>
-              {_.map(trains, (train) => <TrainCar {...train} />)}
+              {_.map(trains, (train) => <TrainCar key={train.name} {...train} />)}
             </g>
           )}
           <g className={classNames('buildings', { touchable: this.isTouchable('building') })}>
-            {_.map(buildings, building => <Building {...building} />) }
+            {_.map(buildings, building => <Building key={building.name} {...building} />) }
           </g>
 
           <g className="tool">
