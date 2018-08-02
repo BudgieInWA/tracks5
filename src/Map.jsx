@@ -61,7 +61,7 @@ class Map extends React.Component {
           </g>
           {tracks && (
             <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
-              {_.map(tracks.edges, ({ v, w }) => <Path hexes={[makeHex(v), makeHex(w)]} />)}
+              {_.map(tracks.edges, ({ v, w }) => <Path className="track" hexes={[makeHex(v), makeHex(w)]} />)}
             </g>
           )}
           {trains && (
