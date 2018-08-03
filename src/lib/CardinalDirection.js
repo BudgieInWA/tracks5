@@ -36,12 +36,12 @@ export class CardinalDirection extends Hex {
 
 // These are all of the cardinal directions.
 const directions = {
-  N : new CardinalDirection(new Hex(0, +1, -1), 0,   'North'),
-  NE: new CardinalDirection(new Hex(+1, 0, -1), 60,  'North East'),
-  SE: new CardinalDirection(new Hex(+1, -1, 0), 120, 'South East'),
-  S:  new CardinalDirection(new Hex(0, -1, +1), 180, 'South'),
-  SW: new CardinalDirection(new Hex(-1, 0, +1), 240, 'South West'),
-  NW: new CardinalDirection(new Hex(-1, +1, 0), 300, 'North West'),
+  N : new CardinalDirection(new Hex(0, -1, +1), 0,   'North'),
+  NE: new CardinalDirection(new Hex(+1, -1, 0), 60,  'North East'),
+  SE: new CardinalDirection(new Hex(+1, 0, -1), 120, 'South East'),
+  S:  new CardinalDirection(new Hex(0, +1, -1), 180, 'South'),
+  SW: new CardinalDirection(new Hex(-1, +1, 0), 240, 'South West'),
+  NW: new CardinalDirection(new Hex(-1, 0, +1), 300, 'North West'),
 };
 // We do a bunch of pre-calculations to make this concept cheap.
 const directionKeys = _.keys(directions);
