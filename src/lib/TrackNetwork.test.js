@@ -1,5 +1,6 @@
 // import _ from 'lodash';
 
+import { HexUtils } from 'react-hexgrid';
 import Hex from './Hex';
 import CardinalDirection from './CardinalDirection';
 
@@ -27,9 +28,6 @@ describe('API', () => {
     expect(network.optionsFrom(Hex.origin, CardinalDirection.N)).toBeInstanceOf(Array);
   });
 
-  it.skip('rails()', () => {
-
-  })
   // it('reverse(dir)', () => {
   // });
 });
@@ -74,4 +72,20 @@ describe('optionsFrom', () => {
     expect(network.optionsFrom(Hex.origin, CardinalDirection.N)).toHaveLength(3);
   });
 
+});
+
+describe('rail', () => {
+  let network;
+  beforeEach(() => {
+    network = new TrackNetwork();
+  });
+
+  it('returns a correctly oriented rail', () => {
+    network.addPath(shortPath);
+    const edge = { v: shortPath[0].toString(), w: shortPath[1].toString() };
+    const rail1 = network.rail(edge);
+    expect(HexUtils.add(rail1.v, rail1.direction)).toEqual(rail1.w);
+    const rail2 = network.rail({ v: edge.w, w: edge.v });
+    expect(HexUtils.add(rail2.v, rail2.direction)).toEqual(rail2.w);
+  })
 });

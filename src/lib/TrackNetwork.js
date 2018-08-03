@@ -6,22 +6,6 @@ import { HexUtils } from "react-hexgrid";
 import CardinalDirection from './CardinalDirection';
 import TrackRail from './TrackRail';
 
-const normalEdgeOrder = (edge, data) => {
-  //TODO store directionsFrom: { [v]: a, [w]: b } to avoid flipping and remain generic between intersection edges.
-  const {v, w} = edge;
-  if ('' + v > '' + w) {
-    return [{
-      ...edge,
-      v: w,
-      w: v,
-    }, {
-      ...data,
-      direction: CardinalDirection.reverse(data.direction),
-    }]
-  }
-  return [edge, data];
-};
-
 export default class TrackNetwork {
   static between = {
     intersections: 'i',
@@ -67,7 +51,11 @@ export default class TrackNetwork {
 
       if (prevHex) {
         // Fill in the "between hex" network.
-        graph.setEdge({ v: prevHex, w: hex, name: TrackNetwork.between.hexes }, { direction: HexUtils.subtract(hex, prevHex) });
+        const forwardDir = CardinalDirection.of(HexUtils.subtract(hex, prevHex));
+        graph.setEdge({ v: prevHex, w: hex, name: TrackNetwork.between.hexes }, {
+          [prevHex]: { direction: forwardDir },
+          [hex]: { direction: forwardDir.opposite },
+        });
       }
 
       prevHex = hex;
@@ -80,7 +68,7 @@ export default class TrackNetwork {
 
   optionsFrom(node, direction=null) {
     const dir = CardinalDirection.of(direction);
-    const outRails =  _.map(this.nodeOutEdges(node, TrackNetwork.between.hexes), edge => this.rail(edge));
+    const outRails = _.map(this.nodeOutEdges(node, TrackNetwork.between.hexes), edge => this.rail(edge));
     if (dir) {
       return _.filter(outRails, ({direction}) => direction === dir || direction === dir.left || direction === dir.right);
     } else {
@@ -141,10 +129,16 @@ export default class TrackNetwork {
     return _.filter(this.graph.nodeEdges(node), { name });
   }
 
+  /**
+   * @param {string} edge.v
+   * @param {string} edge.w
+   * @returns {TrackRail}
+   */
   rail(edge) {
-    const edgeData = this.graph.edge(edge);
-    const [ normalEdge, dataFlippedIfNeeded ] = normalEdgeOrder(edge, edgeData);
-    return new TrackRail(edge, dataFlippedIfNeeded);
+    const edgeObj = { v: edge.v, w: edge.w, name: TrackNetwork.between.hexes };
+    const edgeData = this.graph.edge(edgeObj);
+    if (!edgeData) return undefined;
+    return new TrackRail(edge, edgeData);
   }
 
   /** All edges from node with v === node */
