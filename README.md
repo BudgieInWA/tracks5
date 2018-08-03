@@ -5,12 +5,24 @@
 - `yarn start` - run in development mode
 - `yarn test` - run tests
 
-# Misc TODO
+## Debugging
+
+- React Devtools
+- Redux Devtools
+
+## Misc TODO
 
 Game 
 
-- ~~Split TrackNetwork~~ and wrap edges in TrackSegment or something
-    - make trains navigate forward
+- Improve train movement
+    - give them a movement plan that can be set and is used to make junction decisions during the movePhase
+    - give them `targetSpeed` attr and accelerate/decelerate to it in the movePhase.
+    - add pathfinding to set train movement plans
+    
+- Add buildings that trains can interact with
+    - Station to collect/deliver goods
+    - Home to stockpile resources
+    - Something to generate resources
 
 Engine
 - right click and keyboard business

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { createStore } from "redux";
+import { devToolsEnhancer } from 'redux-devtools-extension';
 import { Provider } from "react-redux";
 import appReducer from "./reducers/appReducer";
 
@@ -8,7 +9,7 @@ import Map from "./Map";
 import Toolbar from "./Toolbar";
 import TurnControls from "./TurnControls";
 
-const store = createStore(appReducer);
+const store = createStore(appReducer, devToolsEnhancer());
 
 class App extends Component {
   render() {
