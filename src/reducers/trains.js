@@ -23,13 +23,15 @@ export function moveTrains(trains, network) {
   return _.map(trains, train => {
     if (train.speed === 0) return train;
     let { hex, direction, distance, destination, speed } = train;
+
+    // TODO a round of reconsiliating move intentions using track rules
+    // TODO update speed
+
     let moved = 0;
     while (moved < speed) {
       // Choose a destination if needed.
       if (!train.destination) {
-        // TODO choose next track segment
-        // TODO turning rules
-        const nextRail = network.optionsFrom(train.hex)[0];
+        const nextRail = network.optionsFrom(train.hex, train.direction)[0];
         if (nextRail) {
           destination = nextRail.w.toString();
           direction = nextRail.direction.toString();
@@ -38,6 +40,7 @@ export function moveTrains(trains, network) {
           }
         } else {
           speed = 0;
+          console.info(`Train ${train.name || train} doesn't have any track to follow. Stopping`);
           break;
         }
       }

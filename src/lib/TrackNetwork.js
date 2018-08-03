@@ -23,15 +23,6 @@ const normalEdgeOrder = (edge, data) => {
 };
 
 export default class TrackNetwork {
-  constructor(state) {
-    this.graph = state
-      ? graphs.json.read(state)
-      : new graphs.Graph({
-        directed: false, // rail is rail.
-        multigraph: true, // subdivide edges with tags/groups/type called "name"
-      });
-  }
-
   static between = {
     intersections: 'i',
     hexes: 'h',
@@ -43,6 +34,15 @@ export default class TrackNetwork {
       this.choices = choices;
     }
   };
+
+  constructor(state) {
+    this.graph = state
+      ? graphs.json.read(state)
+      : new graphs.Graph({
+        directed: false, // rail is rail.
+        multigraph: true, // subdivide edges with tags/groups/type called "name"
+      });
+  }
 
   addPath(hexes) {
     const graph = this.graph;
@@ -76,6 +76,16 @@ export default class TrackNetwork {
     // if (this.nodeEdges(prevHex).length === 1) {
     //
     // }
+  }
+
+  optionsFrom(node, direction=null) {
+    const dir = CardinalDirection.of(direction);
+    const outRails =  _.map(this.nodeOutEdges(node, TrackNetwork.between.hexes), edge => this.rail(edge));
+    if (dir) {
+      return _.filter(outRails, ({direction}) => direction === dir || direction === dir.left || direction === dir.right);
+    } else {
+      return outRails;
+    }
   }
 
   state() {
@@ -145,11 +155,6 @@ export default class TrackNetwork {
 
   wholeEdge(edge) {
 
-  }
-
-  optionsFrom(hex, direction=null) {
-    // TODO: if (direction) { filter... }
-    return _.map(this.nodeOutEdges(hex, TrackNetwork.between.hexes), edge => this.rail(edge));
   }
 
   static otherEndOf = (edge, hex) => hex !== edge.w ? edge.w : edge.v;

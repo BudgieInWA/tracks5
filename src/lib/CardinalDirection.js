@@ -54,7 +54,8 @@ _.each(directionKeys, (key, i) => {
   thisDirection.opposite = directions[directionKeys[wrap(i + 3)]];
 });
 _.each(directions, d => Object.freeze(d));
-_.assign(CardinalDirection, directions);
+
+_.assign(CardinalDirection, { ...directions, directions: _.values(directions) });
 
 getConstructorPermission = () => console.warn('I don\'t recommend using this anymore.');
 
