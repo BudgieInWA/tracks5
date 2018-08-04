@@ -1,4 +1,8 @@
 export default {
+  buildings: {
+    build: 'BUILD_BUILDING',
+  },
+
   tracks: {
     build: 'TRACKS_BUILD',
   },

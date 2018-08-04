@@ -1,5 +1,6 @@
-import ActionTypes from "./reducers/ActionTypes";
+import ActionTypes from "../reducers/ActionTypes";
 
+//TODO classify
 export const tools = {
   poke: {
     touchTargets: { tile: true, building: true, track: true, train: true },
@@ -40,7 +41,18 @@ export const tools = {
     // },
   },
 
-  building: {},
+  building: {
+    touchTargets: { tile: true },
+    getOptions() {
+      // TODO...
+    },
+    onClick({ hex }, event) {
+      let { tool: { option }, dispatch } = this.props;
+      option = 'Station';
+      dispatch({ type: ActionTypes.buildings.build, hex, building: option });
+    }
+  },
+
   train: {},
 };
 

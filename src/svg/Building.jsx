@@ -6,12 +6,12 @@ import Icon from './Icon';
 
 class Building extends React.Component {
   render() {
-    const { name } = this.props;
+    const { name, icon } = this.props;
 
     return (
       <g className="building">
         <Text className="debug">{name || 'building'}</Text>
-        <Icon />
+        <Icon asset={icon} />
       </g>
     );
   }

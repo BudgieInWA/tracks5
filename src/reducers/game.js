@@ -5,10 +5,9 @@ import TrackNetwork  from '../lib/TrackNetwork';
 
 import ActionTypes from "./ActionTypes";
 
+import buildings from './buildings';
 import tracks from './tracks';
 import trains, { moveTrains, getTrains } from './trains';
-
-const buildings = () => [{hex: Hex.origin, name: 'test building'}];
 
 const gameSubReducer = combineReducers({ buildings, tracks, trains });
 

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import ActionTypes from "./reducers/ActionTypes";
 import { getTool } from "./reducers/tool";
 
-import { tools } from "./tools";
+import { tools } from "./things/tools";
 
 class Toolbar extends React.Component {
   constructor(props) {

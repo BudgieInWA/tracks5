@@ -7,11 +7,14 @@ import Hex from './lib/Hex';
 import Tile from "./svg/Tile.jsx";
 import Path from "./svg/Path.jsx";
 
-import { getToolImpl } from "./tools";
+import { getToolImpl } from "./things/tools";
 import { getGame } from './reducers/game';
 
 import Building from "./svg/Building.jsx";
 import TrainCar from "./svg/TrainCar.jsx";
+
+import * as reactBuildings from './things/buildings';
+
 
 class Map extends React.Component {
   constructor(props) {
@@ -69,7 +72,10 @@ class Map extends React.Component {
             </g>
           )}
           <g className={classNames('buildings', { touchable: this.isTouchable('building') })}>
-            {_.map(buildings, building => <Building key={building.name} {...building} />) }
+            {_.map(buildings, building => {
+              const BuildingComp = reactBuildings[building.type] || Building;
+              return <BuildingComp key={building.name} {...building} />;
+            })}l
           </g>
 
           <g className="tool">

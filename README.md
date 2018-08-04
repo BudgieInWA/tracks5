@@ -25,6 +25,7 @@ Game
     - Something to generate resources
 
 Engine
+- only suggest valid track shapes in track tool. See ../tracks/
 - right click and keyboard business
     - right click / esc - cancel / back
     - `\`` - debug console
