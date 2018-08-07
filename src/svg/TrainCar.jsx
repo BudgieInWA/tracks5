@@ -9,7 +9,7 @@ class TrainCar extends React.Component {
     return (
       <g className="train">
         <Text className="debug">{name || 'building'}</Text>
-        <rect x="-2" y="-2" width="2" height="4" transform={`rotate(${direction.bearing}) translate(0 ${-distance * 12}) `} />
+        <rect x="-2" y="-2" width="2" height="4" transform={`rotate(${direction.bearing}) translate(0 ${-distance * 4}) `} />
       </g>
     );
   }

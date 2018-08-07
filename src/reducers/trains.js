@@ -21,10 +21,25 @@ const name = (state = null, action) => action.type === ActionTypes.trains.name ?
 export function moveTrains(trains, network) {
   // TODO check for collisions first
   return _.map(trains, train => {
-    if (train.speed === 0) return train;
-    let { hex, direction, distance, destination, speed } = train;
+    let { hex, destination,  direction, distance, speed, schedule, targetSpeed, targetDirection, } = train;
 
-    // TODO a round of reconsiliating move intentions using track rules
+    const thing = schedule[hex];
+    if (thing) {
+      // Do a round of reconciliation move intentions using track rules
+      targetSpeed = thing.targetSpeed;
+      targetDirection = thing.targetDirection;
+    }
+
+    if (_.isNumber(targetSpeed)) {
+      if (targetSpeed === speed ) {
+        targetSpeed = null;
+      } else if (targetSpeed > speed) {
+        speed++; // Super acceleration. TODO add a cooldown for the next accell
+      } else {
+        speed = targetSpeed;
+      }
+    }
+
     // TODO update speed
 
     let moved = 0;
@@ -46,18 +61,18 @@ export function moveTrains(trains, network) {
       }
 
       // Move forward
-      distance += 1/segments;
+      distance++;
       moved++;
 
       // Fall off the end if needed
-      if (distance >= 1) {
+      if (distance >= segments) {
         hex = train.destination;
         distance = 0;
         destination = null;
       }
     }
 
-    return { ...train, hex, direction, distance, destination, speed };
+    return { ...train, hex, direction, distance, destination, speed, targetSpeed };
   });
 }
 
@@ -65,9 +80,10 @@ const defaultTrain = {
   name: "default train",
   hex: Hex.origin.toString(),
   direction: CardinalDirection.SE.toString(),
-  distance: 0/segments,
+  distance: 0,
   speed: 1,
   destination: null,
+  schedule: [],
 };
 
 function train(state = {}, action) {
