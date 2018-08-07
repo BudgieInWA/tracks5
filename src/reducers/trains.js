@@ -21,13 +21,12 @@ const name = (state = null, action) => action.type === ActionTypes.trains.name ?
 export function moveTrains(trains, network) {
   // TODO check for collisions first
   return _.map(trains, train => {
-    let { hex, destination,  direction, distance, speed, schedule, targetSpeed, targetDirection, } = train;
+    let { hex, destination,  direction, distance, speed, schedule, targetSpeed, } = train;
 
     const thing = schedule[hex];
     if (thing) {
       // Do a round of reconciliation move intentions using track rules
       targetSpeed = thing.targetSpeed;
-      targetDirection = thing.targetDirection;
     }
 
     if (_.isNumber(targetSpeed)) {
@@ -46,7 +45,17 @@ export function moveTrains(trains, network) {
     while (moved < speed) {
       // Choose a destination if needed.
       if (!train.destination) {
-        const nextRail = network.optionsFrom(train.hex, train.direction)[0];
+        let nextRail;
+        if (hex in schedule) {
+          let { [hex]: nextSchedule, ...rest } = schedule;
+
+          nextRail = network.rail({ v: train.hex, w: nextSchedule.destination });
+          schedule = { ...rest };
+        } else {
+          // Choose a random direction for now.
+          nextRail = network.optionsFrom(train.hex, train.direction)[0];
+        }
+
         if (nextRail) {
           destination = nextRail.w.toString();
           direction = nextRail.direction.toString();
@@ -72,7 +81,7 @@ export function moveTrains(trains, network) {
       }
     }
 
-    return { ...train, hex, direction, distance, destination, speed, targetSpeed };
+    return { ...train, hex, destination,  direction, distance, speed, schedule, targetSpeed, };
   });
 }
 
@@ -83,24 +92,43 @@ const defaultTrain = {
   distance: 0,
   speed: 1,
   destination: null,
-  schedule: [],
+  schedule: {}
 };
 
 function train(state = {}, action) {
-  return state;
+  switch(action.type) {
+    default:
+      return state;
+  }
 }
 
 export default function trains(state=[defaultTrain], action) {
   switch(action.type) {
     case ActionTypes.trains.build:
-      return [ ...state, train(undefined, action) ];
+      return [ ...state, defaultTrain ]; // TODO
+
+    case ActionTypes.trains.targets:
+      return [
+        ...state.slice(0, action.id),
+        { ...state[action.id], targetSpeed: action.speed },
+        ...state.slice(action.id + 1),
+      ];
+
+    case ActionTypes.trains.schedule:
+      return [
+        ...state.slice(0, action.id),
+        { ...state[action.id], schedule: action.schedule },
+        ...state.slice(action.id + 1),
+      ];
+
     case ActionTypes.train.name:
       console.warn('untested');
       return [
-        ...state.slice(0, action.index),
-        train(state[action.index]),
-        ...state.slice(action.index),
+        ...state.slice(0, action.id),
+        { ...state[action.id], name: action.name },
+        ...state.slice(action.id + 1),
       ];
+
     default:
       return state;
   }

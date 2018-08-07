@@ -12,7 +12,9 @@ export default {
   },
 
   trains: {
-    build: "build train",
+    build: 'trains.build',
+    targets: 'trains.targets',
+    schedule: 'trains.schedule',
   },
 
   train: {
