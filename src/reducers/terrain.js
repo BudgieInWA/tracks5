@@ -67,6 +67,7 @@ export default function terrain(state = {}, action) {
   return state;
 };
 
-export function getTiles(state) {
-  return state.game.terrain;
+export function transformTerrain(state) {
+  return state;
+  // return _.map(state, tile => new Tile(tile));
 }

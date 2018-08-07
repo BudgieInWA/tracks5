@@ -55,11 +55,11 @@ class Map extends React.Component {
 
                   {...tile}
 
-                  onClick={this.makeHexToolEventDelegator('onClick', { hex })}
+                  onClick={this.makeHexToolEventDelegator('onClick', tile)}
                   // onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
                   // onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
-                  onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', { hex })}
-                  onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', { hex })}
+                  onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', tile)}
+                  onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', tile)}
 
                   // onDragStart={this.makeHexToolEventDelegator('onDragStart')}
                   // onDragOver={this.makeHexToolEventDelegator('onDragStart')}
@@ -71,21 +71,19 @@ class Map extends React.Component {
               )
             })}
           </g>
-          {tracks && (
-            <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
-              {_.map(tracks.edges, ({ v, w }) => <Path key={`${v} -> ${w}`} className="track" hexes={[Hex.of(v), Hex.of(w)]} />)}
-            </g>
-          )}
-          {trains && (
-            <g className={classNames('trains', { touchable: this.isTouchable('train') })}>
-              {_.map(trains, (train) => <TrainCar key={train.name} {...train} />)}
-            </g>
-          )}
+          <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
+            {_.map(tracks && tracks.edges, ({ v, w }) => (
+              <Path key={`${v} -> ${w}`} className="track" hexes={[Hex.of(v), Hex.of(w)]} />
+            ))}
+          </g>
           <g className={classNames('buildings', { touchable: this.isTouchable('building') })}>
             {_.map(buildings, building => {
               const BuildingComp = reactBuildings[building.type] || Building;
               return <BuildingComp key={building.name} {...building} />;
-            })}l
+            })}
+          </g>
+          <g className={classNames('trains', { touchable: this.isTouchable('train') })}>
+            {trains && _.map(trains, (train) => <TrainCar key={train.name} {...train} />)}
           </g>
 
           <g className="tool">

@@ -114,6 +114,6 @@ function transformTrain(state) {
     direction: CardinalDirection.of(state.direction),
   }
 }
-export function getTrains(state) {
+export function transformTrains(state) {
   return _.map(state, transformTrain);
 }

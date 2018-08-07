@@ -4,8 +4,10 @@ import ActionTypes from "../reducers/ActionTypes";
 export const tools = {
   poke: {
     touchTargets: { tile: true, building: true, track: true, train: true },
-    onClick({ hex }, event) {
-      console.info('Poke!', { hex, event });
+    onClick(thing, event) {
+      const { dispatch } = this.props;
+      console.info('Poke!', { thing, event });
+      dispatch({ type: ActionTypes.tool.poke, poke: thing });
     }
   },
 

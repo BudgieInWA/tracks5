@@ -5,7 +5,12 @@ import { HexUtils } from "react-hexgrid";
 import ActionTypes from "./ActionTypes";
 
 
-const name = (state = 'poke', action) => action.type === ActionTypes.tool.name ? action.name : state;
+function poke(state = null, action) {
+  if (action.type === ActionTypes.tool.poke) {
+    return action.poke
+  }
+  return state;
+}
 
 function hexesCrossedByLine(start, end) {
   const distance = HexUtils.distance(start, end);
@@ -14,7 +19,7 @@ function hexesCrossedByLine(start, end) {
 
   const intersects = [];
   let step = 1.0 / Math.max(distance, 1);
-  for (let i=0; i<=distance; i++) {
+  for (let i = 0; i <= distance; i++) {
     intersects.push(HexUtils.round(HexUtils.hexLerp(start, end, step * i)));
   }
   return intersects;
@@ -38,7 +43,6 @@ function hexes(state = [], action) {
       return [...state, ...hexesCrossedByLine(state[state.length - 1], action.hex).slice(1)];
 
     case ActionTypes.tool.hexes.clear:
-    case ActionTypes.tool.name:
       return [];
 
     default:
@@ -50,4 +54,14 @@ export function getTool(state) {
   return state.tool;
 }
 
-export default combineReducers({ name, hexes });
+const nested = combineReducers({ name: (s='poke') => s, poke, hexes });
+
+export default function tool(state = {}, action) {
+  switch(action.type) {
+    case ActionTypes.tool.name:
+      return nested({ name: action.name }, action);
+
+    default:
+      return nested(state, action);
+  }
+}

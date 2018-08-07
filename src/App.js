@@ -6,7 +6,7 @@ import appReducer from "./reducers/appReducer";
 
 import "./App.css";
 import Map from "./Map";
-import Toolbar from "./Toolbar";
+import Toolbar from "./ToolUI";
 import TurnControls from "./TurnControls";
 import NoiseTest from './NoiseTest.jsx'
 

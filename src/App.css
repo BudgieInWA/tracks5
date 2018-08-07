@@ -31,15 +31,13 @@ html, body,
 
 header {
   position: absolute;
+  z-index: 10;
   top: 0;
   left: 0;
-  width: 100%;
 
-  padding: 0.5em;
-
-  z-index: 10;
+  margin: 1em;
 }
-
+header h1 { margin: 0 }
 
 main {
   position: relative;
@@ -48,14 +46,14 @@ main {
   font-size: 20pt;
 }
 
+
 .toolbar {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
 
   display: flex;
-  justify-content: center;
+  justify-content: left;
 
   user-select: none;
 }
@@ -64,9 +62,29 @@ main {
   border: 2px solid #0CA27C;
   background: #2CAD8D;
   padding: 0.6em;
-  margin: 0.6em;
+  margin: 0.5em;
+  margin-right: 0;
 
   box-shadow: rgba(0, 0, 0, 0.3) 0 0 1em;
+}
+
+.toolpanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.5em;
+
+  border: 2px solid #0CA27C;
+  background: #2CAD8D;
+
+  font-size: 12pt;
+}
+.toolpanel:empty {
+  display: none;
+}
+.toolpanel > ul {
+  margin: 0 !important;
+  padding: 0.2em !important;
 }
 
 .turn-controls {
