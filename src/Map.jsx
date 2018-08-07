@@ -2,7 +2,7 @@ import _ from "lodash";
 import React from "react";
 import classNames from "classnames";
 import { connect } from "react-redux";
-import { GridGenerator, HexGrid, Layout, Text } from "react-hexgrid";
+import { HexGrid, Layout, Text } from "react-hexgrid";
 import Hex from './lib/Hex';
 
 import ActionTypes from './reducers/ActionTypes';
@@ -23,10 +23,11 @@ class Map extends React.Component {
   }
 
   componentDidMount() {
-    _.each(GridGenerator.spiral(Hex.origin , 4), hex => this.props.dispatch({
+    this.props.dispatch({
       type: ActionTypes.terrain.reveal,
-      hex,
-    }));
+      hex: Hex.origin,
+      radius: 4,
+    });
   }
 
   makeHexToolEventDelegator(eventType, arg) {
@@ -42,6 +43,7 @@ class Map extends React.Component {
   render() {
     const { tool, terrain, tracks, trains, buildings } = this.props;
 
+    // TODO bind all tool events to all touchable things
     return (
       <HexGrid width="100%" height="100%">
         <Layout size={{ x: 7, y: 7 }}>

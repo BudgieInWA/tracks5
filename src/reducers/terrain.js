@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import { Noise } from 'noisejs';
+import { GridGenerator } from "react-hexgrid";
 
 import { HexUtils } from 'react-hexgrid';
 
@@ -44,24 +46,24 @@ function getTileValues(hex) {
 }
 
 
-const tile = (state, action) => {
-  if (action.type === ActionTypes.terrain.reveal) {
-    const values = getTileValues(action.hex);
+const tile = (state = {}, action) => {
+  let { hex, biome, values } = state;
+  if (hex === undefined) return state;
+
+  if (values === undefined) {
+    values = getTileValues(hex);
     const byRain = biomesByTempThenRain[Math.floor(values.temp * biomesByTempThenRain.length)];
-    const biome = byRain[Math.floor(values.rain * byRain.length)];
-    return {
-      hex: action.hex,
-      biome,
-      values,
-    }
+    biome = byRain[Math.floor(values.rain * byRain.length)];
   }
+
+  return { ...state, hex, biome, values }
 };
 
 export default function terrain(state = {}, action) {
   if (action.type === ActionTypes.terrain.reveal) {
     return {
+      ..._.map(GridGenerator.spiral(action.hex, action.radius || 0), hex => tile({ hex }, action)),
       ...state,
-      [action.hex]: tile(undefined, action),
     }
   }
   return state;
