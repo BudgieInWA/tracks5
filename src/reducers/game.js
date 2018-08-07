@@ -5,11 +5,12 @@ import TrackNetwork  from '../lib/TrackNetwork';
 
 import ActionTypes from "./ActionTypes";
 
+import terrain from './terrain';
 import buildings from './buildings';
 import tracks from './tracks';
 import trains, { moveTrains, getTrains } from './trains';
 
-const gameSubReducer = combineReducers({ buildings, tracks, trains });
+const gameSubReducer = combineReducers({ terrain, buildings, tracks, trains });
 
 function gameTopLevelReducer(state = {}, action) {
   switch(action.type) {

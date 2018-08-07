@@ -1,4 +1,8 @@
 export default {
+  terrain: {
+    reveal: 'REAVEAL_TERRAIN',
+  },
+
   buildings: {
     build: 'BUILD_BUILDING',
   },

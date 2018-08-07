@@ -4,14 +4,15 @@ import classNames from "classnames";
 import { connect } from "react-redux";
 import { GridGenerator, HexGrid, Layout, Text } from "react-hexgrid";
 import Hex from './lib/Hex';
-import Tile from "./svg/Tile.jsx";
-import Path from "./svg/Path.jsx";
 
+import ActionTypes from './reducers/ActionTypes';
 import { getToolImpl } from "./things/tools";
 import { getGame } from './reducers/game';
 
 import Building from "./svg/Building.jsx";
 import TrainCar from "./svg/TrainCar.jsx";
+import Tile from "./svg/Tile.jsx";
+import Path from "./svg/Path.jsx";
 
 import * as reactBuildings from './things/buildings';
 
@@ -19,6 +20,13 @@ import * as reactBuildings from './things/buildings';
 class Map extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    _.each(GridGenerator.spiral(Hex.origin , 4), hex => this.props.dispatch({
+      type: ActionTypes.terrain.reveal,
+      hex,
+    }));
   }
 
   makeHexToolEventDelegator(eventType, arg) {
@@ -34,32 +42,34 @@ class Map extends React.Component {
   render() {
     const { tool, terrain, tracks, trains, buildings } = this.props;
 
-    const hexagons = GridGenerator.spiral(Hex.origin , 4);
-
     return (
       <HexGrid width="100%" height="100%">
         <Layout size={{ x: 7, y: 7 }}>
           <g className={classNames('tiles', { touchable: this.isTouchable('tile') })}>
-            {_.map(hexagons, hex => (
-              <Tile
-                className={classNames({ touchable: this.isTouchable('tile') })}
-                key={hex.toString()}
-                hex={hex}
+            {_.map(terrain, (tile, key) => {
+              const hex = tile.hex;
+              return (
+                <Tile
+                  className={classNames({ touchable: this.isTouchable('tile') })}
+                  key={key}
 
-                onClick={this.makeHexToolEventDelegator('onClick', { hex })}
-                // onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
-                // onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
-                onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', { hex })}
-                onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', { hex })}
+                  {...tile}
 
-                // onDragStart={this.makeHexToolEventDelegator('onDragStart')}
-                // onDragOver={this.makeHexToolEventDelegator('onDragStart')}
-                // onDrop={this.makeHexToolEventDelegator('onDragOver')}
-                // onDragEnd={this.makeHexToolEventDelegator('onDragEnd')}
-              >
-                <Text className="debug">{hex.toString()}</Text>
-              </Tile>
-            ))}
+                  onClick={this.makeHexToolEventDelegator('onClick', { hex })}
+                  // onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
+                  // onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
+                  onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', { hex })}
+                  onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', { hex })}
+
+                  // onDragStart={this.makeHexToolEventDelegator('onDragStart')}
+                  // onDragOver={this.makeHexToolEventDelegator('onDragStart')}
+                  // onDrop={this.makeHexToolEventDelegator('onDragOver')}
+                  // onDragEnd={this.makeHexToolEventDelegator('onDragEnd')}
+                >
+                  <Text className="debug">{hex.toString()}</Text>
+                </Tile>
+              )
+            })}
           </g>
           {tracks && (
             <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>

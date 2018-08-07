@@ -56,10 +56,10 @@ class Tile extends React.Component {
   //   }
   // }
   render() {
-    const { className, ...rest } = this.props;
+    const { className, values, biome, ...rest } = this.props;
     const { points } = this.context;
     return (
-      <g className={classNames('tile', className)}>
+      <g className={classNames('tile', biome, className)}>
         <polygon points={points} {...rest} />
         {this.props.children}
       </g>

@@ -124,14 +124,6 @@ g.grid-positioned { }
   pointer-events: auto;
 }
 
-.tile {
-  fill: #8895DC;
-  stroke: #2137AA;
-  stroke-width: 0.1pt;
-  clip-path: fill-box;
-
-  transition: fill 0.2s;
-}
 
 g.tool {
   pointer-events: none;
@@ -143,6 +135,32 @@ g.tool > path {
   stroke-width: 0.2em;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.tile {
+  stroke: #2137AA;
+  stroke-width: 0.1pt;
+  clip-path: fill-box;
+
+  transition: fill 0.2s;
+}
+.tundra {
+  fill: #d1efff;
+}
+.shrubland {
+  fill: #d4ff77;
+}
+.grassland {
+  fill: rgb(164, 225, 100);
+}
+.forest {
+  fill: rgb(139, 175, 90);
+}
+.desert {
+  fill: #eeda87;
+}
+.rainforest {
+  fill: rgb(66, 123,25);
 }
 
 g.tracks > path {

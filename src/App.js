@@ -8,6 +8,7 @@ import "./App.css";
 import Map from "./Map";
 import Toolbar from "./Toolbar";
 import TurnControls from "./TurnControls";
+import NoiseTest from './NoiseTest.jsx'
 
 const store = createStore(appReducer, devToolsEnhancer());
 
@@ -23,6 +24,7 @@ class App extends Component {
             <Map />
             <Toolbar />
             <TurnControls />
+            {/*<NoiseTest />*/}
           </main>
         </div>
       </Provider>
