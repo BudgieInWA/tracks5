@@ -78,6 +78,7 @@ main {
   background: #2CAD8D;
 
   font-size: 12pt;
+  user-select: text;
 }
 .toolpanel:empty {
   display: none;

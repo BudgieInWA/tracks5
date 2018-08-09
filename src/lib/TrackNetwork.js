@@ -132,7 +132,7 @@ export default class TrackNetwork {
   /**
    * @param {string} edge.v
    * @param {string} edge.w
-   * @returns {TrackRail}
+   * @returns {TrackRail|undefined}
    */
   rail(edge) {
     const edgeObj = { v: edge.v, w: edge.w, name: TrackNetwork.between.hexes };

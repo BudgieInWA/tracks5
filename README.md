@@ -4,6 +4,7 @@
 
 - `yarn start` - run in development mode
 - `yarn test` - run tests
+- `yarn build` - build
 
 ## Debugging
 
@@ -15,9 +16,10 @@
 Game 
 
 - Improve train movement
-    - give them a movement plan that can be set and is used to make junction decisions during the movePhase
-    - give them `targetSpeed` attr and accelerate/decelerate to it in the movePhase.
     - add pathfinding to set train movement plans
+    
+- add Stores with trading 
+    - maybe a store has offers, and if two stores nearby have opposing offers, the trade can happen.
     
 - Add buildings that trains can interact with
     - Station to collect/deliver goods

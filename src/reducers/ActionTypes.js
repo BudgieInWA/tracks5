@@ -13,16 +13,13 @@ export default {
 
   trains: {
     build: 'trains.build',
+    name: 'trains.name',
     targets: 'trains.targets',
     schedule: 'trains.schedule',
   },
 
-  train: {
-    name: "train name",
-  },
-
   game: {
-    movePhase: "train move phase",
+    movePhase: 'game.movePhase',
   },
 
   tool: {
