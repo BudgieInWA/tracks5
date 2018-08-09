@@ -133,7 +133,11 @@ svg#__SVG_SPRITE_NODE__ {
   stroke-linejoin: round;
 }
 
-g.grid-positioned { }
+
+g.grid-positioned {
+  transition: transform 1s; /* transition be default until it proves annoying */
+}
+
 
 .grid {
   pointer-events: none;
@@ -195,7 +199,11 @@ g.tracks > path {
 }
 
 .train {
-  fill: #C04A05;
+  stroke: #C04A05;
+  stroke-width: 2;
+  stroke-linecap: round;
+
+  transition: transform 0.7s;
 }
 
 

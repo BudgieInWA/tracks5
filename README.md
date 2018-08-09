@@ -17,6 +17,7 @@ Game
 
 - Improve train movement
     - add pathfinding to set train movement plans
+    - Trains see and reveal in a radius
     
 - add Stores with trading 
     - maybe a store has offers, and if two stores nearby have opposing offers, the trade can happen.

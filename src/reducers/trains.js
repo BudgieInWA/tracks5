@@ -8,7 +8,7 @@ import Store from '../lib/Store';
 
 import ActionTypes from "./ActionTypes";
 
-const segments = 3;
+export const SEGMENTS = 3;
 
 
 const name = (state = null, action) => action.type === ActionTypes.trains.name ? action.name : state;
@@ -44,14 +44,15 @@ export function moveTrains(trains, network) {
 
     let moved = 0;
     while (moved < speed) {
-      // Choose a destination if needed.
-      if (!train.destination) {
+      // Ensure we have a destination direction if we're heading out.
+      if (distance >= 0 && !destination) {
         let nextRail;
         if (hex in schedule) {
+          // We want to take the `hex` item out and use it.
           let { [hex]: nextSchedule, ...rest } = schedule;
+          schedule = { ...rest };
 
           nextRail = network.rail({ v: train.hex, w: nextSchedule.destination });
-          schedule = { ...rest };
         } else {
           // Choose a random direction for now.
           nextRail = network.optionsFrom(train.hex, train.direction)[0];
@@ -74,10 +75,10 @@ export function moveTrains(trains, network) {
       distance++;
       moved++;
 
-      // Fall off the end if needed
-      if (distance >= segments) {
-        hex = train.destination;
-        distance = 0;
+      // If we've crossed into the other hex, swap over.
+      if (distance > Math.floor(SEGMENTS / 2)) {
+        distance -= SEGMENTS;
+        hex = destination;
         destination = null;
       }
     }

@@ -1,18 +1,22 @@
 import React from "react";
 import gridPositioned from "./gridPositioned";
-import { Text } from "react-hexgrid";
+import { HexUtils, Text } from "react-hexgrid";
 
-class TrainCar extends React.Component {
+import { SEGMENTS } from '../reducers/trains';
+
+const Car = gridPositioned(({ direction, name }) => (
+    <g className="train" transform={`rotate(${direction.bearing})`}>
+      <path d="M 0,2  L 0,0" />
+      <Text className="debug">{name || 'train'}</Text>
+    </g>
+  )
+);
+
+export default class TrainCar extends React.Component {
   render() {
-    const { name, direction, distance } = this.props;
-
+    const { hex, direction, distance, ...rest } = this.props;
     return (
-      <g className="train">
-        <Text className="debug">{name || 'building'}</Text>
-        <rect x="-2" y="-2" width="2" height="4" transform={`rotate(${direction.bearing}) translate(0 ${-distance * 4}) `} />
-      </g>
+      <Car {...this.props} hex={HexUtils.add(hex, HexUtils.multiply(direction, distance / SEGMENTS ))} />
     );
   }
 }
-
-export default gridPositioned(TrainCar);
