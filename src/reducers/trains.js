@@ -4,6 +4,7 @@ import { combineReducers } from "redux";
 import Hex from '../lib/Hex';
 import CardinalDirection from "../lib/CardinalDirection";
 import TrackNetwork from "../lib/TrackNetwork";
+import Store from '../lib/Store';
 
 import ActionTypes from "./ActionTypes";
 
@@ -92,7 +93,8 @@ const defaultTrain = {
   distance: 0,
   speed: 1,
   destination: null,
-  schedule: {}
+  store: 1,
+  schedule: {},
 };
 
 function train(state = {}, action) {
@@ -121,7 +123,7 @@ export default function trains(state=[defaultTrain], action) {
         ...state.slice(action.id + 1),
       ];
 
-    case ActionTypes.train.name:
+    case ActionTypes.trains.name:
       console.warn('untested');
       return [
         ...state.slice(0, action.id),
@@ -135,13 +137,15 @@ export default function trains(state=[defaultTrain], action) {
 }
 
 
-function transformTrain(state) {
+function transformTrain(train, state) {
   return {
-    ...state,
-    hex: Hex.of(state.hex),
-    direction: CardinalDirection.of(state.direction),
+    ...train,
+    hex: Hex.of(train.hex),
+    destination: Hex.of(train.destination),
+    direction: CardinalDirection.of(train.direction),
+    // store: new Store(state.stores[train.store]),
   }
 }
-export function transformTrains(state) {
-  return _.map(state, transformTrain);
+export function transformTrains(trains, state) {
+  return _.map(trains, t => transformTrain(t, state));
 }

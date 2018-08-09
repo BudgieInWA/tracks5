@@ -8,16 +8,29 @@ import terrain, { transformTerrain } from './terrain';
 import buildings from './buildings';
 import tracks from './tracks';
 import trains, { moveTrains, transformTrains } from './trains';
+import { getTradesThatHappen, executeTrades } from './stores';
 
-const nested = combineReducers({ terrain, buildings, tracks, trains });
+const stores = (state = {}, action) => {
+  return state;
+};
+
+const nested = combineReducers({ terrain, buildings, tracks, trains, stores });
+
 
 function gameTopLevelReducer(state = {}, action) {
   switch(action.type) {
+    case ActionTypes.game.transferPhase:
+      return {
+        ...state,
+        stores: executeTrades(state.stores, getTradesThatHappen(state)),
+      };
+
     case ActionTypes.game.movePhase:
       return {
         ...state,
         trains: moveTrains(state.trains, new TrackNetwork(state.tracks)),
       };
+
 
     default:
       return state;
@@ -32,7 +45,7 @@ export function getGame(state) {
   return {
     ...state.game,
     terrain: transformTerrain(state.game.terrain),
-    trains: transformTrains(state.game.trains),
+    trains: transformTrains(state.game.trains, state),
     tool: state.tool,
   };
 }

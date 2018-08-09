@@ -20,6 +20,7 @@ export default {
 
   game: {
     movePhase: 'game.movePhase',
+    transferPhase: 'game.transferPhase',
   },
 
   tool: {
