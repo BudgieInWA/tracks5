@@ -4,9 +4,20 @@ import { connect } from "react-redux";
 
 import ActionTypes from "./reducers/ActionTypes";
 
+
+let timer;
 const turnActions = dispatch => ({
   doMovePhase(event) {
     dispatch({ type: ActionTypes.game.movePhase })
+  },
+  start(event) {
+    clearTimeout(timer);
+    timer = setInterval(() => {
+      dispatch({ type: ActionTypes.game.movePhase })
+    }, 1000);
+  },
+  stop(event) {
+    clearTimeout(timer);
   },
 });
 class TurnControls extends React.Component {
