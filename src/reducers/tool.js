@@ -40,6 +40,7 @@ function hexes(state = [], action) {
       }
 
       // Add the chain of hexes between the end and the new hex.
+      // TODO unravel the track until the new hexes can be added to form a valid track path.
       return [...state, ...hexesCrossedByLine(state[state.length - 1], action.hex).slice(1)];
 
     case ActionTypes.tool.hexes.clear:

@@ -13,9 +13,13 @@ describe('API', () => {
     expect( CardinalDirection.NW ).toBeInstanceOf(CardinalDirection);
   });
 
-  it('instances have left and right', () => {
+  it('left and right', () => {
     expect(dir.left.left.left.left.left.left).toBe(dir);
     expect(dir.right.right.right.right.right.right).toBe(dir);
+  });
+
+  it('opposite', () => {
+    expect(dir.opposite.opposite).toBe(dir);
   });
 
   it('reverse(dir)', () => {

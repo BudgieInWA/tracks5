@@ -146,11 +146,5 @@ export default class TrackNetwork {
     const node = hex.toString();
     return _.map(this.nodeEdges(node, name), edge => edge.w === node ? {...edge, v: edge.w, w: edge.v} : edge);
   }
-
-  wholeEdge(edge) {
-
-  }
-
-  static otherEndOf = (edge, hex) => hex !== edge.w ? edge.w : edge.v;
 }
 

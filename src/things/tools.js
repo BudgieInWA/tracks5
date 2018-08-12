@@ -1,7 +1,11 @@
 import ActionTypes from "../reducers/ActionTypes";
 
-//TODO classify
+//(TODO classify)
 export const tools = {
+  //TODO train directions
+  // Maybe poke selects a poked train allowing it to trasform the tool? Or poking changes you to the tool.
+
+
   poke: {
     touchTargets: { tile: true, building: true, track: true, train: true },
     onClick(thing, event) {

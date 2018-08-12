@@ -11,18 +11,20 @@ const edge = { v: Hex.origin.toString(), w: CardinalDirection.N.toString(), name
 const edgeData = { [edge.v]: { direction: CardinalDirection.N.toString() }, [edge.w]: { direction: CardinalDirection.S.toString() } };
 
 describe('API', () => {
+  let rail;
+  beforeEach(() => {
+    rail = new TrackRail(edge, edgeData);
+  });
+
   it('v', () => {
-    const rail = new TrackRail(edge, edgeData);
     expect(rail).toHaveProperty('v');
     expect(rail.v).toBeInstanceOf(Hex);
   });
   it('w', () => {
-    const rail = new TrackRail(edge, edgeData);
     expect(rail).toHaveProperty('w');
     expect(rail.w).toBeInstanceOf(Hex);
   });
   it('direction', () => {
-    const rail = new TrackRail(edge, edgeData);
     expect(rail).toHaveProperty('direction');
     expect(rail.direction).toBeInstanceOf(CardinalDirection);
   });

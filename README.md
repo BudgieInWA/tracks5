@@ -32,5 +32,6 @@ Engine
 - right click and keyboard business
     - right click / esc - cancel / back
     - `\`` - debug console
+    - `tab`  - cycle tool selection
 - Look like unexplored map.
 - find a transitiiiion-stable description of train positions so they can be css animated.

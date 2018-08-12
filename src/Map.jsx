@@ -48,30 +48,27 @@ class Map extends React.Component {
       <HexGrid width="100%" height="100%">
         <Layout size={{ x: 7, y: 7 }}>
           <g className={classNames('tiles', { touchable: this.isTouchable('tile') })}>
-            {_.map(terrain, (tile, key) => {
-              const hex = tile.hex;
-              return (
-                <Tile
-                  className={classNames({ touchable: this.isTouchable('tile') })}
-                  key={key}
+            {_.map(terrain, (tile, key) => (
+              <Tile
+                className={classNames({ touchable: this.isTouchable('tile') })}
+                key={key}
 
-                  {...tile}
+                {...tile}
 
-                  onClick={this.makeHexToolEventDelegator('onClick', tile)}
-                  // onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
-                  // onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
-                  onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', tile)}
-                  onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', tile)}
+                onClick={this.makeHexToolEventDelegator('onClick', tile)}
+                // onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
+                // onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
+                onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', tile)}
+                onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', tile)}
 
-                  // onDragStart={this.makeHexToolEventDelegator('onDragStart')}
-                  // onDragOver={this.makeHexToolEventDelegator('onDragStart')}
-                  // onDrop={this.makeHexToolEventDelegator('onDragOver')}
-                  // onDragEnd={this.makeHexToolEventDelegator('onDragEnd')}
-                >
-                  <Text className="debug">{hex.toString()}</Text>
-                </Tile>
-              )
-            })}
+                // onDragStart={this.makeHexToolEventDelegator('onDragStart')}
+                // onDragOver={this.makeHexToolEventDelegator('onDragStart')}
+                // onDrop={this.makeHexToolEventDelegator('onDragOver')}
+                // onDragEnd={this.makeHexToolEventDelegator('onDragEnd')}
+              >
+                <Text className="debug">{tile.hex.toString()}</Text>
+              </Tile>
+            ))}
           </g>
           <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
             {_.map(tracks && tracks.edges, ({ v, w }) => (
