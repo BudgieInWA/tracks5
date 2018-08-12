@@ -71,8 +71,16 @@ class Map extends React.Component {
             ))}
           </g>
           <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
-            {_.map(tracks && tracks.edges, ({ v, w }) => (
-              <Path key={`${v} -> ${w}`} className="track" hexes={[Hex.of(v), Hex.of(w)]} />
+            {_.map(tracks, (track) => (
+              <Path
+                key={`${track.v} -> ${track.w}`}
+                className="track"
+                hexes={[track.v, track.w]}
+
+                onClick={this.makeHexToolEventDelegator('onClick', track)}
+                // onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', tile)}
+                // onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', tile)}
+              />
             ))}
           </g>
           <g className={classNames('buildings', { touchable: this.isTouchable('building') })}>

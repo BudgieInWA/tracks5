@@ -20,3 +20,15 @@ export default function tracks(state = new TrackNetwork().state(), action) {
 
   return network.state();
 }
+
+export function transformTracks(tracks, state) {
+  const network = new TrackNetwork(tracks);
+  return network.rails();
+}
+
+export function getTracks(state) {
+  return transformTracks(state.game.tracks, state);
+}
+
+
+

@@ -6,7 +6,7 @@ import ActionTypes from "./ActionTypes";
 
 import terrain, { transformTerrain } from './terrain';
 import buildings from './buildings';
-import tracks from './tracks';
+import tracks, { transformTracks } from './tracks';
 import trains, { moveTrains, transformTrains } from './trains';
 import { getTradesThatHappen, executeTrades } from './stores';
 
@@ -46,6 +46,7 @@ export function getGame(state) {
     ...state.game,
     terrain: transformTerrain(state.game.terrain),
     trains: transformTrains(state.game.trains, state),
+    tracks: transformTracks(state.game.tracks, state),
     tool: state.tool,
   };
 }

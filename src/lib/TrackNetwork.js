@@ -141,6 +141,14 @@ export default class TrackNetwork {
     return new TrackRail(edge, edgeData);
   }
 
+  /**
+   * @returns {TrackRail[]}
+   */
+  rails() {
+    const edges = this.graph.edges();
+    return _.map(edges, e => new TrackRail(e, this.graph.edge(e)));
+  }
+
   /** All edges from node with v === node */
   nodeOutEdges(hex, name) {
     const node = hex.toString();
