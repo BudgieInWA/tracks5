@@ -7,7 +7,7 @@ import appReducer from "./reducers/appReducer";
 import "./App.css";
 import Map from "./Map";
 import Toolbar from "./ToolUI";
-import TurnControls from "./TurnControls";
+import TurnControls from "./TurnUI";
 import NoiseTest from './NoiseTest.jsx'
 
 const store = createStore(appReducer, devToolsEnhancer());

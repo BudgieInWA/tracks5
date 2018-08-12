@@ -69,6 +69,7 @@ class ToolUI extends React.Component {
         </aside>
         <form className="toolbar">
           {_.map(tools, (tool, id) => <label key={id}><input type="radio" name="tool" value={id} checked={id === name} onChange={this.changeTool} />{tool.name || id}</label>)}
+          {/*TODO tool option */}
         </form>
       </React.Fragment>
     );

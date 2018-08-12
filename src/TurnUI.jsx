@@ -20,7 +20,17 @@ const turnActions = dispatch => ({
     clearTimeout(timer);
   },
 });
-class TurnControls extends React.Component {
+
+// TODO allow selection of feature flags for css behaviour and other stuff:
+// const features = {
+//   tracksAsRoads: false,
+//   showSteps: true,
+// };
+// <section>
+//   {_.map(features, (on, f) => <checkbox onChange={})}
+// </section>
+
+class TurnUI extends React.Component {
   render() {
     const { ...actions } = this.props;
     return (
@@ -31,4 +41,4 @@ class TurnControls extends React.Component {
   }
 }
 
-export default connect(null, turnActions)(TurnControls);
+export default connect(null, turnActions)(TurnUI);

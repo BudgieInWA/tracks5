@@ -1,8 +1,8 @@
 import React from 'react';
 
-import hut from '../assets/icons/lorc/originals/svg/000000/transparent/pawn.svg';
+import defaultAsset from '../assets/icons/delapouite/originals/svg/000000/transparent/empty-chessboard.svg';
 
-export default ({asset=hut}) => <use
+export default ({asset=defaultAsset}) => <use
   href={'#' + asset.id }
   width="7"
   height="7"
