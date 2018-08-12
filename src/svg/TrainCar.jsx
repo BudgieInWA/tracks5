@@ -5,7 +5,7 @@ import { HexUtils, Text } from "react-hexgrid";
 import { SEGMENTS } from '../reducers/trains';
 
 const Car = gridPositioned(({ direction, name }) => (
-    <g className="train" transform={`rotate(${direction.bearing})`}>
+    <g className="train" transform={`rotate(${direction.bearing}) translate(-1, 0)`}>
       <path d="M 0,2  L 0,0" />
       <Text className="debug">{name || 'train'}</Text>
     </g>

@@ -100,6 +100,19 @@ const defaultTrain = {
 
 function train(state = {}, action) {
   switch(action.type) {
+    case ActionTypes.trains.build:
+      const { id, hex, direction, distance = 0, store } = action;
+      return {
+        id,
+        name: "new train " + action.id,
+        hex,
+        direction,
+        distance,
+        speed: 1,
+        destination: null,
+        store,
+        schedule: {},
+      };
     default:
       return state;
   }
@@ -108,7 +121,8 @@ function train(state = {}, action) {
 export default function trains(state=[defaultTrain], action) {
   switch(action.type) {
     case ActionTypes.trains.build:
-      return [ ...state, defaultTrain ]; // TODO
+      action.id = state.length;
+      return [ ...state, train(undefined, action) ]; // TODO
 
     case ActionTypes.trains.targets:
       return [

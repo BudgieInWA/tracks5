@@ -59,7 +59,13 @@ export const tools = {
     }
   },
 
-  train: {},
+  train: {
+    touchTargets: { track: true },
+    onClick(rail, event) {
+      let { tool: { option }, dispatch } = this.props;
+      dispatch({ type: ActionTypes.trains.build, hex: rail.v, direction: rail.direction });
+    }
+  },
 };
 
 export const getToolImpl = id => tools[id] || {};
