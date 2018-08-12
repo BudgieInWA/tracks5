@@ -31,7 +31,6 @@ function hexes(state = [], action) {
       return [action.hex];
 
     case ActionTypes.tool.hexes.end:
-      if (action.hex === state[0]) return state;
       if (state.length === 0) return state;
 
       // "Unravel" the path if it is being traced backwards.

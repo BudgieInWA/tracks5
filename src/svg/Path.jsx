@@ -13,10 +13,11 @@ class Path extends Component {
 
   // TODO Refactor
   getPointsString() {
-    const { hexes } = this.props;
+    let { hexes } = this.props;
     const { layout } = this.context;
 
     if (!hexes) return '';
+    if (hexes.length === 1) hexes = [hexes[0], hexes[0]];
 
     // Construct Path points out of all the intersecting hexes (e.g. M 0,0 L 10,20, L 30,20)
     let points = 'M';
@@ -31,7 +32,7 @@ class Path extends Component {
   render() {
     const { hexes, ...rest } = this.props;
     return (
-      <path {...rest} d={this.getPointsString()}></path>
+      <path {...rest} d={this.getPointsString()} />
     );
   }
 }
