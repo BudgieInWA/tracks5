@@ -4,8 +4,8 @@ import { HexUtils, Text } from "react-hexgrid";
 
 import { SEGMENTS } from '../reducers/trains';
 
-const Car = gridPositioned(({ direction, name }) => (
-    <g className="train" transform={`rotate(${direction.bearing}) translate(-1, 0)`}>
+const Car = gridPositioned(({ hex, direction, targetSpeed, bearing, name, ...rest }) => (
+    <g className="train" {...rest} transform={`rotate(${bearing}) translate(-1, 0) scale(0.8) `}>
       <path d="M 0,2  L 0,0" />
       <Text className="debug">{name || 'train'}</Text>
     </g>
@@ -13,10 +13,26 @@ const Car = gridPositioned(({ direction, name }) => (
 );
 
 export default class TrainCar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      bearing: props.direction.bearing,
+    }
+  }
+
+  componentWillReceiveProps({ direction }) {
+    let diff = direction.bearing - (this.state.bearing % 360);
+    if (diff > 180) diff -= 360;
+    if (diff < -180) diff += 360;
+
+    this.setState({ bearing: this.state.bearing + diff });
+  }
+
   render() {
     const { hex, direction, distance, ...rest } = this.props;
     return (
-      <Car {...this.props} hex={HexUtils.add(hex, HexUtils.multiply(direction, distance / SEGMENTS ))} />
+      <Car {...this.props} hex={HexUtils.add(hex, HexUtils.multiply(direction, distance / SEGMENTS ))} bearing={this.state.bearing} />
     );
   }
 }
