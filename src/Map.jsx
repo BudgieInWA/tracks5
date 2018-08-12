@@ -86,11 +86,23 @@ class Map extends React.Component {
           <g className={classNames('buildings', { touchable: this.isTouchable('building') })}>
             {_.map(buildings, building => {
               const BuildingComp = reactBuildings[building.type] || Building;
-              return <BuildingComp key={building.name} {...building} />;
+              return <BuildingComp
+                key={building.name}
+                {...building}
+
+                onClick={this.makeHexToolEventDelegator('onClick', building)}
+              />;
             })}
           </g>
           <g className={classNames('trains', { touchable: this.isTouchable('train') })}>
-            {trains && _.map(trains, (train) => <TrainCar key={train.name} {...train} />)}
+            {trains && _.map(trains, (train) => (
+              <TrainCar
+                key={train.name}
+                {...train}
+
+                onClick={this.makeHexToolEventDelegator('onClick', train)}
+              />
+            ))}
           </g>
 
           <g className="tool">
