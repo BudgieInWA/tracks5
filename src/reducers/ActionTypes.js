@@ -21,6 +21,7 @@ export default {
   game: {
     movePhase: 'game.movePhase',
     transferPhase: 'game.transferPhase',
+    explorePhase: 'game.explorePhase',
   },
 
   tool: {

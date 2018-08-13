@@ -60,13 +60,16 @@ const tile = (state = {}, action) => {
 };
 
 export default function terrain(state = {}, action) {
+  let newHexes = [];
   if (action.type === ActionTypes.terrain.reveal) {
-    const newHexes = _.filter(GridGenerator.spiral(action.hex, action.radius || 0), h => !state[h]);
-    return {
-      ...state,
-      ..._.map(newHexes, hex => tile({ hex }, action)),
-    }
+    const notAlreadyInState = hex => !state[hex];
+    newHexes = _.filter(GridGenerator.spiral(action.hex, action.radius || 0), notAlreadyInState);
   }
+  if (newHexes.length === 0) return state;
+  else return {
+    ...state,
+    ..._.map(newHexes, hex => tile({ hex }, action)),
+  };
   return state;
 };
 
