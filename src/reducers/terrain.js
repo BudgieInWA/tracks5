@@ -61,9 +61,10 @@ const tile = (state = {}, action) => {
 
 export default function terrain(state = {}, action) {
   if (action.type === ActionTypes.terrain.reveal) {
+    const newHexes = _.filter(GridGenerator.spiral(action.hex, action.radius || 0), h => !state[h]);
     return {
-      ..._.map(GridGenerator.spiral(action.hex, action.radius || 0), hex => tile({ hex }, action)),
       ...state,
+      ..._.map(newHexes, hex => tile({ hex }, action)),
     }
   }
   return state;
