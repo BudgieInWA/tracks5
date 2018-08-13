@@ -31,6 +31,10 @@ const turnActions = dispatch => ({
 // </section>
 
 class TurnUI extends React.Component {
+  componentDidMount() {
+    this.props.start();
+  }
+
   render() {
     const { ...actions } = this.props;
     return (

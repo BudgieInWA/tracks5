@@ -90,7 +90,7 @@ export function moveTrains(trains, network) {
 const defaultTrain = {
   name: "default train",
   hex: Hex.origin.toString(),
-  direction: CardinalDirection.SE.toString(),
+  direction: CardinalDirection.N.toString(),
   distance: 0,
   speed: 1,
   destination: null,
