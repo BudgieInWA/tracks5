@@ -135,7 +135,7 @@ svg#__SVG_SPRITE_NODE__ {
 
 
 g.grid-positioned {
-  transition: transform 1s; /* transition be default until it proves annoying */
+  transition: transform 1s linear; /* transition by default until it proves annoying */
 }
 
 
@@ -155,7 +155,7 @@ g.tool {
 g.tool > path {
   fill: none;
   stroke: hsl(79, 20%, 70%);
-  stroke-width: 0.2em;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -193,6 +193,9 @@ g.tracks > path {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.roadsMode g.tracks > path {
+  stroke-width: 5;
+}
 
 .building {
   fill: #C04A05;
@@ -203,7 +206,12 @@ g.tracks > path {
   stroke-width: 2;
   stroke-linecap: round;
 
-  transition: transform 0.7s;
+  transition: transform 0.7s linear;
+}
+.train path.overlay {
+  stroke: black;
+  opacity: 0.3;
+  stroke-width: 0.01em;
 }
 
 

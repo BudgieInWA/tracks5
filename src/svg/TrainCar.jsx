@@ -6,7 +6,8 @@ import { SEGMENTS } from '../reducers/trains';
 
 const Car = gridPositioned(({ hex, direction, targetSpeed, bearing, name, ...rest }) => (
     <g className="train" {...rest} transform={`rotate(${bearing}) translate(-1, 0) scale(0.8) `}>
-      <path d="M 0,2  L 0,0" />
+      <path d="M 0,3  L 0,0" />
+      <path className="overlay" d="M 0,3  L 0,0" />
       <Text className="debug">{name || 'train'}</Text>
     </g>
   )
