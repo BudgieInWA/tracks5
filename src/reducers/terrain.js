@@ -36,7 +36,7 @@ const biomesByTempThenRain = [
 ];
 
 function getTileValues(hex) {
-  const xy = HexUtils.hexToPixel(hex, layout);
+  const xy = HexUtils.hexToPixel(Hex.of(hex), layout);
 
   const rainScale = 0.1;
   const tempScale = 0.1;
@@ -46,6 +46,10 @@ function getTileValues(hex) {
 }
 
 
+/**
+ *
+ * @param state.hex
+ */
 const tile = (state = {}, action) => {
   let { hex, biome, values } = state;
   if (hex === undefined) return state;
@@ -59,21 +63,38 @@ const tile = (state = {}, action) => {
   return { ...state, hex, biome, values }
 };
 
+const notInTerrain = state => hex => !state[hex];
 export default function terrain(state = {}, action) {
   let newHexes = [];
   if (action.type === ActionTypes.terrain.reveal) {
-    const notAlreadyInState = hex => !state[hex];
-    newHexes = _.filter(GridGenerator.spiral(action.hex, action.radius || 0), notAlreadyInState);
+    newHexes = _.filter(GridGenerator.spiral(Hex.of(action.hex), action.radius || 0), notInTerrain(state));
   }
   if (newHexes.length === 0) return state;
   else return {
     ...state,
-    ..._.map(newHexes, hex => tile({ hex }, action)),
+    ..._.fromPairs(_.map(newHexes, h => [h.toString(), tile({ hex: h.toString() }, action)])),
   };
   return state;
 };
 
-export function transformTerrain(state) {
-  return state;
-  // return _.map(state, tile => new Tile(tile));
+
+export function revealTerrain(state, { trains, buildings }) {
+  const radius = 3;
+  return _.reduce(
+    _.map([ ...trains, ...buildings], ({ hex }) => ({ type: ActionTypes.terrain.reveal, hex, radius })),
+    terrain,
+    state
+  );
+};
+
+
+export function Tile(tile) {
+  _.assign(this, {
+    ...tile,
+    hex: Hex.of(tile.hex),
+  });
+}
+
+export function transformTerrain(terrain, state) {
+  return _.mapValues(terrain, tile => new Tile(tile));
 }

@@ -8,13 +8,13 @@ import ActionTypes from "./reducers/ActionTypes";
 let timer;
 const turnActions = dispatch => ({
   doMovePhase(event) {
-    dispatch({ type: ActionTypes.game.movePhase })
+    dispatch({ type: ActionTypes.game.turnResolve })
   },
   start(event) {
     clearTimeout(timer);
     timer = setInterval(() => {
-      dispatch({ type: ActionTypes.game.movePhase })
-    }, 1000);
+      dispatch({ type: ActionTypes.game.turnResolve })
+    }, 990);
   },
   stop(event) {
     clearTimeout(timer);

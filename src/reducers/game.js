@@ -4,13 +4,12 @@ import TrackNetwork  from '../lib/TrackNetwork';
 
 import ActionTypes from "./ActionTypes";
 
-import terrain, { transformTerrain } from './terrain';
+import terrain, { transformTerrain, revealTerrain } from './terrain';
 import buildings from './buildings';
 import tracks, { transformTracks } from './tracks';
 import trains, { moveTrains, transformTrains } from './trains';
 import { getTradesThatHappen, executeTrades } from './stores';
 
-const revealTerrain = (terrain, things) => terrain;
 
 const stores = (state = {}, action) => {
   return state;
@@ -27,6 +26,13 @@ function gameTopLevelReducer(state = {}, action) {
         stores: executeTrades(state.stores, getTradesThatHappen(state)),
       };
 
+    case ActionTypes.game.turnResolve:
+      return _.reduce(
+        [{ type: ActionTypes.game.movePhase }, { type: ActionTypes.game.explorePhase }],
+        gameTopLevelReducer,
+        state
+      );
+
     case ActionTypes.game.movePhase:
       return {
         ...state,
@@ -34,7 +40,7 @@ function gameTopLevelReducer(state = {}, action) {
       };
 
     case ActionTypes.game.explorePhase:
-      const { trains } = state;
+      const { terrain, trains, buildings } = state;
       return {
         ...state,
         terrain: revealTerrain(terrain, { trains, buildings })

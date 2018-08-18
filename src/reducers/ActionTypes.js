@@ -22,6 +22,7 @@ export default {
     movePhase: 'game.movePhase',
     transferPhase: 'game.transferPhase',
     explorePhase: 'game.explorePhase',
+    turnResolve: 'game.turnResolve',
   },
 
   tool: {
