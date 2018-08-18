@@ -79,9 +79,11 @@ export default function terrain(state = {}, action) {
 
 
 export function revealTerrain(state, { trains, buildings }) {
-  const radius = 3;
   return _.reduce(
-    _.map([ ...trains, ...buildings], ({ hex }) => ({ type: ActionTypes.terrain.reveal, hex, radius })),
+    [
+      ..._.map(trains, ({ hex }) => ({ type: ActionTypes.terrain.reveal, hex, radius: 2 })),
+      ..._.map(buildings, ({ hex }) => ({ type: ActionTypes.terrain.reveal, hex, radius: 3 })),
+    ],
     terrain,
     state
   );

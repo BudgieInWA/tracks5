@@ -22,14 +22,6 @@ class Map extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.props.dispatch({
-      type: ActionTypes.terrain.reveal,
-      hex: Hex.origin,
-      radius: 4,
-    });
-  }
-
   makeHexToolEventDelegator(eventType, arg) {
     const tool = getToolImpl(this.props.tool.name);
     return tool[eventType] && ((event) => tool[eventType].apply(this, [arg, event]));
