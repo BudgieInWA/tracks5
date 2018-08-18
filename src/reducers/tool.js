@@ -38,9 +38,23 @@ function hexes(state = [], action) {
         return [...state.slice(0, -1)];
       }
 
+      const path = [...state];
       // Add the chain of hexes between the end and the new hex.
       // TODO unravel the track until the new hexes can be added to form a valid track path.
-      return [...state, ...hexesCrossedByLine(state[state.length - 1], action.hex).slice(1)];
+      // FIXME can go backwards
+      while (true) {
+        const newHexes = hexesCrossedByLine(path[path.length - 1], action.hex).slice(1);
+        if (newHexes.length === 0) return path;
+        const cmp = (a, b) => {
+          return Math.abs(b - a) < 0.0001;
+        };
+        const blah = (path.length > 1) && cmp(HexUtils.distance(newHexes[0], path[path.length - 2]), 1);
+        if (blah) {
+          path.pop();
+        } else {
+          return path.concat(...newHexes);
+        }
+      }
 
     case ActionTypes.tool.hexes.clear:
       return [];
