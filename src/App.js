@@ -27,22 +27,24 @@ function updatePanDir(key, down) {
 const handleKeyInput = (event) => {
   // if (event.code is a key that we control)
   event.preventDefault();
+  console.debug('handling', {event});
 
   // TODO lowercase A-Z in event.key
 
+  if (event.type === 'keydown') switch(event.key) {
+    case '-':
+      store.dispatch({type: ActionTypes.view.zoomOut});
+      break;
+    case '=':
+      store.dispatch({type: ActionTypes.view.zoomIn});
+      break;
+  }
   if (event.type === 'keydown' && !event.repeat) switch(event.key) {
     case 'w':
     case 'a':
     case 's':
     case 'd':
       updatePanDir(event.key, true);
-      break;
-
-    case '-':
-      store.dispatch({type: ActionTypes.view.zoomOut});
-      break;
-    case '=':
-      store.dispatch({type: ActionTypes.view.zoomIn});
       break;
   }
   if (event.type === 'keyup') switch(event.key) {
@@ -59,6 +61,12 @@ class App extends Component {
   componentDidMount() {
     window.document.body.addEventListener('keydown', handleKeyInput);
     window.document.body.addEventListener('keyup', handleKeyInput);
+
+  }
+
+  componentWillUnmount() {
+    window.document.body.removeEventListener('keydown', handleKeyInput);
+    window.document.body.removeEventListener('keyup', handleKeyInput);
   }
 
   render() {

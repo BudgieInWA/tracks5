@@ -6,7 +6,7 @@ import Icon from './Icon';
 
 import pawn from '../assets/icons/lorc/originals/svg/000000/transparent/pawn.svg';
 
-class Building extends React.Component {
+class Building extends React.PureComponent {
   static icon = pawn;
 
   render() {

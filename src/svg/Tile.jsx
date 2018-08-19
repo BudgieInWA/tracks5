@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import gridPositioned from './gridPositioned';
 
-class Tile extends React.Component {
+class Tile extends React.PureComponent {
   static propTypes = {
     className: PropTypes.string,
 

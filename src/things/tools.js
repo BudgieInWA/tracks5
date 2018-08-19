@@ -1,6 +1,7 @@
+import _ from 'lodash';
 import ActionTypes from "../reducers/ActionTypes";
 
-//(TODO classify)
+//(TODO `class`ify)
 export const tools = {
   //TODO train directions
   // Maybe poke selects a poked train allowing it to trasform the tool? Or poking changes you to the tool.
@@ -8,43 +9,36 @@ export const tools = {
 
   poke: {
     touchTargets: { tile: true, building: true, track: true, train: true },
-    onClick(thing, event) {
-      const { dispatch } = this.props;
-      console.info('Poke!', { thing, event });
-      dispatch({ type: ActionTypes.tool.poke, poke: thing });
-    }
+    handlers: {
+      onClick(thing, event, { dispatch }) {
+        console.info('Poke!', { thing, event });
+        dispatch({ type: ActionTypes.tool.poke, poke: thing });
+      },
+    },
+
+    // onDragStart(event, hexComponent) { },
+    // onDragOver(event, hexComponent)  { },
+    // onDrop(event, hexComponent, droppedHexComponent) { },
   },
 
   track: {
     touchTargets: { tile: true },
-    onClick({ hex }, event) {
-      const { tool: { hexes }, dispatch } = this.props;
-      if (hexes.length === 0) {
-        dispatch({ type: ActionTypes.tool.hexes.start, hex });
-      } else {
-        dispatch({ type: ActionTypes.tracks.build, hexes });
-        dispatch({ type: ActionTypes.tool.hexes.clear });
-      }
-    },
-    onMouseEnter({ hex }, event) {
-      const { tool: { hexes }, dispatch } = this.props;
-      if (hexes.length > 0) {
-        dispatch({ type: ActionTypes.tool.hexes.end, hex });
-      }
-    },
+    handlers: {
+      onClick({ hex }, event, { dispatch }) {
+        if (this.hexes.length === 0) {
+          dispatch({ type: ActionTypes.tool.hexes.start, hex });
+        } else {
+          dispatch({ type: ActionTypes.tracks.build, hexes: this.hexes });
+          dispatch({ type: ActionTypes.tool.hexes.clear });
+        }
+      },
+      onMouseEnter({ hex }, event, { dispatch }) {
+        if (this.hexes.length > 0) {
+          dispatch({ type: ActionTypes.tool.hexes.end, hex });
+        }
+      },
 
-
-    // onDragStart(event, hexComponent) {
-    //   const { state: { hex } } = hexComponent;
-    //   this.props.dispatch({ type: ActionTypes.path.start, hex });
-    // },;
-    // onDragOver(event, hexComponent)  {
-    //   const { state: { hex } } = hexComponent;
-    //   this.props.dispatch({ type: ActionTypes.path.end, hex });
-    // },
-    // onDrop(event, hexComponent, droppedHexComponent) {
-    //   this.props.dispatch({ type: ActionTypes.path.clear });
-    // },
+    },
   },
 
   building: {
@@ -52,20 +46,41 @@ export const tools = {
     getOptions() {
       // TODO...
     },
-    onClick({ hex }, event) {
-      let { tool: { option }, dispatch } = this.props;
-      option = 'Station';
-      dispatch({ type: ActionTypes.buildings.build, hex, building: option });
-    }
+    handlers: {
+      onClick({ hex }, event, { dispatch }) {
+        dispatch({ type: ActionTypes.buildings.build, hex, building: this.option || 'Station' });
+      },
+    },
   },
 
   train: {
     touchTargets: { track: true },
-    onClick(rail, event) {
-      let { tool: { option }, dispatch } = this.props;
-      dispatch({ type: ActionTypes.trains.build, hex: rail.v, direction: rail.direction });
-    }
+    getOptions() {
+      // TODO...
+    },
+    handlers: {
+      onClick(rail, event, { dispatch }) {
+        dispatch({ type: ActionTypes.trains.build, hex: rail.v, direction: rail.direction });
+      },
+    },
   },
 };
 
-export const getToolImpl = id => tools[id] || {};
+const noHandlersFactory = () => {};
+export const nullFactory = noHandlersFactory;
+/**
+ *
+ * @param {function|null} getTool - a function that will return the current tool data at the time the event happens.
+ * @param {string|null} targetName
+ * @paaaram {function} dispatch
+ * @returns {function|nullFactory} -
+ */
+export const getHandlersFactory = _.memoize(function makeHandlersFactory(getTool = null, { targetName = null, dispatch }) {
+  if (!getTool) return noHandlersFactory;
+  const tool = tools[getTool().name];
+  if (!tool) return noHandlersFactory;
+  if (targetName && !tool.touchTargets[targetName]) return noHandlersFactory;
+  return (thing) => {
+    return _.mapValues(tool.handlers, handler => event => handler.apply(getTool(), [thing, event, { dispatch }]));
+  };
+}, (getTool, { targetName }) => getTool().name + targetName);

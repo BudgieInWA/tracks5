@@ -6,7 +6,7 @@ import { HexGrid, Layout, Text } from "react-hexgrid";
 import Hex from './lib/Hex';
 
 import ActionTypes from './reducers/ActionTypes';
-import { getToolImpl } from "./things/tools";
+import { getHandlersFactory, nullFactory } from './things/tools';
 import { getGame } from './reducers/game';
 import { getTool } from './reducers/tool';
 import { getView } from './reducers/appReducer';
@@ -18,8 +18,6 @@ import Path from "./svg/Path.jsx";
 
 import * as reactBuildings from './things/buildings';
 
-
-
 class Map extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +27,7 @@ class Map extends React.Component {
     };
 
     let lastFrameTime = null;
+    let frameRequest = null;
     const stepFrame = (frameTime) => { // remember: arrow functions don't bind `this`.
       const { view } = this.props;
 
@@ -45,88 +44,30 @@ class Map extends React.Component {
           });
         }
       }
-
       lastFrameTime = frameTime;
       window.requestAnimationFrame(stepFrame);
     };
     window.requestAnimationFrame(stepFrame);
+    this.stopAnimation = () => window.cancelAnimationFrame(frameRequest);
   }
 
-  makeHexToolEventDelegator(eventType, arg) {
-    const tool = getToolImpl(this.props.tool.name);
-    return tool[eventType] && ((event) => tool[eventType].apply(this, [arg, event]));
+  componentWillUnmount() {
+    this.stopAnimation();
   }
 
-  isTouchable(thing) {
-    const targets = getToolImpl(this.props.tool.name).touchTargets || {};
-    return !!targets[thing];
-  }
 
   render() {
-    const { tool, view, terrain, tracks, trains, buildings } = this.props;
+    const { dispatch, tool, view, terrain, tracks, trains, buildings } = this.props;
 
     const box = _.map([-1 + this.state.viewOffset.x, -1 + this.state.viewOffset.y, 2, 2], c => c * view.scale);
 
     return (
       <HexGrid width="100%" height="100%" viewBox={box.join(' ')}>
         <Layout size={{ x: 1, y: 1 }}>
-          <g className={classNames('tiles', { touchable: this.isTouchable('tile') })}>
-            {_.map(terrain, (tile, key) => (
-              <Tile
-                className={classNames({ touchable: this.isTouchable('tile') })}
-                key={key}
-
-                {...tile}
-
-                onClick={this.makeHexToolEventDelegator('onClick', tile)}
-                // onMouseDown={this.makeHexToolEventDelegator('onMouseDown')}
-                // onMouseUp={this.makeHexToolEventDelegator('onMouseUp')}
-                onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', tile)}
-                onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', tile)}
-
-                // onDragStart={this.makeHexToolEventDelegator('onDragStart')}
-                // onDragOver={this.makeHexToolEventDelegator('onDragStart')}
-                // onDrop={this.makeHexToolEventDelegator('onDragOver')}
-                // onDragEnd={this.makeHexToolEventDelegator('onDragEnd')}
-              >
-                <Text className="debug">{tile.hex.toString()}</Text>
-              </Tile>
-            ))}
-          </g>
-          <g className={classNames('tracks', { touchable: this.isTouchable('track') })}>
-            {_.map(tracks, (track) => (
-              <Path
-                key={`${track.v} -> ${track.w}`}
-                className="track"
-                hexes={[track.v, track.w]}
-
-                onClick={this.makeHexToolEventDelegator('onClick', track)}
-                // onMouseEnter={this.makeHexToolEventDelegator('onMouseEnter', tile)}
-                // onMouseLeave={this.makeHexToolEventDelegator('onMouseLeave', tile)}
-              />
-            ))}
-          </g>
-          <g className={classNames('buildings', { touchable: this.isTouchable('building') })}>
-            {_.map(buildings, building => {
-              const BuildingComp = reactBuildings[building.type] || Building;
-              return <BuildingComp
-                key={building.name}
-                {...building}
-
-                onClick={this.makeHexToolEventDelegator('onClick', building)}
-              />;
-            })}
-          </g>
-          <g className={classNames('trains', { touchable: this.isTouchable('train') })}>
-            {trains && _.map(trains, (train) => (
-              <TrainCar
-                key={train.name}
-                {...train}
-
-                onClick={this.makeHexToolEventDelegator('onClick', train)}
-              />
-            ))}
-          </g>
+          <Terrain     terrain={terrain}   handlersFactory={getHandlersFactory(() => this.props.tool, { targetName: 'tile', dispatch })} />
+          <Tracks       tracks={tracks}    handlersFactory={getHandlersFactory(() => this.props.tool, { targetName: 'track', dispatch })} />
+          <Buildings buildings={buildings} handlersFactory={getHandlersFactory(() => this.props.tool, { targetName: 'building', dispatch })} />
+          <Trains       trains={trains}    handlersFactory={getHandlersFactory(() => this.props.tool, { targetName: 'train', dispatch })} />
 
           <g className="tool">
             {tool.hexes.length && <Path hexes={tool.hexes} />}
@@ -137,5 +78,83 @@ class Map extends React.Component {
     );
   }
 }
+
+
+class Terrain extends React.PureComponent {
+  render() {
+    const { terrain, handlersFactory } = this.props;
+    console.debug('rendering Terrain')
+    return (
+      <g className={classNames('tiles', { touchable: handlersFactory !== nullFactory })}>
+        {_.map(terrain, (tile, key) => (
+          <Tile
+            className={classNames({ touchable: handlersFactory !== nullFactory })}
+            key={key}
+
+            {...tile}
+            {...handlersFactory(tile)}
+          >
+            <Text className="debug">{tile.hex.toString()}</Text>
+          </Tile>
+        ))}
+      </g>
+    );
+  }
+}
+
+class Tracks extends React.PureComponent {
+  render () {
+    const { tracks, handlersFactory } = this.props;
+    return (
+      <g className={classNames('tracks', { touchable: handlersFactory !== nullFactory })}>
+        {_.map(tracks, (track) => (
+          <Path
+            key={`${track.v} -> ${track.w}`}
+            className="track"
+
+            hexes={[track.v, track.w]}
+            {...handlersFactory(track)}
+          />
+        ))}
+      </g>
+    );
+  }
+}
+class Buildings extends React.PureComponent {
+  render() {
+    const { buildings, handlersFactory } = this.props;
+    return (
+      <g className={classNames('buildings', { touchable: handlersFactory !== nullFactory })}>
+        {_.map(buildings, building => {
+          const BuildingComp = reactBuildings[building.type] || Building;
+          return <BuildingComp
+            key={building.name}
+
+            {...building}
+            {...handlersFactory(building)}
+          />;
+        })}
+      </g>
+    );
+  }
+}
+class Trains extends React.PureComponent {
+  render() {
+    const { trains, handlersFactory } = this.props;
+    return (
+      <g className={classNames('trains', { touchable: handlersFactory !== nullFactory })}>
+        {_.map(trains, (train) => (
+          <TrainCar
+            key={train.name}
+
+            {...train}
+            {...handlersFactory(train)}
+          />
+        ))}
+      </g>
+    );
+  }
+}
+
 
 export default connect(s => ({ ...getGame(s), tool: getTool(s), view: getView(s) }))(Map);

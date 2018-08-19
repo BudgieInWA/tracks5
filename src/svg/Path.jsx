@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { HexUtils } from 'react-hexgrid';
 
-class Path extends Component {
+class Path extends React.PureComponent {
   static propTypes = {
     hexes: PropTypes.array,
     layout: PropTypes.object,

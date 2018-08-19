@@ -40,6 +40,7 @@ class TurnUI extends React.Component {
     return (
       <form className="turn-controls">
         {_.map(actions, (action, name) => <button key={name} type="button" onClick={action}>{name}</button>)}
+        {/*<button><pre>`</pre></button>*/}
       </form>
     );
   }
