@@ -4,8 +4,8 @@ import defaultAsset from '../assets/icons/delapouite/originals/svg/000000/transp
 
 export default ({asset=defaultAsset}) => <use
   href={'#' + asset.id }
-  width="7"
-  height="7"
-  transform="translate(-3.5 -3.5)"
+  width="1"
+  height="1"
+  transform="translate(-0.5 -0.5)"
   className="icon"
 />;

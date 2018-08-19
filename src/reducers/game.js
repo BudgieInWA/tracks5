@@ -61,6 +61,5 @@ export function getGame(state) {
     terrain: transformTerrain(state.game.terrain),
     trains: transformTrains(state.game.trains, state),
     tracks: transformTracks(state.game.tracks, state),
-    tool: state.tool,
   };
 }

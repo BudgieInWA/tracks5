@@ -26,12 +26,18 @@ export default {
   },
 
   tool: {
-    name: 'tool anme',
+    name: 'tool',
     poke: 'poke',
     hexes: {
       start: 'PATH_START',
       end:  'PATH_END',
       clear: 'PATH_CLEAR',
     },
+  },
+
+  view: {
+    pan: 'pan',
+    zoomIn: 'zoom_in',
+    zoomOut: 'zoom_out',
   }
 };

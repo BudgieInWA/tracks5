@@ -8,6 +8,8 @@ import Hex from './lib/Hex';
 import ActionTypes from './reducers/ActionTypes';
 import { getToolImpl } from "./things/tools";
 import { getGame } from './reducers/game';
+import { getTool } from './reducers/tool';
+import { getView } from './reducers/appReducer';
 
 import Building from "./svg/Building.jsx";
 import TrainCar from "./svg/TrainCar.jsx";
@@ -17,9 +19,37 @@ import Path from "./svg/Path.jsx";
 import * as reactBuildings from './things/buildings';
 
 
+
 class Map extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      viewOffset: { x: 0, y: 0 },
+    };
+
+    let lastFrameTime = null;
+    const stepFrame = (frameTime) => { // remember: arrow functions don't bind `this`.
+      const { view } = this.props;
+
+      //TODO the api doesn't give us `frameTime` from the last frame :(, skip animating the first frame
+      if (lastFrameTime) {
+        if (view.dx !== 0 || view.dy !== 0) {
+          const screensPerSecond = 0.5;
+          const factor = screensPerSecond * (frameTime - lastFrameTime) / 1000;
+          this.setState({
+            viewOffset: {
+              x: this.state.viewOffset.x + factor * view.dx,
+              y: this.state.viewOffset.y + factor * view.dy,
+            }
+          });
+        }
+      }
+
+      lastFrameTime = frameTime;
+      window.requestAnimationFrame(stepFrame);
+    };
+    window.requestAnimationFrame(stepFrame);
   }
 
   makeHexToolEventDelegator(eventType, arg) {
@@ -33,12 +63,13 @@ class Map extends React.Component {
   }
 
   render() {
-    const { tool, terrain, tracks, trains, buildings } = this.props;
+    const { tool, view, terrain, tracks, trains, buildings } = this.props;
 
-    // TODO bind all tool events to all touchable things
+    const box = _.map([-1 + this.state.viewOffset.x, -1 + this.state.viewOffset.y, 2, 2], c => c * view.scale);
+
     return (
-      <HexGrid width="100%" height="100%">
-        <Layout size={{ x: 7, y: 7 }}>
+      <HexGrid width="100%" height="100%" viewBox={box.join(' ')}>
+        <Layout size={{ x: 1, y: 1 }}>
           <g className={classNames('tiles', { touchable: this.isTouchable('tile') })}>
             {_.map(terrain, (tile, key) => (
               <Tile
@@ -107,4 +138,4 @@ class Map extends React.Component {
   }
 }
 
-export default connect(getGame)(Map);
+export default connect(s => ({ ...getGame(s), tool: getTool(s), view: getView(s) }))(Map);

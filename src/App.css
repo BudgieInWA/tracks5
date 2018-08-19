@@ -35,7 +35,7 @@ header {
   top: 0;
   left: 0;
 
-  margin: 1em;
+  margin: 0.5em;
 }
 header h1 { margin: 0 }
 
@@ -159,14 +159,14 @@ g.tool {
 g.tool > path {
   fill: none;
   stroke: hsl(79, 20%, 70%);
-  stroke-width: 3;
+  stroke-width: 0.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .tile {
   stroke: #2137AA;
-  stroke-width: 0.1pt;
+  stroke-width: 0.001em;
   clip-path: fill-box;
 
   transition: fill 0.2s;
@@ -195,12 +195,12 @@ g.tool > path {
 g.tracks > path {
   fill: none;
   stroke: #FF9E64;
-  stroke-width: 2;
+  stroke-width: 0.2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .roadsMode g.tracks > path {
-  stroke-width: 5;
+  stroke-width: 0.8;
 }
 
 .building {
@@ -208,23 +208,25 @@ g.tracks > path {
 }
 
 .train {
-  stroke: #C04A05;
-  stroke-width: 2;
   stroke-linecap: round;
 
   transition: transform 0.7s linear;
 }
-.train path.overlay {
+.train > path:first-of-type {
+  stroke-width: 0.2;
+  stroke: #C04A05;
+}
+.train > path:last-of-type {
+  stroke-width: 0.02;
   stroke: black;
   opacity: 0.3;
-  stroke-width: 0.01em;
 }
 
 
 svg.grid > g > path:not([class]) {
   fill: none;
   stroke: hsl(60, 20%, 70%);
-  stroke-width: 1;
+  stroke-width: 1em;
   stroke-opacity: 0.7;
   stroke-linecap: round;
   stroke-linejoin: round;
