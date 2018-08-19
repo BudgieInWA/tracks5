@@ -32,7 +32,7 @@ export function moveTrains(trains, network) {
 
     if (_.isNumber(targetSpeed)) {
       if (targetSpeed === speed ) {
-        targetSpeed = null;
+        // targetSpeed = null;
       } else if (targetSpeed > speed) {
         speed++; // Super acceleration. TODO add a cooldown for the next accell
       } else {
@@ -93,6 +93,7 @@ const defaultTrain = {
   direction: CardinalDirection.N.toString(),
   distance: 0,
   speed: 1,
+  targetSpeed: 1,
   destination: null,
   store: 1,
   schedule: {},
@@ -108,7 +109,8 @@ function train(state = {}, action) {
         hex,
         direction,
         distance,
-        speed: 1,
+        speed: 0,
+        targetSpeed: 1,
         destination: null,
         store,
         schedule: {},
