@@ -20,3 +20,8 @@ Object.assign = require('object-assign');
 if (process.env.NODE_ENV === 'test') {
   require('raf').polyfill(global);
 }
+
+if (!console.debug) console.debug = console.log;
+if (!console.trace) console.trace = console.log;
+if (!console.info) console.info = console.log;
+
