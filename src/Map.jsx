@@ -83,7 +83,7 @@ class Map extends React.Component {
 class Terrain extends React.PureComponent {
   render() {
     const { terrain, handlersFactory } = this.props;
-    console.debug('rendering Terrain')
+    console.debug('rendering Terrain');
     return (
       <g className={classNames('tiles', { touchable: handlersFactory !== nullFactory })}>
         {_.map(terrain, (tile, key) => (
