@@ -48,7 +48,7 @@ main {
   position: relative;
   height: 100%;
 
-  font-size: 20pt;
+  font-size: 14pt;
 }
 
 
@@ -56,6 +56,8 @@ main {
   position: absolute;
   bottom: 0;
   left: 0;
+
+  font-size: 20pt;
 
   display: flex;
   justify-content: left;
@@ -97,6 +99,8 @@ main {
   position: absolute;
   bottom: 0;
   right: 0;
+
+  display: flex;
 }
 
 
@@ -104,6 +108,7 @@ main {
   opacity: 0.2;
   display: none;
 }
+
 
 @keyframes spin {
   from { transform: rotate(0deg); }
@@ -143,6 +148,7 @@ svg#__SVG_SPRITE_NODE__ {
 }
 
 
+// TODO move animations together
 g.grid-positioned {
   transition: transform 1s linear; /* transition by default until it proves annoying */
 }

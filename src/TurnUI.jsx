@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import ActionTypes from "./reducers/ActionTypes";
+import { seed } from "./reducers/terrain";
 
 
 let timer;
@@ -39,6 +40,7 @@ class TurnUI extends React.Component {
     const { ...actions } = this.props;
     return (
       <form className="turn-controls">
+        <code>{seed}</code>
         {_.map(actions, (action, name) => <button key={name} type="button" onClick={action}>{name}</button>)}
         {/*<button><pre>`</pre></button>*/}
       </form>
