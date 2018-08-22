@@ -74,7 +74,13 @@ class App extends Component {
       <Provider store={store}>
         <div className="App">
           <header>
-            <h1>Hex Map Game</h1>
+            <ul>
+              <li>Zoom with <kbd>-</kbd> <kbd>+</kbd>{/* or <kbd>Scroll Wheel</kbd>*/}.</li>
+              <li>Pan with <kbd>w</kbd> <kbd>a</kbd> <kbd>s</kbd> <kbd>d</kbd>{/* or <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> or <kbd>Right Click</kbd>*/}.</li>
+              <li>Choose a tool with <kbd>Click</kbd> on the toolbar{/* or <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd>...*/}</li>
+              <li>See how it behaves :)</li>
+
+            </ul>
           </header>
           <main>
             <Map />

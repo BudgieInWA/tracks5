@@ -23,6 +23,7 @@ export default class TrainCar extends React.PureComponent {
   }
 
   componentWillReceiveProps({ direction }) {
+    // The animation will go through the bearing numbers, so we control the sign of diff to choose the rotation direction.
     let diff = direction.bearing - (this.state.bearing % 360);
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;

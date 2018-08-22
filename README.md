@@ -1,6 +1,8 @@
 # tracks
 
-*TLDR,* this is a `react-create-app` app.
+## Running
+
+*TLDR*, this is a `react-create-app` app.
 
 - `yarn start` - run in development mode
 - `yarn test` - run tests
@@ -15,7 +17,7 @@
 
 Game 
 
-- Pan the world
+- Accessibility Tutorial
 
 - Improve train movement
     - add pathfinding to set train movement plans
@@ -32,3 +34,5 @@ Engine
 - right click and keyboard business
     - right click / esc - cancel / back
     - `\`` - debug console
+    
+- reselect and efficient app `renders`

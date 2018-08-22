@@ -34,10 +34,15 @@ header {
   z-index: 10;
   top: 0;
   left: 0;
-
   margin: 0.5em;
+
+  pointer-events: none;
 }
-header h1 { margin: 0 }
+header h1 {
+  margin: 0;
+
+  pointer-events: auto;
+}
 
 main {
   position: relative;
@@ -232,3 +237,26 @@ svg.grid > g > path:not([class]) {
   stroke-linejoin: round;
 }
 
+
+
+kbd {
+  display: inline-block;
+  box-sizing: content-box;
+  min-width: 0.7em;
+  height: 1.1em;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+
+  background-color: #d2d2d2;
+  border: solid;
+  border-width: 0.1em 0.25em 0.3em;
+  border-color: #eee #eee #ccc #ddd;
+  border-radius: 0.2em;
+
+  font-family: monospace;
+  text-align: center;
+  vertical-align: text-bottom;
+}
+kbd:first-letter {
+  text-transform: uppercase;
+}
