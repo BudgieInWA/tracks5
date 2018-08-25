@@ -39,5 +39,11 @@ export default {
     pan: 'pan',
     zoomIn: 'zoom_in',
     zoomOut: 'zoom_out',
-  }
+  },
+
+  inputs: {
+    on: 'inputs.on',
+    off: 'inputs.off',
+    stateAction: 'inputs.action',
+  },
 };

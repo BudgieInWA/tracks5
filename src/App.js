@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from "react";
 import { createStore } from "redux";
 import { devToolsEnhancer } from 'redux-devtools-extension';
@@ -5,6 +6,8 @@ import { Provider } from "react-redux";
 
 import ActionTypes from './reducers/ActionTypes';
 import appReducer from './reducers/appReducer';
+
+import * as Inputs from './Inputs';
 
 import "./App.css";
 import Map from "./Map";
@@ -15,58 +18,14 @@ import TurnControls from "./TurnUI";
 const store = createStore(appReducer, devToolsEnhancer());
 
 
-const panDirsHeld = { w: false, a: false, s: false, d: false };
-function updatePanDir(key, down) {
-  panDirsHeld[key] = !!down;
-
-  const dx = 0 + panDirsHeld.d - panDirsHeld.a;
-  const dy = 0 + panDirsHeld.s - panDirsHeld.w;
-  store.dispatch({ type: ActionTypes.view.pan, dx, dy })
-}
-
-const handleKeyInput = (event) => {
-  // if (event.code is a key that we control)
-  event.preventDefault();
-  console.debug('handling', {event});
-
-  // TODO lowercase A-Z in event.key
-
-  if (event.type === 'keydown') switch(event.key) {
-    case '-':
-      store.dispatch({type: ActionTypes.view.zoomOut});
-      break;
-    case '=':
-      store.dispatch({type: ActionTypes.view.zoomIn});
-      break;
-  }
-  if (event.type === 'keydown' && !event.repeat) switch(event.key) {
-    case 'w':
-    case 'a':
-    case 's':
-    case 'd':
-      updatePanDir(event.key, true);
-      break;
-  }
-  if (event.type === 'keyup') switch(event.key) {
-    case 'w':
-    case 'a':
-    case 's':
-    case 'd':
-      updatePanDir(event.key, false);
-      break;
-  }
-};
-
 class App extends Component {
   componentDidMount() {
-    window.document.body.addEventListener('keydown', handleKeyInput);
-    window.document.body.addEventListener('keyup', handleKeyInput);
-
+    this.inputHandler = Inputs.getHandler({ dispatch: store.dispatch });
+    _.each(Inputs.eventTypes, type => window.document.body.addEventListener(type, this.inputHandler));
   }
 
   componentWillUnmount() {
-    window.document.body.removeEventListener('keydown', handleKeyInput);
-    window.document.body.removeEventListener('keyup', handleKeyInput);
+    _.each(Inputs.eventTypes, type => window.document.body.removeEventListener(type, this.inputHandler));
   }
 
   render() {
