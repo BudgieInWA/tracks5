@@ -75,13 +75,16 @@ class Map extends React.Component {
 
     const box = _.map([-1 + this.state.viewOffset.x, -1 + this.state.viewOffset.y, 2, 2], c => c * zoomScale);
 
+    // The tool function needs to reference `this`, not `tool` directly, so that it returns current tool at call time.
+    const finishFactory = _.partial(getHandlersFactory, () => this.props.tool);
+
     return (
       <HexGrid width="100%" height="100%" viewBox={box.join(' ')}>
         <Layout size={{ x: 1, y: 1 }}>
-          <Terrain     terrain={terrain}   handlersFactory={getHandlersFactory(() => tool, { targetName: 'tile', dispatch })} />
-          <Tracks       tracks={tracks}    handlersFactory={getHandlersFactory(() => tool, { targetName: 'track', dispatch })} />
-          <Buildings buildings={buildings} handlersFactory={getHandlersFactory(() => tool, { targetName: 'building', dispatch })} />
-          <Trains       trains={trains}    handlersFactory={getHandlersFactory(() => tool, { targetName: 'train', dispatch })} />
+          <Terrain     terrain={terrain}   handlersFactory={finishFactory({ targetName: 'tile', dispatch })} />
+          <Tracks       tracks={tracks}    handlersFactory={finishFactory({ targetName: 'track', dispatch })} />
+          <Buildings buildings={buildings} handlersFactory={finishFactory({ targetName: 'building', dispatch })} />
+          <Trains       trains={trains}    handlersFactory={finishFactory({ targetName: 'train', dispatch })} />
 
           <g className="tool">
             {tool.hexes.length && <Path hexes={tool.hexes} />}
