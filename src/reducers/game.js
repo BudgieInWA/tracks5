@@ -4,7 +4,7 @@ import TrackNetwork  from '../lib/TrackNetwork';
 
 import ActionTypes from "./ActionTypes";
 
-import terrain, { transformTerrain, revealTerrain } from './terrain';
+import terrain, { seed, transformTerrain, revealTerrain } from './terrain';
 import buildings from './buildings';
 import tracks, { transformTracks } from './tracks';
 import trains, { moveTrains, transformTrains } from './trains';
@@ -61,5 +61,6 @@ export function getGame(state) {
     terrain: transformTerrain(state.game.terrain),
     trains: transformTrains(state.game.trains, state),
     tracks: transformTracks(state.game.tracks, state),
+    seed,
   };
 }

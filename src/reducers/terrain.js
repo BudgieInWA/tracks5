@@ -9,8 +9,9 @@ import TrackNetwork  from '../lib/TrackNetwork';
 
 import ActionTypes from "./ActionTypes";
 
-const rainNoise = new Noise(0);
-const tempNoise = new Noise(1);
+export const seed = Date.now().valueOf() % 100;
+const rainNoise = new Noise(seed + 0);
+const tempNoise = new Noise(seed + 1);
 
 const orientation = {
   f0: 3.0 / 2.0,
@@ -67,14 +68,13 @@ const notInTerrain = state => hex => !state[hex];
 export default function terrain(state = {}, action) {
   let newHexes = [];
   if (action.type === ActionTypes.terrain.reveal) {
-    newHexes = _.filter(GridGenerator.spiral(Hex.of(action.hex), action.radius || 0), notInTerrain(state));
+    newHexes.push(..._.filter(GridGenerator.spiral(Hex.of(action.hex), action.radius || 0), notInTerrain(state)));
   }
-  if (newHexes.length === 0) return state;
-  else return {
+  if (newHexes.length) return {
     ...state,
     ..._.fromPairs(_.map(newHexes, h => [h.toString(), tile({ hex: h.toString() }, action)])),
   };
-  return state;
+  else return state;
 };
 
 

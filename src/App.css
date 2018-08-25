@@ -148,7 +148,7 @@ svg#__SVG_SPRITE_NODE__ {
 }
 
 
-// TODO move animations together
+/* TODO move animations together */
 g.grid-positioned {
   transition: transform 1s linear; /* transition by default until it proves annoying */
 }
