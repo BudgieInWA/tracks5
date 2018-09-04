@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { combineReducers } from "redux";
+// import { combineReducers } from "redux";
 
 import Hex from '../lib/Hex';
 import CardinalDirection from "../lib/CardinalDirection";
 import TrackNetwork from "../lib/TrackNetwork";
-import Store from '../lib/Store';
+import Inventory from '../lib/Inventory';
 
 import ActionTypes from "./ActionTypes";
 
@@ -160,7 +160,7 @@ function transformTrain(train, state) {
     hex: Hex.of(train.hex),
     destination: Hex.of(train.destination),
     direction: CardinalDirection.of(train.direction),
-    // store: new Store(state.stores[train.store]),
+    // store: new Inventory(state.stores[train.store]),
   }
 }
 export function transformTrains(trains, state) {

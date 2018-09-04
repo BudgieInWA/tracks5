@@ -1,9 +1,9 @@
 
 
 // const filoCache = ;
-const activeStores = {};
+// _.memoize()
 
-export default class Store {
+export default class Inventory {
   constructor(state) {
     this.owner = state.owner;
     this.offers = state.offers;
