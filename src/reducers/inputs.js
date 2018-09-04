@@ -1,20 +1,23 @@
 import { combineReducers } from 'redux';
 
-import { makeStatefulInput, makeBinaryStateInput, mainSectionCodes } from '../Inputs';
+import { makeStatefulInput, makeBinaryStateInput, mainSectionCodes, mouseButtons } from '../Inputs';
 
-const up = makeBinaryStateInput('up', { keys: [mainSectionCodes.KeyW] });
-const left = makeBinaryStateInput('left', { keys: [mainSectionCodes.KeyA] });
-const down = makeBinaryStateInput('down', { keys: [mainSectionCodes.KeyS] });
-const right = makeBinaryStateInput('right', { keys: [mainSectionCodes.KeyD] });
+const up = makeBinaryStateInput('up', { keys: [mainSectionCodes.KeyW, 'ArrowUp'] });
+const left = makeBinaryStateInput('left', { keys: [mainSectionCodes.KeyA, 'ArrowLeft'] });
+const down = makeBinaryStateInput('down', { keys: [mainSectionCodes.KeyS, 'ArrowDown'] });
+const right = makeBinaryStateInput('right', { keys: [mainSectionCodes.KeyD, 'ArrowRight'] });
+
+const mousePan = makeBinaryStateInput('mousePan', { keys: [mouseButtons.Right] });
+//TODO mousemove business
 
 const zoomScale = makeStatefulInput('zoomScale', 7, {
   in: {
-    action: (zoomScale) => Math.min(10, zoomScale - 1),
-    keys: [mainSectionCodes.Equal],
+    action: (zoomScale) => Math.max(1, zoomScale - 1),
+    keys: [mainSectionCodes.Equal, mouseButtons.WheelUp],
   },
   out: {
-    action: (zoomScale) => Math.max(1, zoomScale + 1),
-    keys: [mainSectionCodes.Minus],
+    action: (zoomScale) => Math.min(10, zoomScale + 1),
+    keys: [mainSectionCodes.Minus, mouseButtons.WheelDown],
   },
 });
 

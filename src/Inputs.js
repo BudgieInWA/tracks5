@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import ActionTypes from "./reducers/ActionTypes";
-export const eventTypes = ['keydown', 'keyup'];
+export const eventTypes = ['keydown', 'keyup', 'mousedown', 'mouseup', 'wheel', 'mousemove', 'contextmenu'];
 
 /**
  * Key codes for the standard keys in the "alphanumeric section" category - the main keyboard section - as per
@@ -21,38 +21,53 @@ export const mainSectionCodes = {
 // After statically assigning the document keys (for linters etc.), set the values.
 _.each(mainSectionCodes, (b, code) => mainSectionCodes[code] = code);
 
+export const mouseButtons = { Left: 0, Middle: 1, Right: 2, Four: 3, Five: 4, WheelDown: 'WheelDown', WheelUp: 'WheelUp' };
+
 
 /** Maps `key` or `code` to "input" (state key) name. */
 const binaryStateInputKeys = {};
 /** Maps `key` or `code` to "input" (state key) name and "action" name. */
 const statefulInputKeys = {};
+/** A list of "mousemove" actions. */
+const mouseMoveActions = [];
 
 export function getHandler({ dispatch }) {
   function resolveEvent(event) {
-    if ((event.type === 'keydown' && !event.repeat) || event.type === 'keyup') {
-      const input = binaryStateInputKeys[event.key] || binaryStateInputKeys[event.code] || null;
+    if (event.type === 'contextmenu') return true; // TODO treat as a sort of "click" along with other mouse buttons ?
+    if (event.type === 'mousemove') {
+      _.each(mouseMoveActions, action => action(event));
+      return false;
+    }
+
+    if ((event.type === 'keydown' && !event.repeat) || event.type === 'keyup' || event.type === 'mousedown' || event.type === 'mouseup') {
+      const input = binaryStateInputKeys[event.key] || binaryStateInputKeys[event.code] || binaryStateInputKeys[event.button] || null;
       if (input) {
         dispatch({
-          type: ActionTypes.inputs[event.type === 'keydown' ? 'on' : 'off'],
+          type: ActionTypes.inputs[event.type.substr(-4) === 'down' ? 'on' : 'off'],
           input,
         });
+        return true;
       }
     }
 
-    if (event.type === 'keydown') {
-      const { input, action } = statefulInputKeys[event.key] || statefulInputKeys[event.code] || {};
+    if (event.type === 'keydown' || event.type === 'wheel') {
+      const { input, action } = event.type === 'wheel'
+        ? statefulInputKeys[event.deltaY > 0 ? mouseButtons.WheelDown : mouseButtons.WheelUp] || {}
+        : statefulInputKeys[event.key] || statefulInputKeys[event.code] || {};
       if (input) {
         dispatch({
           type: ActionTypes.inputs.stateAction,
           input,
           name: action,
         });
+        return true;
       }
     }
   }
 
   return function handleKeyInput(event) {
-    if (resolveEvent(event) || mainSectionCodes[event.code]) {
+    event.type === 'mousemove' || console.debug(event.type, event);
+    if (resolveEvent(event) || mainSectionCodes[event.code]) { // TODO only do other checks if resolve event doesn't return.
       event.preventDefault();
     }
   }

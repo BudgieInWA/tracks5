@@ -20,6 +20,7 @@ const store = createStore(appReducer, devToolsEnhancer());
 
 class App extends Component {
   componentDidMount() {
+    //TODO move binding into Inputs
     this.inputHandler = Inputs.getHandler({ dispatch: store.dispatch });
     _.each(Inputs.eventTypes, type => window.document.body.addEventListener(type, this.inputHandler));
   }
