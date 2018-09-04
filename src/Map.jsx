@@ -28,7 +28,7 @@ class Map extends React.Component {
       right: PropTypes.bool,
     }),
 
-    dispatch: PropTypes.fn,
+    dispatch: PropTypes.func,
   };
 
   constructor(props) {
