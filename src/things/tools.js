@@ -64,6 +64,16 @@ export const tools = {
       },
     },
   },
+
+  controlTrain: {
+    touchTargets: { tile: true },
+    stateToOptions: (state) => _.keys(state.game.trains),
+    handlers: {
+      onClick({ hex }, event, { dispatch }) {
+        dispatch({ type: ActionTypes.train.goto, id: this.option, hex: hex.toString() })
+      }
+    }
+  }
 };
 
 const noHandlersFactory = () => {};

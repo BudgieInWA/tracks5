@@ -11,11 +11,16 @@ export default {
     build: 'TRACKS_BUILD',
   },
 
-  trains: {
+  trains: { // TODO move some into `train`
     build: 'trains.build',
     name: 'trains.name',
     targets: 'trains.targets',
     schedule: 'trains.schedule',
+  },
+
+  train: {
+    path: 'train.path',
+    goto: 'train.goto',
   },
 
   game: {

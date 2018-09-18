@@ -100,6 +100,26 @@ export default class TrackNetwork {
     _.map(this.nodeOutEdges(hex, TrackNetwork.between.hexes), e => e.w);
   }
 
+  /**
+   * @param {string} from
+   * @param {string} to
+   * @returns {string[]}
+   */
+  shortestPath(from, to) {
+    const distances = graphs.alg.dijkstra(this.graph, from, undefined, (v) => this.graph.nodeEdges(v));
+    if (distances[to] === Number.POSITIVE_INFINITY) return null;
+
+    const reversePath = [];
+    let current = to;
+    while (current !== from) {
+      reversePath.push(current);
+      current = distances[current].predecessor;
+    }
+    reversePath.push(from);
+    return _.reverse(reversePath);
+  }
+
+
   pathToIntersectionFollowingTrack(edge, path=[]) {
     if (path.length === 0) {
       path.push(edge.v);

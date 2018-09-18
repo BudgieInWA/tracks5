@@ -20,34 +20,49 @@ const nested = combineReducers({ terrain, buildings, tracks, trains, stores });
 
 function gameTopLevelReducer(state = {}, action) {
   switch(action.type) {
-    case ActionTypes.game.transferPhase:
+    case ActionTypes.train.goto: {
+      const train = state.trains[action.id];
+      const path = new TrackNetwork(state.tracks).shortestPath(train.hex, action.hex);
+      if (!path) return state;
+      return {
+        ...state,
+        trains: trains(state.trains, { type: ActionTypes.train.path, id: action.id, path }),
+      };
+    }
+
+    case ActionTypes.game.transferPhase: {
       return {
         ...state,
         stores: executeTrades(state.stores, getTradesThatHappen(state)),
       };
+    }
 
-    case ActionTypes.game.turnResolve:
+    case ActionTypes.game.turnResolve: {
       return _.reduce(
         [{ type: ActionTypes.game.movePhase }, { type: ActionTypes.game.explorePhase }],
         gameTopLevelReducer,
         state
       );
+    }
 
-    case ActionTypes.game.movePhase:
+    case ActionTypes.game.movePhase: {
       return {
         ...state,
         trains: moveTrains(state.trains, new TrackNetwork(state.tracks)),
       };
+    }
 
-    case ActionTypes.game.explorePhase:
+    case ActionTypes.game.explorePhase: {
       const { terrain, trains, buildings } = state;
       return {
         ...state,
         terrain: revealTerrain(terrain, { trains, buildings })
       };
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 
