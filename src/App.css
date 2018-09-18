@@ -56,16 +56,37 @@ main {
   position: absolute;
   bottom: 0;
   left: 0;
+  right: 0;
 
   font-size: 20pt;
 
   display: flex;
-  justify-content: left;
+  flex-flow: column-reverse nowrap;
+  justify-content: flex-start;
 
   user-select: none;
+  pointer-events: none;
+}
+
+/* FIXME display: flex completely ruins the fieldset */
+.toolbar fieldset {
+  /*display: flex;*/
+  /*flex-flow: row nowrap;*/
+  /*justify-content: flex-start;*/
+  /*align-items: flex-start;*/
+
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.toolbar fieldset.option {
+  font-size: 80%;
 }
 
 .toolbar label {
+  display: inline-block;
+
   border: 2px solid #0CA27C;
   background: #2CAD8D;
   padding: 0.6em;
@@ -73,6 +94,8 @@ main {
   margin-right: 0;
 
   box-shadow: rgba(0, 0, 0, 0.3) 0 0 1em;
+
+  pointer-events: auto;
 }
 
 .toolpanel {

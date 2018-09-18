@@ -27,6 +27,7 @@ export default {
 
   tool: {
     name: 'tool',
+    option: 'option',
     poke: 'poke',
     hexes: {
       start: 'PATH_START',

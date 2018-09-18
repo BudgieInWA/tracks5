@@ -50,30 +50,52 @@ class ToolUI extends React.Component {
     super(props);
 
     this.changeTool = this.changeTool.bind(this);
+    this.changeOption = this.changeOption.bind(this);
   }
 
   changeTool(event) {
     const { dispatch } = this.props;
-    if (event.defaultPrevented) return;
-
     dispatch({ type: ActionTypes.tool.name, name: event.currentTarget.value });
   }
 
-  render() {
-    const { name, poke } = this.props;
+  changeOption(event) {
+    const { dispatch } = this.props;
+    dispatch({ type: ActionTypes.tool.option, option: event.currentTarget.value });
+  }
 
+  render() {
+    const { state, tool: { name, poke, option } } = this.props;
+
+    const tool = tools[name];
+    const options = tool.stateToOptions && tool.stateToOptions(state);
     return (
       <React.Fragment>
         <aside className="toolpanel">
           {poke && <JSONTree data={poke} theme={pokeJsonTheme} getItemString={pokeItemStringer} />}
         </aside>
         <form className="toolbar">
-          {_.map(tools, (tool, id) => <label key={id}><input type="radio" name="tool" value={id} checked={id === name} onChange={this.changeTool} />{tool.name || id}</label>)}
-          {/*TODO tool option */}
+          <fieldset>
+            {_.map(tools, (tool, id) => (
+              <label key={id}>
+                <input type="radio" name="tool" value={id} checked={id === name} onChange={this.changeTool} />
+                {tool.name || id}
+              </label>
+            ))}
+          </fieldset>
+          {options &&
+            <fieldset className="option">
+              {_.map(options, o => (
+                <label key={o}>
+                  <input type="radio" name="option" value={o} checked={o === option} onChange={this.changeOption} />
+                  {o}
+                </label>
+              ))}
+            </fieldset>
+          }
         </form>
       </React.Fragment>
     );
   }
 }
 
-export default connect(getTool)(ToolUI);
+export default connect(s => ({ tool: getTool(s), state: s }))(ToolUI);

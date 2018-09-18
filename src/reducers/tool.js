@@ -68,12 +68,15 @@ export function getTool(state) {
   return state.tool;
 }
 
-const nested = combineReducers({ name: (s='poke') => s, poke, hexes });
+const nested = combineReducers({ name: (s='poke') => s, poke, hexes, option: (o='') => o });
 
 export default function tool(state = {}, action) {
   switch(action.type) {
     case ActionTypes.tool.name:
       return nested({ name: action.name }, action);
+
+    case ActionTypes.tool.option:
+      return { ...state, option: action.option };
 
     default:
       return nested(state, action);
