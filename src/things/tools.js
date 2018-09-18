@@ -41,29 +41,29 @@ export const tools = {
     },
   },
 
-  building: {
-    touchTargets: { tile: true },
-    getOptions() {
-      // TODO...
-    },
-    handlers: {
-      onClick({ hex }, event, { dispatch }) {
-        dispatch({ type: ActionTypes.buildings.build, hex, building: this.option || 'Station' });
-      },
-    },
-  },
+  // building: {
+  //   touchTargets: { tile: true },
+  //   getOptions() {
+  //     // TODO...
+  //   },
+  //   handlers: {
+  //     onClick({ hex }, event, { dispatch }) {
+  //       dispatch({ type: ActionTypes.buildings.build, hex, building: this.option || 'Station' });
+  //     },
+  //   },
+  // },
 
-  train: {
-    touchTargets: { track: true },
-    getOptions() {
-      // TODO...
-    },
-    handlers: {
-      onClick(rail, event, { dispatch }) {
-        dispatch({ type: ActionTypes.trains.build, hex: rail.v, direction: rail.direction });
-      },
-    },
-  },
+  // train: {
+  //   touchTargets: { track: true },
+  //   getOptions() {
+  //     // TODO...
+  //   },
+  //   handlers: {
+  //     onClick(rail, event, { dispatch }) {
+  //       dispatch({ type: ActionTypes.trains.build, hex: rail.v, direction: rail.direction });
+  //     },
+  //   },
+  // },
 
   controlTrain: {
     touchTargets: { tile: true },

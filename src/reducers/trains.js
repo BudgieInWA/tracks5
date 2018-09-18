@@ -64,7 +64,7 @@ export function moveTrains(trains, network) {
           nextRail = network.rail({ v: train.hex, w: next });
         } else {
           // Choose a random direction for now.
-          nextRail = network.optionsFrom(train.hex, train.direction)[0];
+          // nextRail = network.optionsFrom(train.hex, train.direction)[0];
         }
 
         if (nextRail) {
