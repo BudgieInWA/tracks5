@@ -35,9 +35,9 @@ class App extends Component {
         <div className="App">
           <header>
             <ul>
-              <li>Zoom with <kbd>-</kbd> <kbd>+</kbd>{/* or <kbd>Scroll Wheel</kbd>*/}.</li>
-              <li>Pan with <kbd>w</kbd> <kbd>a</kbd> <kbd>s</kbd> <kbd>d</kbd>{/* or <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> or <kbd>Right Click</kbd>*/}.</li>
-              <li>Choose a tool with <kbd>Click</kbd> on the toolbar{/* or <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd>...*/}</li>
+              <li>Zoom with <kbd>-</kbd> <kbd>+</kbd> or <kbd>Scroll Wheel</kbd>.</li>
+              <li>Pan with <kbd>w</kbd> <kbd>a</kbd> <kbd>s</kbd> <kbd>d</kbd> or <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd>{/* or <kbd>RMB</kbd>*/}.</li>
+              <li>Choose a tool with <kbd>LMB</kbd> on the toolbar{/* or <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd>...*/}</li>
               <li>See how it behaves :)</li>
 
             </ul>
