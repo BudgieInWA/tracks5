@@ -103,9 +103,13 @@ export default class TrackNetwork {
   /**
    * @param {string} from
    * @param {string} to
-   * @returns {string[]}
+   * @returns {string[]|null}
    */
   shortestPath(from, to) {
+    if (!this.graph.hasNode(from) || !this.graph.hasNode(to)) {
+      return null;
+    }
+
     const distances = graphs.alg.dijkstra(this.graph, from, undefined, (v) => this.graph.nodeEdges(v));
     if (distances[to] === Number.POSITIVE_INFINITY) return null;
 

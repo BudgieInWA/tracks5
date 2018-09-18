@@ -22,8 +22,9 @@ function gameTopLevelReducer(state = {}, action) {
   switch(action.type) {
     case ActionTypes.train.goto: {
       const train = state.trains[action.id];
-      const path = new TrackNetwork(state.tracks).shortestPath(train.hex, action.hex);
-      if (!path) return state;
+      const foundPath = new TrackNetwork(state.tracks).shortestPath(train.destination || train.hex, action.hex);
+      if (!foundPath) return state;
+      const [currentHex, ...path] = foundPath;
       return {
         ...state,
         trains: trains(state.trains, { type: ActionTypes.train.path, id: action.id, path }),
