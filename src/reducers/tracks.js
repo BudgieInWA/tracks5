@@ -5,25 +5,7 @@ import TrackNetwork  from '../lib/TrackNetwork';
 import ActionTypes from "./ActionTypes";
 
 
-import { HexUtils } from 'react-hexgrid';
-import Hex from '../lib/Hex';
-import CardinalDirection from '../lib/CardinalDirection';
-// Walk around in a circle.
-const defaultNetwork = new TrackNetwork();
-let direction = CardinalDirection.N;
-let hex = Hex.origin;
-const path = [];
-do {
-  path.push(hex);
-  hex = HexUtils.add(hex, direction);
-  direction = direction.left;
-} while (!HexUtils.equals(hex, path[0]));
-path.push(hex); // close the path.
-defaultNetwork.addPath(path);
-const defaultTracks = defaultNetwork.state();
-// const defaultTracks = new TrackNetwork().state();
-
-export default function tracks(state = defaultTracks, action) {
+export default function tracks(state = new TrackNetwork().state(), action) {
   if (!_.includes(ActionTypes.tracks, action.type)) return state;
 
   const network = new TrackNetwork(state);

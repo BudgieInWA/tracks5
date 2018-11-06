@@ -1,6 +1,5 @@
 import  _ from 'lodash';
 import { combineReducers } from 'redux';
-import TrackNetwork  from '../lib/TrackNetwork';
 
 import ActionTypes from "./ActionTypes";
 
@@ -8,17 +7,41 @@ import terrain, { seed, transformTerrain, revealTerrain } from './terrain';
 import buildings from './buildings';
 import tracks, { transformTracks } from './tracks';
 import trains, { moveTrains, transformTrains } from './trains';
-import { getTradesThatHappen, executeTrades } from './stores';
+import inventories from './inventories';
+
+import { HexUtils } from 'react-hexgrid';
+import Hex from '../lib/Hex';
+import CardinalDirection from '../lib/CardinalDirection';
+import TrackNetwork  from '../lib/TrackNetwork';
 
 
-const stores = (state = {}, action) => {
-  return state;
-};
-
-const nested = combineReducers({ terrain, buildings, tracks, trains, stores });
+const nested = combineReducers({ terrain, buildings, tracks, trains, inventories });
 
 
-function gameTopLevelReducer(state = {}, action) {
+function gameTopLevelReducer(state, action) {
+  if (state === undefined) {
+    // Build some default things as an example.
+
+    // Walk around in a circle to build a path.
+    let direction = CardinalDirection.N;
+    let hex = Hex.origin;
+    const path = [];
+    do {
+      path.push(hex);
+      hex = HexUtils.add(hex, direction);
+      direction = direction.left;
+    } while (!HexUtils.equals(hex, path[0]));
+    path.push(hex); // close the path.
+
+    state = _.reduce([{
+      type: ActionTypes.game.buildTrain,
+      hex: Hex.origin.toString(),
+      direction: CardinalDirection.N.toString(),
+    }, {
+      type: ActionTypes.tracks.build,
+      hexes: path,
+    }], game, {});
+  }
   switch(action.type) {
     case ActionTypes.train.goto: {
       const train = state.trains[action.id];
@@ -34,7 +57,7 @@ function gameTopLevelReducer(state = {}, action) {
     case ActionTypes.game.transferPhase: {
       return {
         ...state,
-        stores: executeTrades(state.stores, getTradesThatHappen(state)),
+        inventories: inventories(state, action),
       };
     }
 
@@ -58,6 +81,15 @@ function gameTopLevelReducer(state = {}, action) {
       return {
         ...state,
         terrain: revealTerrain(terrain, { trains, buildings })
+      };
+    }
+
+    case ActionTypes.game.buildTrain: {
+      const trainId = _.keys(state.trains).length;
+      return {
+        ...state,
+        trains: trains(state.trains, { ...action, type: ActionTypes.trains.add, id: trainId }),
+        inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `train.${trainId}`, slotCount: 3, slotCapacity: 3 }),
       };
     }
 

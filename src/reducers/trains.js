@@ -71,8 +71,8 @@ export function moveTrains(trains, network) {
           destination = nextRail.w.toString();
           direction = nextRail.direction.toString();
         } else {
+          // Train chose no track so it stops.
           speed = 0;
-          console.info(`Train ${train.name || train} doesn't have any track to follow. Stopping`);
           break;
         }
       }
@@ -96,8 +96,8 @@ export function moveTrains(trains, network) {
 
 function train(state = {}, action) {
   switch(action.type) {
-    case ActionTypes.trains.build:
-      const { id, hex, direction, distance = 0, targetSpeed = 1, store } = action;
+    case ActionTypes.trains.add:
+      const { id, hex, direction, distance = 0, targetSpeed = 1, inventory } = action;
       return {
         id,
         name: "new train " + action.id,
@@ -112,8 +112,6 @@ function train(state = {}, action) {
 
         speed: 0,
         targetSpeed,
-
-        store,
       };
 
     default:
@@ -121,19 +119,9 @@ function train(state = {}, action) {
   }
 }
 
-const defaultTrain = train({}, {
-  type: ActionTypes.trains.build,
-
-  id: 0,
-  hex: Hex.origin.toString(),
-  direction: CardinalDirection.N.toString(),
-  destination: null,
-  store: 1,
-});
-
-export default function trains(state=[defaultTrain], action) {
+export default function trains(state=[], action) {
   switch(action.type) {
-    case ActionTypes.trains.build:
+    case ActionTypes.trains.add:
       action.id = state.length;
       return [ ...state, train(undefined, action) ]; // TODO
 
@@ -158,14 +146,6 @@ export default function trains(state=[defaultTrain], action) {
         ...state.slice(action.id + 1),
       ];
 
-    case ActionTypes.trains.name:
-      console.warn('untested');
-      return [
-        ...state.slice(0, action.id),
-        { ...state[action.id], name: action.name },
-        ...state.slice(action.id + 1),
-      ];
-
     default:
       return state;
   }
@@ -178,7 +158,7 @@ function transformTrain(train, state) {
     hex: Hex.of(train.hex),
     destination: Hex.of(train.destination),
     direction: CardinalDirection.of(train.direction),
-    // store: new Inventory(state.stores[train.store]),
+    inventory: new Inventory(state.game.inventories[`train.${train.id}`]),
   }
 }
 export function transformTrains(trains, state) {

@@ -6,11 +6,11 @@ import Building from '../svg/Building';
 export class Station extends Building {
   static icon = station;
 
-  constructor ({ team, store }) {
+  constructor ({ team, inventory }) {
     super();
 
     this.team = team;
-    this.store = store;
+    this.inventory = inventory;
   }
 
 }

@@ -1,13 +1,10 @@
 
-
-// const filoCache = ;
-// _.memoize()
-
 export default class Inventory {
   constructor(state) {
-    this.owner = state.owner;
-    this.offers = state.offers;
-    this.contents = state.contents;
-    this.capacity = state.capacity;
+    Object.assign(this, state);
+  }
+
+  toString() {
+    return `${this.id} (${this.slotCount} x ${this.slotCapacity})`
   }
 }

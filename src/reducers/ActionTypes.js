@@ -12,7 +12,7 @@ export default {
   },
 
   trains: { // TODO move some into `train`
-    build: 'trains.build',
+    add: 'trains.build',
     name: 'trains.name',
     targets: 'trains.targets',
     schedule: 'trains.schedule',
@@ -23,11 +23,18 @@ export default {
     goto: 'train.goto',
   },
 
+  inventories: {
+    limit: 'inventories.limit',
+    transfer: 'inventories.transfer',
+  },
+
   game: {
     movePhase: 'game.movePhase',
     transferPhase: 'game.transferPhase',
     explorePhase: 'game.explorePhase',
     turnResolve: 'game.turnResolve',
+
+    buildTrain: 'game.buildTrain',
   },
 
   tool: {
