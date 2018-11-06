@@ -8,10 +8,10 @@ import { seed } from "./reducers/terrain";
 
 let timer;
 const turnActions = dispatch => ({
-  doMovePhase(event) {
+  advance(event) {
     dispatch({ type: ActionTypes.game.turnResolve })
   },
-  start(event) {
+  play(event) {
     clearTimeout(timer);
     timer = setInterval(() => {
       dispatch({ type: ActionTypes.game.turnResolve })
@@ -33,7 +33,7 @@ const turnActions = dispatch => ({
 
 class TurnUI extends React.Component {
   componentDidMount() {
-    this.props.start();
+    this.props.play();
   }
 
   render() {
