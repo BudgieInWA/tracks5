@@ -262,6 +262,9 @@ g.tracks > path {
   opacity: 0.3;
 }
 
+.train-path {
+  transition: d 3s linear; /* segment length, assuming train speed 1 */
+}
 
 svg.grid > g > path:not([class]) {
   fill: none;

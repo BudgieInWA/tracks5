@@ -80,7 +80,8 @@ export const tools = {
       }
     },
     renderMap({ tool: { selection }, trains}) {
-      const renderTrain = t => t.path && t.path.length ? <Path key={t.name || t.id} hexes={[t.hex, (t.destination || t.hex), ...t.path]} /> : null;
+      //TODO only rerender in sync with train animations (rerender at last 1/3rd breaks animation).
+      const renderTrain = t => t.path && t.path.length || t.destination ? <Path key={t.name || t.id} hexes={[t.hex, (t.destination || t.hex), ...t.path]} className="train-path" /> : null;
       if (selection) {
         return renderTrain(trains[selection]);
       } else {
