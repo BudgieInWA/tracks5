@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { HexUtils } from 'react-hexgrid';
+import Hex from '../lib/Hex';
 
 class Path extends React.PureComponent {
   static propTypes = {
@@ -22,7 +23,7 @@ class Path extends React.PureComponent {
     // Construct Path points out of all the intersecting hexes (e.g. M 0,0 L 10,20, L 30,20)
     let points = 'M';
     points += hexes.map(hex => {
-      let p = HexUtils.hexToPixel(hex, layout);
+      let p = HexUtils.hexToPixel(Hex.of(hex), layout);
       return ` ${p.x},${p.y} `;
     }).join('L');
 

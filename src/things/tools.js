@@ -1,5 +1,8 @@
 import _ from 'lodash';
+import React from 'react';
 import ActionTypes from "../reducers/ActionTypes";
+
+import Path from "../svg/Path.jsx";
 
 //(TODO `class`ify)
 export const tools = {
@@ -39,6 +42,7 @@ export const tools = {
       },
 
     },
+    renderMap: ({ tool: { hexes } }) => hexes && hexes.length ? <Path hexes={hexes} /> : null,
   },
 
   // building: {
@@ -74,7 +78,15 @@ export const tools = {
           dispatch({ type: ActionTypes.train.goto, id: this.option, hex: hex.toString() })
         }
       }
-    }
+    },
+    renderMap({ tool: { selection }, trains}) {
+      const renderTrain = t => t.path && t.path.length ? <Path key={t.name || t.id} hexes={[t.hex, (t.destination || t.hex), ...t.path]} /> : null;
+      if (selection) {
+        return renderTrain(trains[selection]);
+      } else {
+        return _.map(_.values(trains), renderTrain);
+      }
+    },
   }
 };
 

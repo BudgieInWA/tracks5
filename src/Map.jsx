@@ -7,7 +7,7 @@ import { HexGrid, Layout, Text } from "react-hexgrid";
 import Hex from './lib/Hex';
 
 import ActionTypes from './reducers/ActionTypes';
-import { getHandlersFactory, nullFactory } from './things/tools';
+import { tools, getHandlersFactory, nullFactory } from './things/tools';
 import { getGame } from './reducers/game';
 import { getTool } from './reducers/tool';
 import { getInputs } from './reducers/inputs';
@@ -78,6 +78,8 @@ class Map extends React.Component {
     // The tool function needs to reference `this`, not `tool` directly, so that it returns current tool at call time.
     const finishFactory = _.partial(getHandlersFactory, () => this.props.tool);
 
+    const currentTool = tools[tool.name] || {};
+
     return (
       <HexGrid width="100%" height="100%" viewBox={box.join(' ')}>
         <Layout size={{ x: 1, y: 1 }}>
@@ -88,8 +90,8 @@ class Map extends React.Component {
 
           <g className="tool">
             {tool.hexes.length && <Path hexes={tool.hexes} />}
+            {currentTool.renderMap && <currentTool.renderMap {...{ tool, terrain, tracks, trains, buildings }} />}
           </g>
-
         </Layout>
       </HexGrid>
     );
