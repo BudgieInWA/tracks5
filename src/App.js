@@ -11,8 +11,7 @@ import * as Inputs from './Inputs';
 
 import "./App.css";
 import Map from "./Map";
-import Toolbar from "./ToolUI";
-import TurnControls from "./TurnUI";
+import HUD from "./HUD";
 // import NoiseTest from './NoiseTest.jsx';
 
 const store = createStore(appReducer, devToolsEnhancer());
@@ -44,8 +43,7 @@ class App extends Component {
           </header>
           <main>
             <Map />
-            <Toolbar />
-            <TurnControls />
+            <HUD />
             {/*<NoiseTest />*/}
           </main>
         </div>

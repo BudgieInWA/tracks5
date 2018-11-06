@@ -1,8 +1,47 @@
 import _ from 'lodash';
 import React from 'react';
+import JSONTree from 'react-json-tree';
+import Path from "../svg/Path.jsx";
+
 import ActionTypes from "../reducers/ActionTypes";
 
-import Path from "../svg/Path.jsx";
+
+const pokeItemStringer = (type, data, itemType, itemString) => {
+  switch (type) {
+    case 'Object':
+      return (
+        <span>
+          <span style={{opacity: 0.7}}>{data.constructor.name} {`{${itemString.split(' ')[0]}}`}</span>
+          &nbsp;
+          {data.constructor.name === 'Object' ? undefined : `"${data.toString()}"`}
+        </span>
+      );
+
+    default:
+      return <span>{type} {itemType} {itemString}</span>;
+
+  }
+};
+const pokeJsonTheme = {
+  scheme: 'tomorrow',
+  author: 'chris kempson (http://chriskempson.com)',
+  base00: '#1d1f21',
+  base01: '#282a2e',
+  base02: '#373b41',
+  base03: '#969896',
+  base04: '#b4b7b4',
+  base05: '#c5c8c6',
+  base06: '#e0e0e0',
+  base07: '#ffffff',
+  base08: '#cc6666',
+  base09: '#de935f',
+  base0A: '#f0c674',
+  base0B: '#b5bd68',
+  base0C: '#8abeb7',
+  base0D: '#81a2be',
+  base0E: '#b294bb',
+  base0F: '#a3685a'
+};
 
 //(TODO `class`ify)
 export const tools = {
@@ -18,6 +57,8 @@ export const tools = {
         dispatch({ type: ActionTypes.tool.poke, poke: thing });
       },
     },
+
+    renderHud: ({ tool: { poke } }) => <JSONTree data={poke || "Click on some entity to see details."} theme={pokeJsonTheme} getItemString={pokeItemStringer} />,
 
     // onDragStart(event, hexComponent) { },
     // onDragOver(event, hexComponent)  { },
