@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import ActionTypes from "./ActionTypes";
 
 import terrain, { seed, transformTerrain, revealTerrain } from './terrain';
-import buildings from './buildings';
+import buildings, { transformBuildings } from './buildings';
 import tracks, { transformTracks } from './tracks';
 import trains, { moveTrains, transformTrains } from './trains';
 import inventories from './inventories';
@@ -33,14 +33,23 @@ function gameTopLevelReducer(state, action) {
     } while (!HexUtils.equals(hex, path[0]));
     path.push(hex); // close the path.
 
-    state = _.reduce([{
-      type: ActionTypes.game.buildTrain,
-      hex: Hex.origin.toString(),
-      direction: CardinalDirection.N.toString(),
-    }, {
-      type: ActionTypes.tracks.build,
-      hexes: path,
-    }], game, {});
+    console.debug({action})
+    state = _.reduce([
+      {
+        type: ActionTypes.game.buildBuilding,
+        building: 'home',
+        hex: Hex.origin.toString(),
+      },
+      {
+        type: ActionTypes.tracks.build,
+        hexes: path,
+      },
+      {
+        type: ActionTypes.game.buildTrain,
+        hex: Hex.origin.toString(),
+        direction: CardinalDirection.N.toString(),
+      },
+    ], game, {});
   }
   switch(action.type) {
     case ActionTypes.train.goto: {
@@ -84,6 +93,15 @@ function gameTopLevelReducer(state, action) {
       };
     }
 
+    case ActionTypes.game.buildBuilding: {
+      const buildingId = _.keys(state.buildings).length;
+      return {
+        ...state,
+        buildings: buildings(state.buildings, { ...action, type: ActionTypes.buildings.add, id: buildingId }),
+        inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `building.${buildingId}`, slotCount: 100, slotCapacity: 100 }),
+      };
+    }
+
     case ActionTypes.game.buildTrain: {
       const trainId = _.keys(state.trains).length;
       return {
@@ -107,8 +125,9 @@ export function getGame(state) {
   return {
     ...state.game,
     terrain: transformTerrain(state.game.terrain),
-    trains: transformTrains(state.game.trains, state),
+    buildings: transformBuildings(state.game.buildings, state),
     tracks: transformTracks(state.game.tracks, state),
+    trains: transformTrains(state.game.trains, state),
     seed,
   };
 }

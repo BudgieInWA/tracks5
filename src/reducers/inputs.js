@@ -9,6 +9,7 @@ const right = makeBinaryStateInput('right', { keys: [mainSectionCodes.KeyD, 'Arr
 
 const mousePan = makeBinaryStateInput('mousePan', { keys: [mouseButtons.Right] });
 //TODO mousemove business
+// const mouseMove = makeEventInput('mouseMove');
 
 const zoomScale = makeStatefulInput('zoomScale', 7, {
   in: {

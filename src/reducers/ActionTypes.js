@@ -4,7 +4,7 @@ export default {
   },
 
   buildings: {
-    build: 'BUILD_BUILDING',
+    add: 'buildings.add',
   },
 
   tracks: {
@@ -34,6 +34,7 @@ export default {
     explorePhase: 'game.explorePhase',
     turnResolve: 'game.turnResolve',
 
+    buildBuilding: 'game.buildBuilding',
     buildTrain: 'game.buildTrain',
   },
 

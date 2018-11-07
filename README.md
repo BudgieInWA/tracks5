@@ -20,7 +20,7 @@ Game
 - Accessibility Tutorial
 
 - Improve train movement
-    - add pathfinding to set train movement plans
+  - Driver makes decicions based on goals, quests, schedules, etc.
     
 - add ~~Stores~~ Inventories with trading 
     - maybe an inv owner has offers, and if two nearby invs have opposing offers, the trade can happen. (use those meta reducers)

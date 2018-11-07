@@ -1,29 +1,32 @@
 import _ from "lodash";
 
 import Hex  from '../lib/Hex';
+import CardinalDirection from "../lib/CardinalDirection";
+
+import Inventory from '../lib/Inventory';
 
 import ActionTypes from "./ActionTypes";
 
 function building(state={}, action) {
-  if (action.type === ActionTypes.buildings.build) {
+  if (action.type === ActionTypes.buildings.add) {
     //TODO check the rules
+    const { id, hex, building: type } = action;
     return {
-      type: action.building,
-      hex: action.hex,
-      name: 'a fake name',
+      id,
+      name: `${type || 'building'} ${id}`,
+
+      type,
+      hex,
     }
   }
+  return state;
 }
 
-const defaultBuilding = {
-  type: 'Station',
-  hex: Hex.origin,
-  name: 'test building',
-};
 
-export default function buildings(state = [defaultBuilding], action) {
+
+export default function buildings(state = [], action) {
   switch(action.type) {
-    case ActionTypes.buildings.build:
+    case ActionTypes.buildings.add:
       return [
         ...state,
         building(undefined, action),
@@ -32,4 +35,15 @@ export default function buildings(state = [defaultBuilding], action) {
     default:
       return state;
   }
+}
+
+function transformBuilding(building, state) {
+  return {
+    ...building,
+    hex: Hex.of(building.hex),
+    inventory: new Inventory(state.game.inventories[`building.${building.id}`]),
+  }
+}
+export function transformBuildings(buildings, state) {
+  return _.map(buildings, b => transformBuilding(b, state));
 }
