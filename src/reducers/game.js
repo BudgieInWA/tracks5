@@ -51,69 +51,75 @@ function gameTopLevelReducer(state, action) {
       },
     ], game, {});
   }
-  switch(action.type) {
-    case ActionTypes.train.goto: {
-      const train = state.trains[action.id];
-      const foundPath = new TrackNetwork(state.tracks).shortestPath(train.destination || train.hex, action.hex);
-      if (!foundPath) return state;
-      const [currentHex, ...path] = foundPath;
-      return {
-        ...state,
-        trains: trains(state.trains, { type: ActionTypes.train.path, id: action.id, path }),
-      };
-    }
 
-    case ActionTypes.game.transferPhase: {
-      return {
-        ...state,
-        inventories: inventories(state, action),
-      };
-    }
+  try {
+    switch(action.type) {
+      case ActionTypes.train.goto: {
+        const train = state.trains[action.id];
+        const foundPath = new TrackNetwork(state.tracks).shortestPath(train.destination || train.hex, action.hex);
+        if (!foundPath) return state;
+        const [currentHex, ...path] = foundPath;
+        return {
+          ...state,
+          trains: trains(state.trains, { type: ActionTypes.train.path, id: action.id, path }),
+        };
+      }
 
-    case ActionTypes.game.turnResolve: {
-      return _.reduce(
-        [{ type: ActionTypes.game.movePhase }, { type: ActionTypes.game.explorePhase }],
-        gameTopLevelReducer,
-        state
-      );
-    }
+      case ActionTypes.game.transferPhase: {
+        return {
+          ...state,
+          inventories: inventories(state, action),
+        };
+      }
 
-    case ActionTypes.game.movePhase: {
-      return {
-        ...state,
-        trains: moveTrains(state.trains, new TrackNetwork(state.tracks)),
-      };
-    }
+      case ActionTypes.game.turnResolve: {
+        return _.reduce(
+          [{ type: ActionTypes.game.movePhase }, { type: ActionTypes.game.explorePhase }],
+          gameTopLevelReducer,
+          state
+        );
+      }
 
-    case ActionTypes.game.explorePhase: {
-      const { terrain, trains, buildings } = state;
-      return {
-        ...state,
-        terrain: revealTerrain(terrain, { trains, buildings })
-      };
-    }
+      case ActionTypes.game.movePhase: {
+        return {
+          ...state,
+          trains: moveTrains(state.trains, new TrackNetwork(state.tracks)),
+        };
+      }
 
-    case ActionTypes.game.buildBuilding: {
-      const buildingId = _.keys(state.buildings).length;
-      return {
-        ...state,
-        buildings: buildings(state.buildings, { ...action, type: ActionTypes.buildings.add, id: buildingId }),
-        inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `building.${buildingId}`, slotCount: 100, slotCapacity: 100 }),
-      };
-    }
+      case ActionTypes.game.explorePhase: {
+        const { terrain, trains, buildings } = state;
+        return {
+          ...state,
+          terrain: revealTerrain(terrain, { trains, buildings })
+        };
+      }
 
-    case ActionTypes.game.buildTrain: {
-      const trainId = _.keys(state.trains).length;
-      return {
-        ...state,
-        trains: trains(state.trains, { ...action, type: ActionTypes.trains.add, id: trainId }),
-        inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `train.${trainId}`, slotCount: 3, slotCapacity: 3 }),
-      };
-    }
+      case ActionTypes.game.buildBuilding: {
+        const buildingId = _.keys(state.buildings).length;
+        return {
+          ...state,
+          buildings: buildings(state.buildings, { ...action, type: ActionTypes.buildings.add, id: buildingId }),
+          inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `building.${buildingId}`, slotCount: 100, slotCapacity: 100 }),
+        };
+      }
 
-    default: {
-      return state;
+      case ActionTypes.game.buildTrain: {
+        const trainId = _.keys(state.trains).length;
+        return {
+          ...state,
+          trains: trains(state.trains, { ...action, type: ActionTypes.trains.add, id: trainId }),
+          inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `train.${trainId}`, slotCount: 3, slotCapacity: 3 }),
+        };
+      }
+
+      default: {
+        return state;
+      }
     }
+  } catch (reducerError) {
+    console.warn('Game reducer failed, action ignoredaction', { action, reducerError });
+    return state;
   }
 }
 
