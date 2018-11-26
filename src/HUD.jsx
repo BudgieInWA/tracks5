@@ -50,9 +50,9 @@ class HUD extends React.Component {
 
           {options &&
             <fieldset className="option">
-              {_.map(options, o => (
-                <label key={o}>
-                  <input type="radio" name="option" value={o} checked={o === option} onChange={this.changeOption} />
+              {_.map(options, (o, id) => (
+                <label key={id}>
+                  <input type="radio" name="option" value={id} checked={id === '' + option} onChange={this.changeOption} />
                   {o}
                 </label>
               ))}

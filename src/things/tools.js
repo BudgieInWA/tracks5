@@ -112,7 +112,7 @@ export const tools = {
 
   controlTrain: {
     touchTargets: { tile: true },
-    stateToOptions: (state) => _.keys(state.game.trains),
+    stateToOptions: (state) => ({ 0: 'Yourself'}),
     handlers: {
       onClick({ hex }, event, { dispatch }) {
         if (this.option.length) {
