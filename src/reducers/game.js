@@ -33,7 +33,6 @@ function gameTopLevelReducer(state, action) {
     } while (!HexUtils.equals(hex, path[0]));
     path.push(hex); // close the path.
 
-    console.debug({action})
     state = _.reduce([
       {
         type: ActionTypes.game.buildBuilding,

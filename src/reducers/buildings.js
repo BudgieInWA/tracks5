@@ -1,7 +1,6 @@
 import _ from "lodash";
 
 import Hex  from '../lib/Hex';
-import CardinalDirection from "../lib/CardinalDirection";
 
 import Inventory from '../lib/Inventory';
 

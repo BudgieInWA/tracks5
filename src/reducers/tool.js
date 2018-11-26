@@ -4,6 +4,7 @@ import { HexUtils } from "react-hexgrid";
 
 import ActionTypes from "./ActionTypes";
 
+import { tools } from "../things/tools";
 
 function poke(state = null, action) {
   if (action.type === ActionTypes.tool.poke) {
@@ -71,6 +72,9 @@ export function getTool(state) {
 const nested = combineReducers({ name: (s='poke') => s, poke, hexes, option: (o='') => o });
 
 export default function tool(state = {}, action) {
+  // TODO need options from stateToOptions
+  // const { name, option } = state;
+  // const currentTool = tools[state.name];
   switch(action.type) {
     case ActionTypes.tool.name:
       return nested({ name: action.name }, action);
