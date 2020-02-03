@@ -48,6 +48,11 @@ function gameTopLevelReducer(state, action) {
         hex: Hex.origin.toString(),
         direction: CardinalDirection.N.toString(),
       },
+      {
+        type: ActionTypes.game.buildBuilding,
+        building: 'LumberYard',
+        hex: new Hex(2, 5).toString(),
+      },
     ], game, {});
   }
 
