@@ -24,10 +24,10 @@ export default {
   },
 
   inventories: {
-    limit: 'inventories.limit',
+    add: 'inventories.add',
     transfer: 'inventories.transfer',
+    insert: 'inventories.insert',
   },
-
   game: {
     movePhase: 'game.movePhase',
     transferPhase: 'game.transferPhase',

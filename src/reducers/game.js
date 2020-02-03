@@ -53,6 +53,11 @@ function gameTopLevelReducer(state, action) {
         building: 'LumberYard',
         hex: new Hex(2, 5).toString(),
       },
+      {
+        type: ActionTypes.inventories.insert,
+        id: 't1',
+        resource: [100, 'wood'],
+      },
     ], game, {});
   }
 
