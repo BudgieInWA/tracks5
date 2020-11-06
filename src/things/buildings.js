@@ -1,4 +1,3 @@
-import React from 'react';
 import station from '../assets/icons/delapouite/originals/svg/000000/transparent/virtual-marker.svg';
 import tree from '../assets/icons/cathelineau/originals/svg/000000/transparent/holy-oak.svg';
 
