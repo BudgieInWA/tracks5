@@ -42,4 +42,4 @@ export const withdrawFromInventory = (inventories, { id, resources }) =>
 
 // export const getAgreedTrades = (inventories) => TODO return matching pairs of offers
 
-// export const resolveTrades = (inventories) => TODO return matching pairs of offers
+export const resolveTrades = (inventories) => inventories; // TODO return matching pairs of offers
