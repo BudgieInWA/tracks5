@@ -24,9 +24,7 @@ export default {
   },
 
   inventories: {
-    add: 'inventories.add',
-    transfer: 'inventories.transfer',
-    insert: 'inventories.insert',
+    resolveTrades: 'inventories.resolveTrades',
   },
   game: {
     movePhase: 'game.movePhase',
