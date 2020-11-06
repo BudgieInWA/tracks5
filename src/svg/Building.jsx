@@ -6,7 +6,7 @@ import Icon from './Icon';
 
 import pawn from '../assets/icons/lorc/originals/svg/000000/transparent/pawn.svg';
 
-const BuildingSvg  = gridPositioned(({ name, icon, ...rest }) => (
+const BuildingSvg = gridPositioned(({ name, icon, ...rest }) => (
   <g className="building" {...rest}>
     <Text className="debug">{name || 'building'}</Text>
     <Icon asset={icon} />

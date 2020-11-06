@@ -1,18 +1,18 @@
 import _ from 'lodash';
 // import { combineReducers } from "redux";
-import { HexUtils } from "react-hexgrid";
+import { HexUtils } from 'react-hexgrid';
 
 import Hex from '../lib/Hex';
-import CardinalDirection from "../lib/CardinalDirection";
-import TrackNetwork from "../lib/TrackNetwork";
+import CardinalDirection from '../lib/CardinalDirection';
+import TrackNetwork from '../lib/TrackNetwork';
 import Inventory from '../lib/Inventory';
 
-import ActionTypes from "./ActionTypes";
+import ActionTypes from './ActionTypes';
 
 export const SEGMENTS = 3;
 
-
-const name = (state = null, action) => action.type === ActionTypes.trains.name ? action.name : state;
+const name = (state = null, action) =>
+  action.type === ActionTypes.trains.name ? action.name : state;
 
 const cmp = (a, b) => {
   return Math.abs(b - a) < 0.0001;
@@ -26,8 +26,8 @@ const cmp = (a, b) => {
  */
 export function moveTrains(trains, network) {
   // TODO check for collisions first
-  return _.map(trains, train => {
-    let { hex, destination,  direction, distance, speed, schedule, path, targetSpeed, } = train;
+  return _.map(trains, (train) => {
+    let { hex, destination, direction, distance, speed, schedule, path, targetSpeed } = train;
 
     // const thing = schedule[hex];
     // if (thing) {
@@ -37,7 +37,7 @@ export function moveTrains(trains, network) {
 
     // 1. accelerate towards the target speed.
     if (_.isNumber(targetSpeed)) {
-      if (targetSpeed === speed ) {
+      if (targetSpeed === speed) {
         // targetSpeed = null;
       } else if (targetSpeed > speed) {
         speed++; // Super acceleration. TODO add a cooldown for the next accell
@@ -90,17 +90,17 @@ export function moveTrains(trains, network) {
       }
     }
 
-    return { ...train, hex, destination,  direction, distance, speed, schedule, path, targetSpeed, };
+    return { ...train, hex, destination, direction, distance, speed, schedule, path, targetSpeed };
   });
 }
 
 function train(state = {}, action) {
-  switch(action.type) {
+  switch (action.type) {
     case ActionTypes.trains.add:
       const { id, hex, direction, distance = 0, targetSpeed = 1, inventory } = action;
       return {
         id,
-        name: "new train " + action.id,
+        name: 'new train ' + action.id,
 
         hex,
         direction,
@@ -119,11 +119,11 @@ function train(state = {}, action) {
   }
 }
 
-export default function trains(state=[], action) {
-  switch(action.type) {
+export default function trains(state = [], action) {
+  switch (action.type) {
     case ActionTypes.trains.add:
       action.id = state.length;
-      return [ ...state, train(undefined, action) ]; // TODO
+      return [...state, train(undefined, action)]; // TODO
 
     case ActionTypes.trains.targets:
       return [
@@ -151,7 +151,6 @@ export default function trains(state=[], action) {
   }
 }
 
-
 function transformTrain(train, state) {
   return {
     ...train,
@@ -159,8 +158,8 @@ function transformTrain(train, state) {
     destination: Hex.of(train.destination),
     direction: CardinalDirection.of(train.direction),
     inventory: new Inventory(state.game.inventories[`train.${train.id}`]),
-  }
+  };
 }
 export function transformTrains(trains, state) {
-  return _.map(trains, t => transformTrain(t, state));
+  return _.map(trains, (t) => transformTrain(t, state));
 }

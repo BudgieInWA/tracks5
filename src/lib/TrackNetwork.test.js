@@ -43,7 +43,7 @@ describe('addPath', () => {
     expect(network.optionsFrom(shortPath[0]).length).toBe(1);
   });
 
-  it('doesn\'t double-build rails', () => {
+  it("doesn't double-build rails", () => {
     network.addPath(shortPath);
     const originalOptions = network.optionsFrom(shortPath[0]);
     network.addPath(shortPath);
@@ -63,15 +63,14 @@ describe('optionsFrom', () => {
   });
 
   it('returns all directions without `direction` specified', () => {
-    CardinalDirection.directions.forEach(d => network.addPath([Hex.origin, d]));
+    CardinalDirection.directions.forEach((d) => network.addPath([Hex.origin, d]));
     expect(network.optionsFrom(Hex.origin)).toHaveLength(CardinalDirection.directions.length);
   });
 
   it('filters options in forward-ish relative to `direction`', () => {
-    CardinalDirection.directions.forEach(d => network.addPath([Hex.origin, d]));
+    CardinalDirection.directions.forEach((d) => network.addPath([Hex.origin, d]));
     expect(network.optionsFrom(Hex.origin, CardinalDirection.N)).toHaveLength(3);
   });
-
 });
 
 describe('rail', () => {
@@ -87,5 +86,5 @@ describe('rail', () => {
     expect(HexUtils.add(rail1.v, rail1.direction)).toEqual(rail1.w);
     const rail2 = network.rail({ v: edge.w, w: edge.v });
     expect(HexUtils.add(rail2.v, rail2.direction)).toEqual(rail2.w);
-  })
+  });
 });

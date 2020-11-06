@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import ActionTypes from "./ActionTypes";
+import ActionTypes from './ActionTypes';
 
 import * as I from '../game/inventories';
 
@@ -12,4 +12,3 @@ export default function inventories(state = {}, action) {
       return state;
   }
 }
-

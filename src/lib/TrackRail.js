@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 import Hex from './Hex';
 import CardinalDirection from './CardinalDirection';
@@ -28,7 +28,7 @@ export default class TrackRail {
    */
   otherEnd(hex) {
     this.ensureIsEnd(hex);
-    return this.w !== hex  ? this.w : this.v;
+    return this.w !== hex ? this.w : this.v;
   }
 
   /**
@@ -40,4 +40,3 @@ export default class TrackRail {
     return hex === this.v ? this.direction : this.direction.opposite;
   }
 }
-

@@ -1,25 +1,29 @@
 import _ from 'lodash';
 import React from 'react';
 import JSONTree from 'react-json-tree';
-import Path from "../svg/Path.jsx";
+import Path from '../svg/Path.jsx';
 
-import ActionTypes from "../reducers/ActionTypes";
-
+import ActionTypes from '../reducers/ActionTypes';
 
 const pokeItemStringer = (type, data, itemType, itemString) => {
   switch (type) {
     case 'Object':
       return (
         <span>
-          <span style={{opacity: 0.7}}>{data.constructor.name} {`{${itemString.split(' ')[0]}}`}</span>
+          <span style={{ opacity: 0.7 }}>
+            {data.constructor.name} {`{${itemString.split(' ')[0]}}`}
+          </span>
           &nbsp;
           {data.constructor.name === 'Object' ? undefined : `"${data.toString()}"`}
         </span>
       );
 
     default:
-      return <span>{type} {itemType} {itemString}</span>;
-
+      return (
+        <span>
+          {type} {itemType} {itemString}
+        </span>
+      );
   }
 };
 const pokeJsonTheme = {
@@ -40,14 +44,13 @@ const pokeJsonTheme = {
   base0C: '#8abeb7',
   base0D: '#81a2be',
   base0E: '#b294bb',
-  base0F: '#a3685a'
+  base0F: '#a3685a',
 };
 
 //(TODO `class`ify)
 export const tools = {
   //TODO train directions
   // Maybe poke selects a poked train allowing it to trasform the tool? Or poking changes you to the tool.
-
 
   poke: {
     touchTargets: { tile: true, building: true, track: true, train: true },
@@ -58,7 +61,13 @@ export const tools = {
       },
     },
 
-    renderHud: ({ tool: { poke } }) => <JSONTree data={poke || "Click on some entity to see details."} theme={pokeJsonTheme} getItemString={pokeItemStringer} />,
+    renderHud: ({ tool: { poke } }) => (
+      <JSONTree
+        data={poke || 'Click on some entity to see details.'}
+        theme={pokeJsonTheme}
+        getItemString={pokeItemStringer}
+      />
+    ),
 
     // onDragStart(event, hexComponent) { },
     // onDragOver(event, hexComponent)  { },
@@ -81,9 +90,8 @@ export const tools = {
           dispatch({ type: ActionTypes.tool.hexes.end, hex });
         }
       },
-
     },
-    renderMap: ({ tool: { hexes } }) => hexes && hexes.length ? <Path hexes={hexes} /> : null,
+    renderMap: ({ tool: { hexes } }) => (hexes && hexes.length ? <Path hexes={hexes} /> : null),
   },
 
   // building: {
@@ -112,24 +120,31 @@ export const tools = {
 
   controlTrain: {
     touchTargets: { tile: true },
-    stateToOptions: (state) => ({ 0: 'Yourself'}),
+    stateToOptions: (state) => ({ 0: 'Yourself' }),
     handlers: {
       onClick({ hex }, event, { dispatch }) {
         if (this.option.length) {
-          dispatch({ type: ActionTypes.train.goto, id: this.option, hex: hex.toString() })
+          dispatch({ type: ActionTypes.train.goto, id: this.option, hex: hex.toString() });
         }
-      }
+      },
     },
-    renderMap({ tool: { selection }, trains}) {
+    renderMap({ tool: { selection }, trains }) {
       //TODO only rerender in sync with train animations (rerender at last 1/3rd breaks animation).
-      const renderTrain = t => t.path && t.path.length || t.destination ? <Path key={t.name || t.id} hexes={[t.hex, (t.destination || t.hex), ...t.path]} className="train-path" /> : null;
+      const renderTrain = (t) =>
+        (t.path && t.path.length) || t.destination ? (
+          <Path
+            key={t.name || t.id}
+            hexes={[t.hex, t.destination || t.hex, ...t.path]}
+            className="train-path"
+          />
+        ) : null;
       if (selection) {
         return renderTrain(trains[selection]);
       } else {
         return _.map(_.values(trains), renderTrain);
       }
     },
-  }
+  },
 };
 
 const noHandlersFactory = () => {};
@@ -141,12 +156,17 @@ export const nullFactory = noHandlersFactory;
  * @param {function} dispatch
  * @returns {function|nullFactory} -
  */
-export const getHandlersFactory = _.memoize(function makeHandlersFactory(getTool = null, { targetName = null, dispatch }) {
-  if (!getTool) return noHandlersFactory;
-  const tool = tools[getTool().name];
-  if (!tool) return noHandlersFactory;
-  if (targetName && !tool.touchTargets[targetName]) return noHandlersFactory;
-  return (thing) => {
-    return _.mapValues(tool.handlers, handler => event => handler.apply(getTool(), [thing, event, { dispatch }]));
-  };
-}, (getTool, { targetName }) => getTool().name + targetName);
+export const getHandlersFactory = _.memoize(
+  function makeHandlersFactory(getTool = null, { targetName = null, dispatch }) {
+    if (!getTool) return noHandlersFactory;
+    const tool = tools[getTool().name];
+    if (!tool) return noHandlersFactory;
+    if (targetName && !tool.touchTargets[targetName]) return noHandlersFactory;
+    return (thing) => {
+      return _.mapValues(tool.handlers, (handler) => (event) =>
+        handler.apply(getTool(), [thing, event, { dispatch }])
+      );
+    };
+  },
+  (getTool, { targetName }) => getTool().name + targetName
+);

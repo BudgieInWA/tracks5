@@ -1,7 +1,7 @@
-import _ from "lodash";
-import graphs from "@dagrejs/graphlib";
+import _ from 'lodash';
+import graphs from '@dagrejs/graphlib';
 
-import { HexUtils } from "react-hexgrid";
+import { HexUtils } from 'react-hexgrid';
 // import Hex from './Hex';
 import CardinalDirection from './CardinalDirection';
 import TrackRail from './TrackRail';
@@ -23,9 +23,9 @@ export default class TrackNetwork {
     this.graph = state
       ? graphs.json.read(state)
       : new graphs.Graph({
-        directed: false, // rail is rail.
-        multigraph: true, // subdivide edges with tags/groups/type called "name"
-      });
+          directed: false, // rail is rail.
+          multigraph: true, // subdivide edges with tags/groups/type called "name"
+        });
   }
 
   addPath(hexes) {
@@ -35,14 +35,12 @@ export default class TrackNetwork {
     // }
 
     let prevHex;
-    _.each(hexes, hex => {
+    _.each(hexes, (hex) => {
       if (this.graph.hasNode(hex)) {
         // if (isIntersection(hex)) {
         // Join the intersection.
         // prevJoinedIntersection = true;
-
         // Finish off all the pending 'to intersection' edges.
-
         // ...
         // } else {
         // break up the section, ...
@@ -52,10 +50,13 @@ export default class TrackNetwork {
       if (prevHex) {
         // Fill in the "between hex" network.
         const forwardDir = CardinalDirection.of(HexUtils.subtract(hex, prevHex));
-        graph.setEdge({ v: prevHex, w: hex, name: TrackNetwork.between.hexes }, {
-          [prevHex]: { direction: forwardDir },
-          [hex]: { direction: forwardDir.opposite },
-        });
+        graph.setEdge(
+          { v: prevHex, w: hex, name: TrackNetwork.between.hexes },
+          {
+            [prevHex]: { direction: forwardDir },
+            [hex]: { direction: forwardDir.opposite },
+          }
+        );
       }
 
       prevHex = hex;
@@ -66,11 +67,16 @@ export default class TrackNetwork {
     // }
   }
 
-  optionsFrom(node, direction=null) {
+  optionsFrom(node, direction = null) {
     const dir = CardinalDirection.of(direction);
-    const outRails = _.map(this.nodeOutEdges(node, TrackNetwork.between.hexes), edge => this.rail(edge));
+    const outRails = _.map(this.nodeOutEdges(node, TrackNetwork.between.hexes), (edge) =>
+      this.rail(edge)
+    );
     if (dir) {
-      return _.filter(outRails, ({direction}) => direction === dir || direction === dir.left || direction === dir.right);
+      return _.filter(
+        outRails,
+        ({ direction }) => direction === dir || direction === dir.left || direction === dir.right
+      );
     } else {
       return outRails;
     }
@@ -88,8 +94,8 @@ export default class TrackNetwork {
    * @param {Hex} hex
    */
   markIntersection(hex) {
-    _.each(this.nodeOutEdges(hex, TrackNetwork.between.hexes), e => {
-      _.each(this.pathToIntersectionFollowingTrack(e), hex => {
+    _.each(this.nodeOutEdges(hex, TrackNetwork.between.hexes), (e) => {
+      _.each(this.pathToIntersectionFollowingTrack(e), (hex) => {
         // Correct the 'between intersections' edge that this new intersection breaks.
         //TODO
       });
@@ -97,7 +103,7 @@ export default class TrackNetwork {
   }
 
   connectedNodes(hex) {
-    _.map(this.nodeOutEdges(hex, TrackNetwork.between.hexes), e => e.w);
+    _.map(this.nodeOutEdges(hex, TrackNetwork.between.hexes), (e) => e.w);
   }
 
   /**
@@ -110,7 +116,9 @@ export default class TrackNetwork {
       return null;
     }
 
-    const distances = graphs.alg.dijkstra(this.graph, from, undefined, (v) => this.graph.nodeEdges(v));
+    const distances = graphs.alg.dijkstra(this.graph, from, undefined, (v) =>
+      this.graph.nodeEdges(v)
+    );
     if (distances[to] === Number.POSITIVE_INFINITY) return null;
 
     const reversePath = [];
@@ -123,8 +131,7 @@ export default class TrackNetwork {
     return _.reverse(reversePath);
   }
 
-
-  pathToIntersectionFollowingTrack(edge, path=[]) {
+  pathToIntersectionFollowingTrack(edge, path = []) {
     if (path.length === 0) {
       path.push(edge.v);
     }
@@ -144,8 +151,12 @@ export default class TrackNetwork {
   }
 
   nextEdgeFollowingTrack(edge) {
-    const destinationOutEdges = _.filter(this.nodeOutEdges(edge.w, TrackNetwork.between.hexes), e => e.w === edge.v);
-    if (destinationOutEdges.length !== 1) throw new TrackNetwork.NotSimpleTrack({choices: destinationOutEdges});
+    const destinationOutEdges = _.filter(
+      this.nodeOutEdges(edge.w, TrackNetwork.between.hexes),
+      (e) => e.w === edge.v
+    );
+    if (destinationOutEdges.length !== 1)
+      throw new TrackNetwork.NotSimpleTrack({ choices: destinationOutEdges });
     return destinationOutEdges[0];
   }
 
@@ -170,13 +181,14 @@ export default class TrackNetwork {
    */
   rails() {
     const edges = this.graph.edges();
-    return _.map(edges, e => new TrackRail(e, this.graph.edge(e)));
+    return _.map(edges, (e) => new TrackRail(e, this.graph.edge(e)));
   }
 
   /** All edges from node with v === node */
   nodeOutEdges(hex, name) {
     const node = hex.toString();
-    return _.map(this.nodeEdges(node, name), edge => edge.w === node ? {...edge, v: edge.w, w: edge.v} : edge);
+    return _.map(this.nodeEdges(node, name), (edge) =>
+      edge.w === node ? { ...edge, v: edge.w, w: edge.v } : edge
+    );
   }
 }
-

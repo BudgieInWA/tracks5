@@ -1,20 +1,19 @@
-import _ from "lodash";
-import React from "react";
-import { connect } from "react-redux";
+import _ from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
 
-import ActionTypes from "./reducers/ActionTypes";
-import { seed } from "./reducers/terrain";
-
+import ActionTypes from './reducers/ActionTypes';
+import { seed } from './reducers/terrain';
 
 let timer;
-const turnActions = dispatch => ({
+const turnActions = (dispatch) => ({
   advance(event) {
-    dispatch({ type: ActionTypes.game.turnResolve })
+    dispatch({ type: ActionTypes.game.turnResolve });
   },
   play(event) {
     clearTimeout(timer);
     timer = setInterval(() => {
-      dispatch({ type: ActionTypes.game.turnResolve })
+      dispatch({ type: ActionTypes.game.turnResolve });
     }, 990);
   },
   stop(event) {
@@ -41,7 +40,11 @@ class TurnUI extends React.Component {
     return (
       <form className="turn-controls">
         <code>{seed}</code>
-        {_.map(actions, (action, name) => <button key={name} type="button" onClick={action}>{name}</button>)}
+        {_.map(actions, (action, name) => (
+          <button key={name} type="button" onClick={action}>
+            {name}
+          </button>
+        ))}
         {/*<button><pre>`</pre></button>*/}
       </form>
     );

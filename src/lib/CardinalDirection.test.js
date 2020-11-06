@@ -5,12 +5,12 @@ const dir = CardinalDirection.N;
 
 describe('API', () => {
   it('N, NE, SE, S, SW, NW', () => {
-    expect( CardinalDirection.N  ).toBeInstanceOf(CardinalDirection);
-    expect( CardinalDirection.NE ).toBeInstanceOf(CardinalDirection);
-    expect( CardinalDirection.SE ).toBeInstanceOf(CardinalDirection);
-    expect( CardinalDirection.S  ).toBeInstanceOf(CardinalDirection);
-    expect( CardinalDirection.SW ).toBeInstanceOf(CardinalDirection);
-    expect( CardinalDirection.NW ).toBeInstanceOf(CardinalDirection);
+    expect(CardinalDirection.N).toBeInstanceOf(CardinalDirection);
+    expect(CardinalDirection.NE).toBeInstanceOf(CardinalDirection);
+    expect(CardinalDirection.SE).toBeInstanceOf(CardinalDirection);
+    expect(CardinalDirection.S).toBeInstanceOf(CardinalDirection);
+    expect(CardinalDirection.SW).toBeInstanceOf(CardinalDirection);
+    expect(CardinalDirection.NW).toBeInstanceOf(CardinalDirection);
   });
 
   it('left and right', () => {
@@ -33,5 +33,5 @@ describe('API', () => {
     const restoredStr = restoredDir.toString();
     expect(restoredDir).toBe(dir);
     expect(restoredStr).toBe(str);
-  })
+  });
 });

@@ -7,7 +7,7 @@ import Building from '../svg/Building';
 export class Station extends Building {
   static icon = station;
 
-  constructor ({ team, inventory }) {
+  constructor({ team, inventory }) {
     super();
 
     this.team = team;
@@ -18,7 +18,7 @@ export class Station extends Building {
 export class LumberYard extends Building {
   static icon = tree;
 
-  constructor ({ team, inventory }) {
+  constructor({ team, inventory }) {
     super();
 
     this.team = team;

@@ -1,14 +1,14 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-import { HexUtils } from "react-hexgrid";
+import { HexUtils } from 'react-hexgrid';
 
-import ActionTypes from "./ActionTypes";
+import ActionTypes from './ActionTypes';
 
-import { tools } from "../things/tools";
+import { tools } from '../things/tools';
 
 function poke(state = null, action) {
   if (action.type === ActionTypes.tool.poke) {
-    return action.poke
+    return action.poke;
   }
   return state;
 }
@@ -27,7 +27,7 @@ function hexesCrossedByLine(start, end) {
 }
 
 function hexes(state = [], action) {
-  switch(action.type) {
+  switch (action.type) {
     case ActionTypes.tool.hexes.start:
       return [action.hex];
 
@@ -49,7 +49,8 @@ function hexes(state = [], action) {
         const cmp = (a, b) => {
           return Math.abs(b - a) < 0.0001;
         };
-        const blah = (path.length > 1) && cmp(HexUtils.distance(newHexes[0], path[path.length - 2]), 1);
+        const blah =
+          path.length > 1 && cmp(HexUtils.distance(newHexes[0], path[path.length - 2]), 1);
         if (blah) {
           path.pop();
         } else {
@@ -69,13 +70,13 @@ export function getTool(state) {
   return state.tool;
 }
 
-const nested = combineReducers({ name: (s='poke') => s, poke, hexes, option: (o='') => o });
+const nested = combineReducers({ name: (s = 'poke') => s, poke, hexes, option: (o = '') => o });
 
 export default function tool(state = {}, action) {
   // TODO need options from stateToOptions
   // const { name, option } = state;
   // const currentTool = tools[state.name];
-  switch(action.type) {
+  switch (action.type) {
     case ActionTypes.tool.name:
       return nested({ name: action.name }, action);
 

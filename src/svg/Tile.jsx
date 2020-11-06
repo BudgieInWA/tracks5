@@ -17,11 +17,11 @@ class Tile extends React.PureComponent {
     onDragEnd: PropTypes.func,
     onDragOver: PropTypes.func,
     onDrop: PropTypes.func,
-    children: PropTypes.node
+    children: PropTypes.node,
   };
 
   static contextTypes = {
-    points: PropTypes.string
+    points: PropTypes.string,
   };
 
   // onDragStart(e) {

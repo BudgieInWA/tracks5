@@ -11,7 +11,8 @@ export default {
     build: 'TRACKS_BUILD',
   },
 
-  trains: { // TODO move some into `train`
+  trains: {
+    // TODO move some into `train`
     add: 'trains.build',
     name: 'trains.name',
     targets: 'trains.targets',
@@ -42,7 +43,7 @@ export default {
     poke: 'poke',
     hexes: {
       start: 'PATH_START',
-      end:  'PATH_END',
+      end: 'PATH_END',
       clear: 'PATH_CLEAR',
     },
   },

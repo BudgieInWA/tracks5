@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import { Noise } from 'noisejs';
-import { GridGenerator } from "react-hexgrid";
+import { GridGenerator } from 'react-hexgrid';
 
 import { HexUtils } from 'react-hexgrid';
 
 import Hex from '../lib/Hex';
-import TrackNetwork  from '../lib/TrackNetwork';
+import TrackNetwork from '../lib/TrackNetwork';
 
-import ActionTypes from "./ActionTypes";
+import ActionTypes from './ActionTypes';
 
 export const seed = Date.now().valueOf() % 100;
 const rainNoise = new Noise(seed + 0);
@@ -25,8 +25,14 @@ const orientation = {
   startAngle: 0.0,
 };
 const layout = {
-  origin: { x: 0, y: 0 },
-  size: { x: 1, y: 1 },
+  origin: {
+    x: 0,
+    y: 0,
+  },
+  size: {
+    x: 1,
+    y: 1,
+  },
   spacing: 1,
   orientation,
 };
@@ -43,9 +49,11 @@ function getTileValues(hex) {
   const tempScale = 0.1;
   const rain = (1 + rainNoise.perlin2(xy.x * rainScale, xy.y * rainScale)) / 2;
   const temp = (1 + tempNoise.perlin2(xy.x * tempScale, xy.y * tempScale)) / 2;
-  return { rain, temp };
+  return {
+    rain,
+    temp,
+  };
 }
-
 
 /**
  *
@@ -61,34 +69,48 @@ const tile = (state = {}, action) => {
     biome = byRain[Math.floor(values.rain * byRain.length)];
   }
 
-  return { ...state, hex, biome, values }
+  return {
+    ...state,
+    hex,
+    biome,
+    values,
+  };
 };
 
-const notInTerrain = state => hex => !state[hex];
+const notInTerrain = (state) => (hex) => !state[hex];
 export default function terrain(state = {}, action) {
   let newHexes = [];
   if (action.type === ActionTypes.terrain.reveal) {
-    newHexes.push(..._.filter(GridGenerator.spiral(Hex.of(action.hex), action.radius || 0), notInTerrain(state)));
+    newHexes.push(
+      ..._.filter(GridGenerator.spiral(Hex.of(action.hex), action.radius || 0), notInTerrain(state))
+    );
   }
-  if (newHexes.length) return {
-    ...state,
-    ..._.fromPairs(_.map(newHexes, h => [h.toString(), tile({ hex: h.toString() }, action)])),
-  };
+  if (newHexes.length)
+    return {
+      ...state,
+      ..._.fromPairs(_.map(newHexes, (h) => [h.toString(), tile({ hex: h.toString() }, action)])),
+    };
   else return state;
-};
-
+}
 
 export function revealTerrain(state, { trains, buildings }) {
   return _.reduce(
     [
-      ..._.map(trains, ({ hex }) => ({ type: ActionTypes.terrain.reveal, hex, radius: 4 })),
-      ..._.map(buildings, ({ hex }) => ({ type: ActionTypes.terrain.reveal, hex, radius: 3 })),
+      ..._.map(trains, ({ hex }) => ({
+        type: ActionTypes.terrain.reveal,
+        hex,
+        radius: 4,
+      })),
+      ..._.map(buildings, ({ hex }) => ({
+        type: ActionTypes.terrain.reveal,
+        hex,
+        radius: 3,
+      })),
     ],
     terrain,
     state
   );
-};
-
+}
 
 export function Tile(tile) {
   _.assign(this, {
@@ -98,5 +120,5 @@ export function Tile(tile) {
 }
 
 export function transformTerrain(terrain, state) {
-  return _.mapValues(terrain, tile => new Tile(tile));
+  return _.mapValues(terrain, (tile) => new Tile(tile));
 }

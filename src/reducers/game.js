@@ -1,7 +1,7 @@
-import  _ from 'lodash';
+import _ from 'lodash';
 import { combineReducers } from 'redux';
 
-import ActionTypes from "./ActionTypes";
+import ActionTypes from './ActionTypes';
 
 import terrain, { seed, transformTerrain, revealTerrain } from './terrain';
 import buildings, { transformBuildings } from './buildings';
@@ -12,11 +12,9 @@ import inventories from './inventories';
 import { HexUtils } from 'react-hexgrid';
 import Hex from '../lib/Hex';
 import CardinalDirection from '../lib/CardinalDirection';
-import TrackNetwork  from '../lib/TrackNetwork';
-
+import TrackNetwork from '../lib/TrackNetwork';
 
 const nested = combineReducers({ terrain, buildings, tracks, trains, inventories });
-
 
 function gameTopLevelReducer(state, action) {
   if (state === undefined) {
@@ -33,39 +31,46 @@ function gameTopLevelReducer(state, action) {
     } while (!HexUtils.equals(hex, path[0]));
     path.push(hex); // close the path.
 
-    state = _.reduce([
-      {
-        type: ActionTypes.game.buildBuilding,
-        building: 'home',
-        hex: Hex.origin.toString(),
-      },
-      {
-        type: ActionTypes.tracks.build,
-        hexes: path,
-      },
-      {
-        type: ActionTypes.game.buildTrain,
-        hex: Hex.origin.toString(),
-        direction: CardinalDirection.N.toString(),
-      },
-      {
-        type: ActionTypes.game.buildBuilding,
-        building: 'LumberYard',
-        hex: new Hex(2, 5).toString(),
-      },
-      {
-        type: ActionTypes.inventories.insert,
-        id: 't1',
-        resource: [100, 'wood'],
-      },
-    ], game, {});
+    state = _.reduce(
+      [
+        {
+          type: ActionTypes.game.buildBuilding,
+          building: 'home',
+          hex: Hex.origin.toString(),
+        },
+        {
+          type: ActionTypes.tracks.build,
+          hexes: path,
+        },
+        {
+          type: ActionTypes.game.buildTrain,
+          hex: Hex.origin.toString(),
+          direction: CardinalDirection.N.toString(),
+        },
+        {
+          type: ActionTypes.game.buildBuilding,
+          building: 'LumberYard',
+          hex: new Hex(2, 5).toString(),
+        },
+        {
+          type: ActionTypes.inventories.insert,
+          id: 't1',
+          resource: [100, 'wood'],
+        },
+      ],
+      game,
+      {}
+    );
   }
 
   try {
-    switch(action.type) {
+    switch (action.type) {
       case ActionTypes.train.goto: {
         const train = state.trains[action.id];
-        const foundPath = new TrackNetwork(state.tracks).shortestPath(train.destination || train.hex, action.hex);
+        const foundPath = new TrackNetwork(state.tracks).shortestPath(
+          train.destination || train.hex,
+          action.hex
+        );
         if (!foundPath) return state;
         const [currentHex, ...path] = foundPath;
         return {
@@ -100,7 +105,7 @@ function gameTopLevelReducer(state, action) {
         const { terrain, trains, buildings } = state;
         return {
           ...state,
-          terrain: revealTerrain(terrain, { trains, buildings })
+          terrain: revealTerrain(terrain, { trains, buildings }),
         };
       }
 
@@ -108,8 +113,17 @@ function gameTopLevelReducer(state, action) {
         const buildingId = _.keys(state.buildings).length;
         return {
           ...state,
-          buildings: buildings(state.buildings, { ...action, type: ActionTypes.buildings.add, id: buildingId }),
-          inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `building.${buildingId}`, slotCount: 100, slotCapacity: 100 }),
+          buildings: buildings(state.buildings, {
+            ...action,
+            type: ActionTypes.buildings.add,
+            id: buildingId,
+          }),
+          inventories: inventories(state.inventories, {
+            type: ActionTypes.inventories.limit,
+            id: `building.${buildingId}`,
+            slotCount: 100,
+            slotCapacity: 100,
+          }),
         };
       }
 
@@ -118,7 +132,12 @@ function gameTopLevelReducer(state, action) {
         return {
           ...state,
           trains: trains(state.trains, { ...action, type: ActionTypes.trains.add, id: trainId }),
-          inventories: inventories(state.inventories, { type: ActionTypes.inventories.limit, id: `train.${trainId}`, slotCount: 3, slotCapacity: 3 }),
+          inventories: inventories(state.inventories, {
+            type: ActionTypes.inventories.limit,
+            id: `train.${trainId}`,
+            slotCount: 3,
+            slotCapacity: 3,
+          }),
         };
       }
 

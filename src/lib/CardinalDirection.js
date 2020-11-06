@@ -36,27 +36,27 @@ export class CardinalDirection extends Hex {
 
 // These are all of the cardinal directions.
 const directions = {
-  N : new CardinalDirection(new Hex(0, -1, +1), 0,   'North'),
-  NE: new CardinalDirection(new Hex(+1, -1, 0), 60,  'North East'),
+  N: new CardinalDirection(new Hex(0, -1, +1), 0, 'North'),
+  NE: new CardinalDirection(new Hex(+1, -1, 0), 60, 'North East'),
   SE: new CardinalDirection(new Hex(+1, 0, -1), 120, 'South East'),
-  S:  new CardinalDirection(new Hex(0, +1, -1), 180, 'South'),
+  S: new CardinalDirection(new Hex(0, +1, -1), 180, 'South'),
   SW: new CardinalDirection(new Hex(-1, +1, 0), 240, 'South West'),
   NW: new CardinalDirection(new Hex(-1, 0, +1), 300, 'North West'),
 };
 // We do a bunch of pre-calculations to make this concept cheap.
 const directionKeys = _.keys(directions);
-const wrap = n => (n + directionKeys.length) % directionKeys.length;
+const wrap = (n) => (n + directionKeys.length) % directionKeys.length;
 _.each(directionKeys, (key, i) => {
   const thisDirection = directions[key];
   directionsByString[thisDirection.toString()] = thisDirection;
-  thisDirection.left     = directions[directionKeys[wrap(i - 1)]];
-  thisDirection.right    = directions[directionKeys[wrap(i + 1)]];
+  thisDirection.left = directions[directionKeys[wrap(i - 1)]];
+  thisDirection.right = directions[directionKeys[wrap(i + 1)]];
   thisDirection.opposite = directions[directionKeys[wrap(i + 3)]];
 });
-_.each(directions, d => Object.freeze(d));
+_.each(directions, (d) => Object.freeze(d));
 
 _.assign(CardinalDirection, { ...directions, directions: _.values(directions) });
 
-getConstructorPermission = () => console.warn('I don\'t recommend using this anymore.');
+getConstructorPermission = () => console.warn("I don't recommend using this anymore.");
 
 export default CardinalDirection;

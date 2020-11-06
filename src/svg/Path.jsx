@@ -9,7 +9,7 @@ class Path extends React.PureComponent {
     layout: PropTypes.object,
   };
   static contextTypes = {
-    layout: PropTypes.object // TODO Shape
+    layout: PropTypes.object, // TODO Shape
   };
 
   // TODO Refactor
@@ -22,19 +22,19 @@ class Path extends React.PureComponent {
 
     // Construct Path points out of all the intersecting hexes (e.g. M 0,0 L 10,20, L 30,20)
     let points = 'M';
-    points += hexes.map(hex => {
-      let p = HexUtils.hexToPixel(Hex.of(hex), layout);
-      return ` ${p.x},${p.y} `;
-    }).join('L');
+    points += hexes
+      .map((hex) => {
+        let p = HexUtils.hexToPixel(Hex.of(hex), layout);
+        return ` ${p.x},${p.y} `;
+      })
+      .join('L');
 
     return points;
   }
 
   render() {
     const { hexes, ...rest } = this.props;
-    return (
-      <path {...rest} d={this.getPointsString()} />
-    );
+    return <path {...rest} d={this.getPointsString()} />;
   }
 }
 
