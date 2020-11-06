@@ -138,7 +138,7 @@ export const nullFactory = noHandlersFactory;
  *
  * @param {function|null} getTool - a function that will return the current tool data at the time the event happens.
  * @param {string|null} targetName
- * @paaaram {function} dispatch
+ * @param {function} dispatch
  * @returns {function|nullFactory} -
  */
 export const getHandlersFactory = _.memoize(function makeHandlersFactory(getTool = null, { targetName = null, dispatch }) {

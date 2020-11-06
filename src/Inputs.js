@@ -78,7 +78,7 @@ export function getHandler({ dispatch }) {
  *
  * @param {string} name - the name of the input
  * @param {string[]} keys - The default keys, identified by `code` or `key`
- * @returns {function([object], object): object} - The reducer function for the input state.
+ * @returns {function(boolean?, object): boolean} - The reducer function for the input state.
  */
 export function makeBinaryStateInput(name, { keys }) {
   _.each(keys, k => {
@@ -97,8 +97,8 @@ export function makeBinaryStateInput(name, { keys }) {
  *
  * @param {string} name - The name of the input.
  * @param {*} initialState
- * @param {object<string, {action: function(*), keys: string[]}>} actions - Maps action names to the transformation and default keys.
- * @returns {function([object], object): object} - The reducer function for the input state.
+ * @param {object<string, {action: function(*): *, keys: string[]}>} actions - Maps action names to the transformation and default keys.
+ * @returns {function(*?, object): *} - The reducer function for the input state.
  */
 export function makeStatefulInput(name, initialState, actions)  {
   _.each(actions, ({ keys }, actionName) => {
